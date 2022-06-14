@@ -44,7 +44,7 @@ FROM section_schedule;
 
 ```{r}
 meets_test_df <- tibble(
-  crn = sample(1:99999, 10),
+  course_reference_number = sample(1:99999, 10),
   is_meets_monday = sample(c(TRUE, FALSE), 10, replace = TRUE),
   is_meets_tuesday = sample(c(TRUE, FALSE), 10, replace = TRUE),
   is_meets_wednesday = sample(c(TRUE, FALSE), 10, replace = TRUE),
@@ -56,6 +56,20 @@ meets_test_df <- tibble(
 
 DT::datatable(meets_test_df)
 ```
+
+### Now let's see if we can pull in real data
+
+```{r}
+### We pull the data we want from Edify
+library(here)
+source(here::here("R", "data_io_util.R"))
+
+real_c17_df <- get_data_from_sql_file(file_name="c_17.sql",
+                             dsn="edify")
+# display data pulled in table
+DT::datatable(real_c17_df, rownames=FALSE)
+```
+
 ## The function that formats it
 
 The first thing I need to do is to figure out how to turn a true into a letter and false into a space. We use a case_when statement to changes the boolean logic of true or false into the USHE race field value. example: If is_meets_monday is coded as TRUE then there will be a new variable called "M" in the column called M
@@ -64,7 +78,7 @@ The first thing I need to do is to figure out how to turn a true into a letter a
 # TODO: talk with Andrea about what to do with missing values.
   # TODO: What to do if the input is not a boolean value.
 
-change_meet <- meets_test_df %>% 
+change_meet <- real_c17_df %>% 
   mutate(M = case_when(
     is_meets_monday == TRUE ~ "M",
     is_meets_monday == FALSE ~ "",
@@ -103,7 +117,7 @@ DT::datatable(change_meet)
 Here we want to only run the crn numbers and USHE data. 
 ```{r}
 only_crn_and_ushe_data <- change_meet %>% 
-  select(crn, "C-17")
+  select(course_reference_number, "C-17")
 
 DT::datatable(only_crn_and_ushe_data)
 
