@@ -20,15 +20,26 @@ library(stringr)
 library(DT)
 library(purrr)
 ```
-
-## Where does the data come from
-
-Outline where in Edify this data comes from. This should come from the spread sheet.
-This is part of the Student Data Submission Element S-14
+## This is part of the Student Data Submission to USHE Element S-14
 ELEMENT NAME: Ethnic Origin 
 FIELD NAME: S_ETHNIC 
 FIELD FORMAT: Varchar, 8 Characters,  
 DEFINITION: The racial and ethnic categories used to classify students.
+
+## This data is found in Edify from export.student table
+```{}
+SELECT s.student_id,
+       s.is_hispanic_latino_ethnicity,
+       s.is_asian,
+       s.is_black,
+       s.is_american_indian_alaskan,
+       s.is_hawaiian_pacific_islander,
+       s.is_white,
+       s.is_international,
+       s.is_other_race
+FROM export.student s;
+```
+
 
 ### Create fake data that matches this.
 
@@ -98,7 +109,7 @@ DT::datatable(change_race)
 
 ```
 
-Here we want to only run the d-numbers and ushe data.
+Here we want to only run the d-numbers and ushe data. This data should have all of the spaces included in the raw table only_numbers_and_ushe_data
 ```{r}
 only_numbers_and_ushe_data <- change_race %>% 
   select(person_id, "S-14")
