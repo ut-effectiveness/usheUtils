@@ -19,6 +19,7 @@ library(glue)
 library(stringr)
 library(DT)
 library(purrr)
+library(here)
 ```
 ## This is part of the Student Data Submission to USHE Element S-14
 ELEMENT NAME: Ethnic Origin 
@@ -60,6 +61,19 @@ test_df <- tibble(
 DT::datatable(test_df)
 ```
 
+### Now let's see if we can pull in real data
+
+```{r}
+### We pull the data we want from the report database REPT 
+library(here)
+source(here::here("R", "data_io_util.R"))
+
+real_df <- get_data_from_sql_file(file_name="s_14.sql",
+                             dsn="edify")
+# display data pulled in table
+DT::datatable(real_df, rownames=FALSE)
+```
+
 
 ## The function that formats it
 
@@ -69,7 +83,7 @@ The first thing I need to do is to figure out how to turn a true into a letter a
 # TODO: talk with Andrea about what to do with missing values.
   # TODO: What to do if the input is not a boolean value.
 
-change_race <- test_df %>% 
+change_race <- real_df %>%  
   mutate(H = case_when(
     is_hispanic_latino_ethnicity == TRUE ~ "H",
     is_hispanic_latino_ethnicity == FALSE ~ " ",
@@ -106,6 +120,8 @@ change_race <- test_df %>%
 change_race$"S-14" = paste(change_race$H, change_race$A, change_race$B, change_race$I, change_race$P, change_race$W, change_race$N, change_race$U)
 
 DT::datatable(change_race)
+
+
 
 ```
 
