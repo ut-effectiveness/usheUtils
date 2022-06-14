@@ -23,7 +23,12 @@ library(purrr)
 
 ## Where does the data come from
 
-Outline where in Edify this data comes from. This should come from the spread sheet. 
+Outline where in Edify this data comes from. This should come from the spread sheet.
+This is part of the Student Data Submission Element S-14
+ELEMENT NAME: Ethnic Origin 
+FIELD NAME: S_ETHNIC 
+FIELD FORMAT: Varchar, 8 Characters,  
+DEFINITION: The racial and ethnic categories used to classify students.
 
 ### Create fake data that matches this.
 
@@ -47,38 +52,12 @@ DT::datatable(test_df)
 
 ## The function that formats it
 
-The first thing I need to do is to figure out how to turn a true into a letter and false into a space.
+The first thing I need to do is to figure out how to turn a true into a letter and false into a space. We use a case_when statement to changes the boolean logic of true or false into the USHE race field value. example: If is_hispanic_latino_ethnicity is coded as TRUE then there will be a new variable called "H" in the column called H
 
 ```{r}
-change_hispanic <- function(boolean) {
-  # TODO: talk with Andrea about what to do with missing values.
+# TODO: talk with Andrea about what to do with missing values.
   # TODO: What to do if the input is not a boolean value.
-  if_else(boolean, 'H', ' ', missing = ' ')
-}
-```
 
-
-What does this do to test_df?
-
-```{r}
-is_hispanic_latino_ethnicity <- test_df %>% 
-  mutate(is_hispanic_test = change_hispanic(is_hispanic))
-
-datatable(hispanic_test)
-```
-
-Now we will do the same thing for asians.
-```{r}
-change_asian <- function(boolean) {
-  # TODO: talk with Andrea about what to do with missing values.
-  # TODO: What to do if the input is not a boolean value.
-  if_else(boolean, 'A', ' ', missing = ' ')
-}
-
-# case_when might be a better way to handle this.
-```
-
-```{r}
 change_race <- test_df %>% 
   mutate(H = case_when(
     is_hispanic_latino_ethnicity == TRUE ~ "H",
@@ -113,27 +92,19 @@ change_race <- test_df %>%
     is_other_race == FALSE ~ " ",
     TRUE ~ "mistake"))
 
-change_race$combind_races = paste(change_race$H, change_race$A, change_race$B, change_race$I, change_race$P, change_race$W, change_race$N, change_race$U)
+change_race$"S-14" = paste(change_race$H, change_race$A, change_race$B, change_race$I, change_race$P, change_race$W, change_race$N, change_race$U)
 
+DT::datatable(change_race)
+
+```
+
+Here we want to only run the d-numbers and ushe data.
+```{r}
 only_numbers_and_ushe_data <- change_race %>% 
-  select(person_id, combind_races)
+  select(person_id, "S-14")
 
-```
+DT::datatable(only_numbers_and_ushe_data)
 
-
-
-```{r}
-a_and_h_test <- test_df %>% 
-  mutate(is_hispanic_test = change_hispanic(is_hispanic)) %>% 
-  mutate(is_asian_test = change_asian(is_asian))
-
-datatable(a_and_h_test)
-```
-
-Paste idea
-```{r}
-a_and_h_paste <- a_and_h_test %>% 
-  select(person_id, is_hispanic_test, is_asian_test)
 
 ```
 
