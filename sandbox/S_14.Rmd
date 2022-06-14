@@ -45,7 +45,7 @@ FROM export.student s;
 
 ```{r}
 test_df <- tibble(
-  person_id = sample(1:99999999, 10),
+  student_id = sample(1:999999, 10),
   is_hispanic_latino_ethnicity = sample(c(TRUE, FALSE), 10, replace = TRUE),
   is_asian = sample(c(TRUE, FALSE), 10, replace = TRUE),
   is_black = sample(c(TRUE, FALSE), 10, replace = TRUE),
@@ -55,7 +55,7 @@ test_df <- tibble(
   is_international = sample(c(TRUE, FALSE), 10, replace = TRUE),
   is_other_race = sample(c(TRUE, FALSE), 10, replace = TRUE)
 ) %>% 
-    mutate(person_id = str_pad(person_id, 10, pad = '0'))
+    mutate(person_id = str_pad(student_id, 8, pad = '0'))
 
 DT::datatable(test_df)
 ```
@@ -112,7 +112,7 @@ DT::datatable(change_race)
 Here we want to only run the d-numbers and ushe data. This data should have all of the spaces included in the raw table only_numbers_and_ushe_data
 ```{r}
 only_numbers_and_ushe_data <- change_race %>% 
-  select(person_id, "S-14")
+  select(student_id, "S-14")
 
 DT::datatable(only_numbers_and_ushe_data)
 
