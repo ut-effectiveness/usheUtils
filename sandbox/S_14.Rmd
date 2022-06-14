@@ -30,8 +30,8 @@ Outline where in Edify this data comes from. This should come from the spread sh
 ```{r}
 test_df <- tibble(
   person_id = sample(1:99999999, 10),
-  is_hispanic = sample(c('true', 'false'), 10, replace = TRUE),
-  is_asian = sample(c('true', 'false'), 10, replace = TRUE) 
+  is_hispanic = sample(c(TRUE, FALSE), 10, replace = TRUE),
+  is_asian = sample(c(TRUE, FALSE), 10, replace = TRUE) 
 ) %>% 
     mutate(person_id = str_pad(person_id, 10, pad = '0'))
 
@@ -41,4 +41,47 @@ DT::datatable(test_df)
 
 ## The function that formats it
 
-- Create a function that takes in the fake data set and outputs the data in the format USHE is looking for
+The first thing I need to do is to figure out how to turn a true into a letter and false into a space.
+
+```{r}
+change_hispanic <- function(boolean) {
+  # TODO: talk with Andrea about what to do with missing values.
+  # TODO: What to do if the input is not a boolean value.
+  if_else(boolean, 'H', ' ', missing = ' ')
+}
+```
+
+
+What does this do to test_df?
+
+```{r}
+hispanic_test <- test_df %>% 
+  mutate(is_hispanic_test = change_hispanic(is_hispanic))
+
+datatable(hispanic_test)
+```
+
+Now we will do the same thing for asians.
+```{r}
+change_asian <- function(boolean) {
+  # TODO: talk with Andrea about what to do with missing values.
+  # TODO: What to do if the input is not a boolean value.
+  if_else(boolean, 'A', ' ', missing = ' ')
+}
+```
+
+```{r}
+a_and_h_test <- test_df %>% 
+  mutate(is_hispanic_test = change_hispanic(is_hispanic)) %>% 
+  mutate(is_asian_test = change_asian(is_asian))
+
+datatable(a_and_h_test)
+```
+
+Paste idea
+```{r}
+a_and_h_paste <- a_and_h_test %>% 
+  select(person_id, is_hispanic_test, is_asian_test) %>% 
+  unite()
+```
+
