@@ -1,9 +1,44 @@
 ---
-title: "Student Ethnic Origin"
+title: "S-14"
 output: html_document
 date: '2022-06-01'
 ---
 
-The ethnic origin field for the student file has to have the format blah blah blah
+```{r set global chunks, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, message = FALSE
+)
+```
+
+```{r load libraries}
+library(tidyverse)
+library(datasets)
+library(plotly)
+library(gt)
+library(glue)
+library(stringr)
+library(DT)
+library(purrr)
+```
+
+## Where does the data come from
+
+Outline where in Edify this data comes from. This should come from the spread sheet. 
+
+### Create fake data that matches this.
+
+```{r}
+test_df <- tibble(
+  person_id = sample(1:99999999, 10),
+  is_hispanic = sample(c('true', 'false'), 10, replace = TRUE),
+  is_asian = sample(c('true', 'false'), 10, replace = TRUE) 
+) %>% 
+    mutate(person_id = str_pad(person_id, 10, pad = '0'))
+
+DT::datatable(test_df)
+```
 
 
+## The function that formats it
+
+- Create a function that takes in the fake data set and outputs the data in the format USHE is looking for
