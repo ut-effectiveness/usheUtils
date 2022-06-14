@@ -115,7 +115,7 @@ change_race <- real_df %>%
   mutate(U = case_when(
     is_other_race == TRUE ~ "U",
     is_other_race == FALSE ~ " ",
-    TRUE ~ "mistake"))
+    TRUE ~ " ")) # here I took out "mistake" and just put in a space because it was NA
 
 change_race$"S-14" = paste(change_race$H, change_race$A, change_race$B, change_race$I, change_race$P, change_race$W, change_race$N, change_race$U)
 
