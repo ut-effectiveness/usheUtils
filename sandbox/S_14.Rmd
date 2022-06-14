@@ -30,8 +30,14 @@ Outline where in Edify this data comes from. This should come from the spread sh
 ```{r}
 test_df <- tibble(
   person_id = sample(1:99999999, 10),
-  is_hispanic = sample(c(TRUE, FALSE), 10, replace = TRUE),
-  is_asian = sample(c(TRUE, FALSE), 10, replace = TRUE) 
+  is_hispanic_latino_ethnicity = sample(c(TRUE, FALSE), 10, replace = TRUE),
+  is_asian = sample(c(TRUE, FALSE), 10, replace = TRUE),
+  is_black = sample(c(TRUE, FALSE), 10, replace = TRUE),
+  is_american_indian_alaskan = sample(c(TRUE, FALSE), 10, replace = TRUE),
+  is_hawaiian_pacific_islander = sample(c(TRUE, FALSE), 10, replace = TRUE),
+  is_white = sample(c(TRUE, FALSE), 10, replace = TRUE),
+  is_international = sample(c(TRUE, FALSE), 10, replace = TRUE),
+  is_other_race = sample(c(TRUE, FALSE), 10, replace = TRUE)
 ) %>% 
     mutate(person_id = str_pad(person_id, 10, pad = '0'))
 
@@ -55,7 +61,7 @@ change_hispanic <- function(boolean) {
 What does this do to test_df?
 
 ```{r}
-hispanic_test <- test_df %>% 
+is_hispanic_latino_ethnicity <- test_df %>% 
   mutate(is_hispanic_test = change_hispanic(is_hispanic))
 
 datatable(hispanic_test)
@@ -73,6 +79,50 @@ change_asian <- function(boolean) {
 ```
 
 ```{r}
+change_race <- test_df %>% 
+  mutate(H = case_when(
+    is_hispanic_latino_ethnicity == TRUE ~ "H",
+    is_hispanic_latino_ethnicity == FALSE ~ " ",
+    TRUE ~ "mistake")) %>% 
+  mutate(A = case_when(
+    is_asian == TRUE ~ "A",
+    is_asian == FALSE ~ " ",
+    TRUE ~ "mistake")) %>%
+  mutate(B = case_when(
+    is_black ==  TRUE ~ "B",
+    is_black == FALSE ~ " ",
+    TRUE ~ "mistake")) %>%
+  mutate(I = case_when(
+    is_american_indian_alaskan == TRUE ~ "I",
+    is_american_indian_alaskan == FALSE ~ " ",
+    TRUE ~ "mistake")) %>%
+  mutate(P = case_when(
+    is_hawaiian_pacific_islander == TRUE ~ "P",
+    is_hawaiian_pacific_islander == FALSE ~ " ",
+    TRUE ~ "mistake")) %>%
+  mutate(W = case_when(
+    is_white == TRUE ~ "W",
+    is_white == FALSE ~ " ",
+    TRUE ~ "mistake")) %>%
+  mutate(N = case_when(
+    is_international == TRUE ~ "N",
+    is_international == FALSE ~ " ",
+    TRUE ~ "mistake")) %>%
+  mutate(U = case_when(
+    is_other_race == TRUE ~ "U",
+    is_other_race == FALSE ~ " ",
+    TRUE ~ "mistake"))
+
+change_race$combind_races = paste(change_race$H, change_race$A, change_race$B, change_race$I, change_race$P, change_race$W, change_race$N, change_race$U)
+
+only_numbers_and_ushe_data <- change_race %>% 
+  select(person_id, combind_races)
+
+```
+
+
+
+```{r}
 a_and_h_test <- test_df %>% 
   mutate(is_hispanic_test = change_hispanic(is_hispanic)) %>% 
   mutate(is_asian_test = change_asian(is_asian))
@@ -83,7 +133,7 @@ datatable(a_and_h_test)
 Paste idea
 ```{r}
 a_and_h_paste <- a_and_h_test %>% 
-  select(person_id, is_hispanic_test, is_asian_test) %>% 
-  unite()
+  select(person_id, is_hispanic_test, is_asian_test)
+
 ```
 
