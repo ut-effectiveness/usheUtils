@@ -113,27 +113,20 @@ change_race <- test_df %>%
     is_other_race == FALSE ~ " ",
     TRUE ~ "mistake"))
 
-change_race$combind_races = paste(change_race$H, change_race$A, change_race$B, change_race$I, change_race$P, change_race$W, change_race$N, change_race$U)
+change_race$"S-14" = paste(change_race$H, change_race$A, change_race$B, change_race$I, change_race$P, change_race$W, change_race$N, change_race$U)
 
+DT::datatable(change_race)
+
+```
+
+Here we want to only run the d-numbers and ushe data.
+```{r}
 only_numbers_and_ushe_data <- change_race %>% 
-  select(person_id, combind_races)
+  select(person_id, "S-14")
 
-```
+DT::datatable(only_numbers_and_ushe_data)
 
-
-
-```{r}
-a_and_h_test <- test_df %>% 
-  mutate(is_hispanic_test = change_hispanic(is_hispanic)) %>% 
-  mutate(is_asian_test = change_asian(is_asian))
-
-datatable(a_and_h_test)
-```
-
-Paste idea
-```{r}
-a_and_h_paste <- a_and_h_test %>% 
-  select(person_id, is_hispanic_test, is_asian_test)
+writeLines(only_numbers_and_ushe_data, "my_file1.txt")    
 
 ```
 
