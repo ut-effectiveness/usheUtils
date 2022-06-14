@@ -1,0 +1,111 @@
+---
+title: "C-17"
+author: "Craig Demke"
+date: '2022-06-14'
+output: html_document
+---
+```{r set global chunks, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, message = FALSE
+)
+```
+
+```{r load libraries}
+library(tidyverse)
+library(datasets)
+library(plotly)
+library(gt)
+library(glue)
+library(stringr)
+library(DT)
+library(purrr)
+```
+## This is part of the Course Data Submission to USHE Element C-17
+ELEMENT NAME: Section Days 1 
+FIELD NAME: C_DAYS 
+FIELD FORMAT: Varchar, 7 Characters 
+With one position for each day of week, starting with Monday. 
+
+## This data is found in Edify from export.section_schedule table
+```{}
+SELECT course_reference_number,
+       is_meets_monday,
+       is_meets_tuesday,
+       is_meets_wednesday,
+       is_meets_thursday,
+       is_meets_friday,
+       is_meets_saturday,
+       is_meets_sunday
+FROM section_schedule;
+```
+
+
+### Create fake data that matches this.
+
+```{r}
+meets_test_df <- tibble(
+  crn = sample(1:99999, 10),
+  is_meets_monday = sample(c(TRUE, FALSE), 10, replace = TRUE),
+  is_meets_tuesday = sample(c(TRUE, FALSE), 10, replace = TRUE),
+  is_meets_wednesday = sample(c(TRUE, FALSE), 10, replace = TRUE),
+  is_meets_thursday = sample(c(TRUE, FALSE), 10, replace = TRUE),
+  is_meets_friday = sample(c(TRUE, FALSE), 10, replace = TRUE),
+  is_meets_saturday = sample(c(TRUE, FALSE), 10, replace = TRUE),
+  is_meets_sunday = sample(c(TRUE, FALSE), 10, replace = TRUE)
+) 
+
+DT::datatable(meets_test_df)
+```
+## The function that formats it
+
+The first thing I need to do is to figure out how to turn a true into a letter and false into a space. We use a case_when statement to changes the boolean logic of true or false into the USHE race field value. example: If is_meets_monday is coded as TRUE then there will be a new variable called "M" in the column called M
+
+```{r}
+# TODO: talk with Andrea about what to do with missing values.
+  # TODO: What to do if the input is not a boolean value.
+
+change_meet <- meets_test_df %>% 
+  mutate(M = case_when(
+    is_meets_monday == TRUE ~ "M",
+    is_meets_monday == FALSE ~ "",
+    TRUE ~ "mistake")) %>% 
+  mutate(T = case_when(
+    is_meets_tuesday == TRUE ~ "T",
+    is_meets_tuesday == FALSE ~ "",
+    TRUE ~ "mistake")) %>%
+  mutate(W = case_when(
+    is_meets_wednesday ==  TRUE ~ "W",
+    is_meets_wednesday == FALSE ~ "",
+    TRUE ~ "mistake")) %>%
+  mutate(R = case_when(
+    is_meets_thursday == TRUE ~ "R",
+    is_meets_thursday == FALSE ~ "",
+    TRUE ~ "mistake")) %>%
+  mutate(F = case_when(
+    is_meets_friday == TRUE ~ "F",
+    is_meets_friday == FALSE ~ "",
+    TRUE ~ "mistake")) %>%
+  mutate(S = case_when(
+    is_meets_saturday == TRUE ~ "S",
+    is_meets_saturday == FALSE ~ "",
+    TRUE ~ "mistake")) %>%
+  mutate(U = case_when(
+    is_meets_sunday == TRUE ~ "U",
+    is_meets_sunday == FALSE ~ "",
+    TRUE ~ "mistake"))
+
+change_meet$"C-17" = paste(change_meet$M, change_meet$T, change_meet$W, change_meet$R, change_meet$F, change_meet$S, change_meet$U)
+
+DT::datatable(change_meet)
+
+```
+
+Here we want to only run the crn numbers and USHE data. 
+```{r}
+only_crn_and_ushe_data <- change_meet %>% 
+  select(crn, "C-17")
+
+DT::datatable(only_crn_and_ushe_data)
+
+
+```
