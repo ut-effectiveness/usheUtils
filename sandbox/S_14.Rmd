@@ -68,6 +68,8 @@ change_asian <- function(boolean) {
   # TODO: What to do if the input is not a boolean value.
   if_else(boolean, 'A', ' ', missing = ' ')
 }
+
+# case_when might be a better way to handle this.
 ```
 
 ```{r}
