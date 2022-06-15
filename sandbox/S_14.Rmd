@@ -135,3 +135,52 @@ DT::datatable(only_numbers_and_ushe_data)
 
 ```
 
+## Making a function
+
+```{r}
+
+format_s_14 <- function(input_df) {
+  
+  output_df <- input_df %>%  
+  mutate(H = case_when(
+    is_hispanic_latino_ethnicity == TRUE ~ "H",
+    is_hispanic_latino_ethnicity == FALSE ~ " ",
+    TRUE ~ "mistake")) %>% 
+  mutate(A = case_when(
+    is_asian == TRUE ~ "A",
+    is_asian == FALSE ~ " ",
+    TRUE ~ "mistake")) %>%
+  mutate(B = case_when(
+    is_black ==  TRUE ~ "B",
+    is_black == FALSE ~ " ",
+    TRUE ~ "mistake")) %>%
+  mutate(I = case_when(
+    is_american_indian_alaskan == TRUE ~ "I",
+    is_american_indian_alaskan == FALSE ~ " ",
+    TRUE ~ "mistake")) %>%
+  mutate(P = case_when(
+    is_hawaiian_pacific_islander == TRUE ~ "P",
+    is_hawaiian_pacific_islander == FALSE ~ " ",
+    TRUE ~ "mistake")) %>%
+  mutate(W = case_when(
+    is_white == TRUE ~ "W",
+    is_white == FALSE ~ " ",
+    TRUE ~ "mistake")) %>%
+  mutate(N = case_when(
+    is_international == TRUE ~ "N",
+    is_international == FALSE ~ " ",
+    TRUE ~ "mistake")) %>%
+  mutate(U = case_when(
+    is_other_race == TRUE ~ "U",
+    is_other_race == FALSE ~ " ",
+    TRUE ~ " ")) # here I took out "mistake" and just put in a space because it was NA
+  
+  output_df$"S-14" = paste(output_df$H, output_df$A, output_df$B, 
+                           output_df$I, output_df$P, output_df$W, 
+                           output_df$N, output_df$U)
+  
+  return(output_df)
+  
+}
+```
+
