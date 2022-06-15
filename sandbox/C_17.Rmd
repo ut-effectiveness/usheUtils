@@ -79,7 +79,7 @@ The first thing I need to do is to figure out how to turn a true into a letter a
   # TODO: What to do if the input is not a boolean value.
 
 
-change_meet <- real_c17_df %>%
+change_meet <- meets_test_df %>%
   mutate(M = case_when(
     is_meets_monday == TRUE ~ "M",
     is_meets_monday == FALSE ~ "",
@@ -167,7 +167,8 @@ output_df$"C-17" = paste(output_df$M, output_df$T, output_df$W,
                            output_df$R, output_df$F, output_df$S,
                            output_df$U)
 
-
+output_df <- output_df %>% 
+  select(course_reference_number, "C-17")
 
 return(output_df)
 }
