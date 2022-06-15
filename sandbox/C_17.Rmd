@@ -110,7 +110,9 @@ change_meet <- real_c17_df %>%
 
 change_meet$"C-17" = paste(change_meet$M, change_meet$T, change_meet$W, change_meet$R, change_meet$F, change_meet$S, change_meet$U)
 
+
 DT::datatable(change_meet)
+
 
 ```
 
