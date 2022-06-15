@@ -78,7 +78,8 @@ The first thing I need to do is to figure out how to turn a true into a letter a
 # TODO: talk with Andrea about what to do with missing values.
   # TODO: What to do if the input is not a boolean value.
 
-change_meet <- real_c17_df %>% 
+
+change_meet <- real_c17_df %>%
   mutate(M = case_when(
     is_meets_monday == TRUE ~ "M",
     is_meets_monday == FALSE ~ "",
@@ -112,6 +113,7 @@ change_meet$"C-17" = paste(change_meet$M, change_meet$T, change_meet$W, change_m
 
 
 DT::datatable(change_meet)
+
 
 
 ```
