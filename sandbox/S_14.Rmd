@@ -75,7 +75,7 @@ DT::datatable(real_df, rownames=FALSE)
 ```
 
 
-## The function that formats it
+## Here is the R script
 
 The first thing I need to do is to figure out how to turn a true into a letter and false into a space. We use a case_when statement to changes the boolean logic of true or false into the USHE race field value. example: If is_hispanic_latino_ethnicity is coded as TRUE then there will be a new variable called "H" in the column called H
 
@@ -182,5 +182,16 @@ format_s_14 <- function(input_df) {
   return(output_df)
   
 }
+```
+## Choose which data frame you want pass through the function 
+
+meets_test_df for the fake data set
+```{r}
+DT::datatable(format_s_14(test_df))
+```
+
+real_c17_df for the real data
+```{r}
+DT::datatable(format_s_14(real_df))
 ```
 
