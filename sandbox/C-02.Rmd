@@ -22,15 +22,25 @@ library(stringr)
 library(DT)
 library(purrr)
 ```
-## This is part of the Course Data Submission to USHE Element C-17
-ELEMENT NAME: Section Days 1 
-FIELD NAME: C_DAYS 
-FIELD FORMAT: Varchar, 7 Characters 
-With one position for each day of week, starting with Monday. 
+## This is part of the Course Data Submission to USHE Element C-02
+ELEMENT NAME: Year, Term & Extract Code 
+FIELD NAME: C_TERM_ID 
+FIELD FORMAT: Number, 4 Characters (YYYY format) 
+ Number, 1 Character (T format) 
+ Varchar, 1 character (E format) 
+DEFINITION: The current academic year, term, and extract in which course is offered. Format  YYYYTE is made up of academic year YYYY, academic term T, and extract E (3rd week or End of  Term). 
 
-## This data is found in Edify from export.section_schedule table
+## This data is found in Edify from export.course_verson, and export.term
 ```{}
-
+SELECT DISTINCT (s.course_id),
+       t.academic_year_code,
+       t.season,
+       s.version_id
+FROM export.student_section_version s
+LEFT JOIN term t
+    ON t.term_id = s.term_id
+WHERE s.term_id = '202140'
+LIMIT 10;
 ```
 
 
@@ -49,17 +59,17 @@ DT::datatable(year_term_extract_test_df, rownames=FALSE)
 ### Now let's see if we can pull in real data
 
 ```{r}
-### We pull the data we want from Edify
-#library(here)
-#source(here::here("R", "data_io_util.R"))
+#We pull the data we want from Edify
+library(here)
+source(here::here("R", "data_io_util.R"))
 
-#real_c17_df <- get_data_from_sql_file(file_name="c_02.sql",
- #                            dsn="edify")
-# display data pulled in table
-#DT::datatable(real_c_02_df, rownames=FALSE)
+real_c_02_df <- get_data_from_sql_file(file_name="c_02.sql",
+                           dsn="edify")
+ #display data pulled in table
+DT::datatable(real_c_02_df, rownames=FALSE)
 ```
 
-## ## Here is the R script
+## Here is the R script
 
 The first thing I need to do is to figure out how to
 ```{r}
@@ -99,7 +109,7 @@ format_ushe_year_term_extract <- function(input_df) {
   mutate(v_format = case_when(
     version_id == '2' ~ '3',
     version_id == '3' ~ 'E',
-    TRUE ~ "mistake"))
+    TRUE ~ "exclude"))
 
 output_df$"year_term_extract" = paste(output_df$academic_year_code,
                                         output_df$t_format,
@@ -119,6 +129,6 @@ DT::datatable(format_ushe_year_term_extract(year_term_extract_test_df))
 
 --- for the real data
 ```{r}
-#DT::datatable(format_ushe_year_term_extract(place_holder))
+DT::datatable(format_ushe_year_term_extract(real_c_02_df))
 ```
 
