@@ -70,7 +70,7 @@ real_c17_df <- get_data_from_sql_file(file_name="c_17.sql",
 DT::datatable(real_c17_df, rownames=FALSE)
 ```
 
-## The function that formats it
+## ## Here is the R script
 
 The first thing I need to do is to figure out how to turn a true into a letter and false into a space. We use a case_when statement to changes the boolean logic of true or false into the USHE race field value. example: If is_meets_monday is coded as TRUE then there will be a new variable called "M" in the column called M
 
@@ -127,3 +127,62 @@ DT::datatable(only_crn_and_ushe_data)
 
 
 ```
+
+Making the function for days of the week C-17
+
+```{r}
+format_c_17 <- function(input_df) {
+  
+  output_df <- input_df %>%
+     mutate(M = case_when(
+    is_meets_monday == TRUE ~ "M",
+    is_meets_monday == FALSE ~ "",
+    TRUE ~ "mistake")) %>% 
+  mutate(T = case_when(
+    is_meets_tuesday == TRUE ~ "T",
+    is_meets_tuesday == FALSE ~ "",
+    TRUE ~ "mistake")) %>%
+  mutate(W = case_when(
+    is_meets_wednesday ==  TRUE ~ "W",
+    is_meets_wednesday == FALSE ~ "",
+    TRUE ~ "mistake")) %>%
+  mutate(R = case_when(
+    is_meets_thursday == TRUE ~ "R",
+    is_meets_thursday == FALSE ~ "",
+    TRUE ~ "mistake")) %>%
+  mutate(F = case_when(
+    is_meets_friday == TRUE ~ "F",
+    is_meets_friday == FALSE ~ "",
+    TRUE ~ "mistake")) %>%
+  mutate(S = case_when(
+    is_meets_saturday == TRUE ~ "S",
+    is_meets_saturday == FALSE ~ "",
+    TRUE ~ "mistake")) %>%
+  mutate(U = case_when(
+    is_meets_sunday == TRUE ~ "U",
+    is_meets_sunday == FALSE ~ "",
+    TRUE ~ "mistake"))
+
+output_df$"C-17" = paste(output_df$M, output_df$T, output_df$W,
+                           output_df$R, output_df$F, output_df$S,
+                           output_df$U)
+
+
+
+return(output_df)
+}
+    
+```
+
+## Choose which data frame you want pass through the function 
+
+meets_test_df for the fake data set
+```{r}
+DT::datatable(format_c_17(meets_test_df))
+```
+
+real_c17_df for the real data
+```{r}
+DT::datatable(format_c_17(real_c17_df))
+```
+
