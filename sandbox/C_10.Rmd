@@ -1,0 +1,118 @@
+---
+title: "C-10"
+author: "Craig Demke"
+date: '2022-06-16'
+output: html_document
+---
+
+```{r set global chunks, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, message = FALSE
+)
+```
+
+```{r load libraries}
+library(tidyverse)
+library(datasets)
+library(plotly)
+library(gt)
+library(glue)
+library(stringr)
+library(DT)
+library(purrr)
+```
+## This is part of the Course Data Submission to USHE Element C-10
+ELEMENT NAME: Course Site Type 
+FIELD NAME: C_SITE_TYPE 
+FIELD FORMAT: Varchar, 3 Characters 
+DEFINITION: Code used to specify a site type where instruction originates. 
+
+## This data is found in Edify from export.student_section_version campus_id
+```{}
+
+```
+
+
+### Create fake data that matches this.
+
+```{r}
+c_10_test_df <- tibble(
+  course_reference_number = sample(1:99999, 10),
+  campus_id = sample(c("A01", "AC1", "ACE", "AU1", "B80", "B8C", "C00", "C01", "C02", "C03", "C04",
+                       "C05", "C06", "C07", "C08", "C09", "C10", "C11", "C12", "C13", "C14", "C15",
+                       "C16", "C17", "C18", "C19", "C20", "C21", "C22", "C23", "C24", "C25", "C26",
+                       "C27", "C28", "D07", "E04", "F10", "G", "H", "O01", "O02", "O03", "OCE", "OU1",
+                       "UOS", "V01", "XXX", "Z"), 10, replace = TRUE))
+
+DT::datatable(c_10_test_df, rownames=FALSE)
+```
+
+### Now let's see if we can pull in real data
+
+```{r}
+#We pull the data we want from Edify
+library(here)
+source(here::here("R", "data_io_util.R"))
+
+real_c_10_df <- get_data_from_sql_file(file_name="c_10.sql",
+                           dsn="edify")
+ #display data pulled in table
+DT::datatable(real_c_10_df, rownames=FALSE)
+```
+
+## Here is the R script
+
+```{r}
+# Adding conditional logic to determine c_term_id
+
+changec_10_test_df <- c_10_test_df %>%
+  mutate(site_type = case_when(
+    campus_id == "AC1" ~ 'A01',
+    campus_id == "AU1" ~ 'A01',
+    campus_id == "ACE" ~ 'A01',
+    campus_id == "B8C" ~ 'B80',
+    campus_id == "UOS" ~ 'C',
+    campus_id == "OU1" ~ 'O01', #TODO should this be A01
+    campus_id == "V01" ~ 'O01', #TODO should this be A01
+    str_sub(campus_id, 1, 1) == "C" ~ str_sub(campus_id, 1, 1),
+    TRUE ~ campus_id))
+
+
+DT::datatable(changec_10_test_df)
+
+```
+
+Now we write the function
+```{r}
+format_c_10 <- function(input_df) {
+  
+  output_df <- input_df %>%
+    mutate(site_type = case_when(
+    campus_id == "AC1" ~ 'A01',
+    campus_id == "AU1" ~ 'A01',
+    campus_id == "ACE" ~ 'A01',
+    campus_id == "B8C" ~ 'B80',
+    campus_id == "UOS" ~ 'C',
+    campus_id == "OU1" ~ 'O01', #TODO should this be A01
+    campus_id == "V01" ~ 'O01', #TODO should this be A01
+    str_sub(campus_id, 1, 1) == 'C' ~ str_sub(campus_id, 1, 1),
+    TRUE ~ campus_id))
+
+output_df <- output_df %>% 
+  select(course_reference_number, site_type)
+
+
+return(output_df)
+}
+```
+## Choose which data frame you want pass through the function 
+
+ for the fake data set
+```{r}
+DT::datatable(format_c_10(c_10_test_df))
+```
+
+--- for the real data
+```{r}
+DT::datatable(format_c_10(real_c_10_df))
+```
