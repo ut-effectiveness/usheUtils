@@ -115,7 +115,11 @@ output_df$"year_term_extract" = paste(output_df$academic_year_code,
                                         output_df$t_format,
                                         output_df$v_format)
 
-output_df$Remove_all_space <- gsub('\\s+', '', output_df$"year_term_extract")
+output_df$year_term_extract <- gsub('\\s+', '', output_df$"year_term_extract")
+
+output_df <- output_df %>% 
+  select(year_term_extract)
+
 
 return(output_df)
 }
