@@ -179,6 +179,9 @@ format_s_14 <- function(input_df) {
                            output_df$I, output_df$P, output_df$W, 
                            output_df$N, output_df$U)
   
+  output_df <- output_df %>% 
+  select(student_id, "S-14")
+  
   return(output_df)
   
 }
