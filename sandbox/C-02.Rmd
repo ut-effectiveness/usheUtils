@@ -82,9 +82,10 @@ change_year_term_extract <- year_term_extract_test_df %>%
     season == 'Spring' ~ '3',
     TRUE ~ "mistake")) %>% 
   mutate(v_format = case_when(
+    version_id == '1' ~ 'current',
     version_id == '2' ~ '3',
     version_id == '3' ~ 'E',
-    TRUE ~ "mistake"))
+    TRUE ~ "error"))
 
 change_year_term_extract$"year_term_extract" = paste(change_year_term_extract$academic_year_code,
                                         change_year_term_extract$t_format,
@@ -107,9 +108,10 @@ format_ushe_year_term_extract <- function(input_df) {
     season == 'Spring' ~ '3',
     TRUE ~ "mistake")) %>% 
   mutate(v_format = case_when(
+    version_id == '1' ~ 'current',
     version_id == '2' ~ '3',
     version_id == '3' ~ 'E',
-    TRUE ~ "exclude"))
+    TRUE ~ "error"))
 
 output_df$"year_term_extract" = paste(output_df$academic_year_code,
                                         output_df$t_format,
