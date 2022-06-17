@@ -1,0 +1,165 @@
+---
+title: "c_44_instruct_type"
+author: "Craig Demke"
+date: '2022-06-17'
+output: html_document
+---
+
+---
+title: "instruct_type"
+output: html_document
+date: '2022-06-01'
+---
+
+```{r set global chunks, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, message = FALSE
+)
+```
+
+```{r load libraries}
+library(tidyverse)
+library(datasets)
+library(plotly)
+library(gt)
+library(glue)
+library(stringr)
+library(DT)
+library(purrr)
+library(here)
+```
+## This is part of the course data 
+Element: C-44 
+ELEMENT NAME: Instructional Type 
+FIELD NAME: C_INSTRUCT_TYPE 
+FIELD FORMAT: Varchar, 3 Characters 
+
+## This data is found in Edify int the student_section table with the section_format_type_code column
+```{}
+SELECT DISTINCT (section_format_type_desc),
+       section_format_type_code
+FROM student_section;
+```
+
+
+### Create fake data that matches this.
+
+```{r}
+instruct_type_test_df <- tibble(
+  course_reference_number = sample(1:99999, 10),
+  section_format_type_code = sample(c("LEV", "MUN", "INV", "LBV", "LEX", "PRA", "LAB", "LBS", "STU", "LES", "
+                       SUP", "LEC", "ENS", "INT", "THE", "CLS", "LEL", "LBC", "INS", "
+                       CLN", "OTH", "MUM", "ACT", "CON"), 10, replace = TRUE))
+
+   
+
+DT::datatable(instruct_type_test_df, rownames=FALSE)
+```
+
+### Now let's see if we can pull in real data
+
+```{r}
+### We pull the data we want from the report database REPT 
+library(here)
+source(here::here("R", "data_io_util.R"))
+
+instruct_type_real_df <- get_data_from_sql_file(file_name="c_44.sql",
+                             dsn="edify")
+# display data pulled in table
+DT::datatable(instruct_type_real_df, rownames=FALSE)
+```
+
+
+## Here is the R script
+
+The first thing I need to do is change each edify data point to the USHE data point
+
+```{r}
+
+change_instruct_type_df <- instruct_type_test_df %>%  
+  mutate(instruct_type = case_when(
+    section_format_type_code ==	"LEV"	~	"LEC", #TODO is this right
+    section_format_type_code ==	"LEX"	~	"LEC",
+    section_format_type_code ==	"LES"	~	"LEC", #TODO is this right
+    section_format_type_code ==	"LEC"	~	"LEC",
+    section_format_type_code ==	"INS"	~	"LEC",
+    section_format_type_code ==	"STU"	~	"LEL",
+    section_format_type_code ==	"ENS"	~	"LEL",
+    section_format_type_code ==	"LEL"	~	"LEL",
+    section_format_type_code ==	"LBV"	~	"LAB", #TODO is this right
+    section_format_type_code ==	"LAB"	~	"LAB",
+    section_format_type_code ==	"LBS"	~	"LAB", #TODO is this right
+    section_format_type_code ==	"LBC"	~	"LAB",
+    section_format_type_code ==	"PRA"	~	"SUP",
+    section_format_type_code ==	"SUP"	~	"SUP",
+    section_format_type_code ==	"INT"	~	"SUP",
+    section_format_type_code ==	"CLN"	~	"SUP",
+    section_format_type_code ==	"MUN"	~	"INV",
+    section_format_type_code ==	"INV"	~	"INV",
+    section_format_type_code ==	"MUN" ~	"INV",
+    section_format_type_code ==	"ACT"	~	"INV",
+    section_format_type_code ==	"THE"	~	"THE",
+    section_format_type_code ==	"CON"	~	"CON", #TODO is this right according to USHE pdf
+    section_format_type_code ==	"CLS"	~	"OTH",
+    section_format_type_code ==	"OTH"	~	"OTH",
+    TRUE ~ "error"))
+
+
+
+DT::datatable(change_instruct_type_df)
+
+
+
+```
+
+## Making a function
+
+```{r}
+
+format_instruct_type <- function(input_df) {
+  
+  output_df <- input_df %>%  
+  mutate(instruct_type = case_when(
+    section_format_type_code ==	"LEV"	~	"LEC", #TODO is this right
+    section_format_type_code ==	"LEX"	~	"LEC",
+    section_format_type_code ==	"LES"	~	"LEC", #TODO is this right
+    section_format_type_code ==	"LEC"	~	"LEC",
+    section_format_type_code ==	"INS"	~	"LEC",
+    section_format_type_code ==	"STU"	~	"LEL",
+    section_format_type_code ==	"ENS"	~	"LEL",
+    section_format_type_code ==	"LEL"	~	"LEL",
+    section_format_type_code ==	"LBV"	~	"LAB", #TODO is this right
+    section_format_type_code ==	"LAB"	~	"LAB",
+    section_format_type_code ==	"LBS"	~	"LAB", #TODO is this right
+    section_format_type_code ==	"LBC"	~	"LAB",
+    section_format_type_code ==	"PRA"	~	"SUP",
+    section_format_type_code ==	"SUP"	~	"SUP",
+    section_format_type_code ==	"INT"	~	"SUP",
+    section_format_type_code ==	"CLN"	~	"SUP",
+    section_format_type_code ==	"MUN"	~	"INV",
+    section_format_type_code ==	"INV"	~	"INV",
+    section_format_type_code ==	"MUN" ~	"INV",
+    section_format_type_code ==	"ACT"	~	"INV",
+    section_format_type_code ==	"THE"	~	"THE",
+    section_format_type_code ==	"CON"	~	"CON", #TODO is this right according to USHE pdf
+    section_format_type_code ==	"CLS"	~	"OTH",
+    section_format_type_code ==	"OTH"	~	"OTH",
+    TRUE ~ "error"))
+  
+  
+  return(output_df)
+  
+}
+```
+## Choose which data frame you want pass through the function 
+
+instruct_type_test_df for the fake data set
+```{r}
+DT::datatable(format_instruct_type(instruct_type_test_df))
+```
+
+instruct_type_real_df for the real data
+```{r}
+DT::datatable(format_instruct_type(instruct_type_real_df))
+```
+
