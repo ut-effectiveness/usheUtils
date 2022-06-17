@@ -83,41 +83,46 @@ The first thing I need to do is to figure out how to turn a true into a letter a
 # TODO: talk with Andrea about what to do with missing values.
   # TODO: What to do if the input is not a boolean value.
 
-change_race <- real_df %>%  
+change_race <- test_df %>%  
   mutate(H = case_when(
     is_hispanic_latino_ethnicity == TRUE ~ "H",
     is_hispanic_latino_ethnicity == FALSE ~ " ",
-    TRUE ~ "mistake")) %>% 
+    TRUE ~ " ")) %>% 
   mutate(A = case_when(
     is_asian == TRUE ~ "A",
     is_asian == FALSE ~ " ",
-    TRUE ~ "mistake")) %>%
+    TRUE ~ " ")) %>%
   mutate(B = case_when(
     is_black ==  TRUE ~ "B",
     is_black == FALSE ~ " ",
-    TRUE ~ "mistake")) %>%
+    TRUE ~ " ")) %>%
   mutate(I = case_when(
     is_american_indian_alaskan == TRUE ~ "I",
     is_american_indian_alaskan == FALSE ~ " ",
-    TRUE ~ "mistake")) %>%
+    TRUE ~ " ")) %>%
   mutate(P = case_when(
     is_hawaiian_pacific_islander == TRUE ~ "P",
     is_hawaiian_pacific_islander == FALSE ~ " ",
-    TRUE ~ "mistake")) %>%
+    TRUE ~ " ")) %>%
   mutate(W = case_when(
     is_white == TRUE ~ "W",
     is_white == FALSE ~ " ",
-    TRUE ~ "mistake")) %>%
+    TRUE ~ " ")) %>%
   mutate(N = case_when(
     is_international == TRUE ~ "N",
     is_international == FALSE ~ " ",
-    TRUE ~ "mistake")) %>%
+    TRUE ~ " ")) %>%
   mutate(U = case_when(
     is_other_race == TRUE ~ "U",
     is_other_race == FALSE ~ " ",
     TRUE ~ " ")) # here I took out "mistake" and just put in a space because it was NA
 
-change_race$"S-14" = paste(change_race$H, change_race$A, change_race$B, change_race$I, change_race$P, change_race$W, change_race$N, change_race$U)
+change_race$"S-14" = paste(change_race$H, change_race$A, change_race$B,
+                           change_race$I,change_race$P, change_race$W,
+                           change_race$N, change_race$U)
+
+change_race$"S-14" <- gsub('\\s  ', '', change_race$"S-14")
+
 
 DT::datatable(change_race)
 
@@ -144,36 +149,36 @@ format_s_14 <- function(input_df) {
   output_df <- input_df %>%  
   mutate(H = case_when(
     is_hispanic_latino_ethnicity == TRUE ~ "H",
-    is_hispanic_latino_ethnicity == FALSE ~ " ",
+    is_hispanic_latino_ethnicity == FALSE ~ "",
     TRUE ~ "mistake")) %>% 
   mutate(A = case_when(
     is_asian == TRUE ~ "A",
-    is_asian == FALSE ~ " ",
+    is_asian == FALSE ~ "",
     TRUE ~ "mistake")) %>%
   mutate(B = case_when(
     is_black ==  TRUE ~ "B",
-    is_black == FALSE ~ " ",
+    is_black == FALSE ~ "",
     TRUE ~ "mistake")) %>%
   mutate(I = case_when(
     is_american_indian_alaskan == TRUE ~ "I",
-    is_american_indian_alaskan == FALSE ~ " ",
+    is_american_indian_alaskan == FALSE ~ "",
     TRUE ~ "mistake")) %>%
   mutate(P = case_when(
     is_hawaiian_pacific_islander == TRUE ~ "P",
-    is_hawaiian_pacific_islander == FALSE ~ " ",
+    is_hawaiian_pacific_islander == FALSE ~ "",
     TRUE ~ "mistake")) %>%
   mutate(W = case_when(
     is_white == TRUE ~ "W",
-    is_white == FALSE ~ " ",
+    is_white == FALSE ~ "",
     TRUE ~ "mistake")) %>%
   mutate(N = case_when(
     is_international == TRUE ~ "N",
-    is_international == FALSE ~ " ",
+    is_international == FALSE ~ "",
     TRUE ~ "mistake")) %>%
   mutate(U = case_when(
     is_other_race == TRUE ~ "U",
-    is_other_race == FALSE ~ " ",
-    TRUE ~ " ")) # here I took out "mistake" and just put in a space because it was NA
+    is_other_race == FALSE ~ "",
+    TRUE ~ "")) # here I took out "mistake" and just put in a space because it was NA
   
   output_df$"S-14" = paste(output_df$H, output_df$A, output_df$B, 
                            output_df$I, output_df$P, output_df$W, 
