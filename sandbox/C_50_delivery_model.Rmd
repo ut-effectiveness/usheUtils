@@ -1,0 +1,112 @@
+---
+title: "C_50_delievery_model"
+author: "Craig Demke"
+date: '2022-06-22'
+output: html_document
+---
+
+```{r set global chunks, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, message = FALSE
+)
+```
+
+```{r load libraries}
+library(tidyverse)
+library(datasets)
+library(plotly)
+library(gt)
+library(glue)
+library(stringr)
+library(DT)
+library(purrr)
+library(here)
+```
+## This is part of the 
+
+
+## This data is found in Edify from export.student_section, instruction_method_code.
+```{}
+SELECT DISTINCT (instruction_method_code)
+FROM student_section;
+```
+
+
+### Create fake data that matches this.
+
+```{r}
+c_50_delivery_model_test_df <- tibble(
+  course_reference_number = sample(1:99999, 10),
+  instruction_method_code = sample(c("B", "V", " ", "E", "R", "I", "P", "H", "O", "T", NULL), 10, replace = TRUE))
+
+DT::datatable(c_50_delivery_model_test_df, rownames=FALSE)
+```
+
+### Now let's see if we can pull in real data
+
+```{r}
+### We pull the data we want from the report database REPT 
+library(here)
+source(here::here("R", "data_io_util.R"))
+
+real_df <- get_data_from_sql_file(file_name="c_50.sql",
+                             dsn="edify")
+# display data pulled in table
+DT::datatable(c_50_delivery_model_real_df, rownames=FALSE)
+```
+
+
+## Here is the R script
+
+The first thing I need to do is to figure out how to
+
+```{r}
+
+change_c_50_delivery_model_df <- c_50_delivery_model_test_df %>%
+   mutate(c_50_delivery_model = case_when(
+    instruction_method_code == "B" ~ 'B',
+    instruction_method_code == "V" ~ '?',
+    instruction_method_code == " " ~ "P",
+    instruction_method_code == "E" ~ 'H',
+    instruction_method_code == "R" ~ '?',
+    instruction_method_code == "I" ~ '?',
+    instruction_method_code == "P" ~ '?',
+    instruction_method_code == "H" ~ '?',
+    instruction_method_code == "O" ~ 'O',
+    instruction_method_code == "T" ~ 'T',
+    TRUE ~ 'instruction_method_code'))
+
+
+DT::datatable(change_c_50_delivery_model_df, rownames=FALSE)
+
+
+
+```
+
+## Making a function
+
+```{r}
+
+format_c_50_delivery_model <- function(input_df) {
+  
+  output_df <- input_df %>%  
+ 
+  
+  output_df <- output_df %>% 
+  select()
+  
+  return(output_df)
+  
+}
+```
+## Choose which data frame you want pass through the function 
+
+c_50_delivery_model_test_df for the fake data set
+```{r}
+DT::datatable(format_place_holder(c_50_delivery_model_test_df), rownames=FALSE)
+```
+
+c_50_delivery_model_real_df for the real data
+```{r}
+DT::datatable(format_place_holder(c_50_delivery_model_real_df), rownames=FALSE)
+```
