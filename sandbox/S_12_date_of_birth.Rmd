@@ -1,0 +1,120 @@
+---
+title: "S_12_date_of_birth"
+author: "Craig Demke"
+date: '2022-06-22'
+output: html_document
+---
+
+```{r set global chunks, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, message = FALSE
+)
+```
+
+```{r load libraries}
+library(tidyverse)
+library(datasets)
+library(plotly)
+library(gt)
+library(glue)
+library(stringr)
+library(DT)
+library(purrr)
+library(here)
+library(lubridate)
+```
+## This is part of the 
+
+
+## This data is found in Edify from 
+```{}
+SELECT birth_date
+FROM studen;
+```
+
+
+### Create fake data that matches this.
+
+```{r}
+s_12_date_of_birth_test_df <- tibble(
+  birth_date_year = sample(1978:2010, 10, replace = TRUE),
+  birth_date_month = sample(01:12, 10, replace = TRUE),
+  birth_date_day = sample(01:29, 10, replace = TRUE)) %>% 
+  mutate(birth_date_month = str_pad(birth_date_month, 2, pad = '0')) %>% 
+  mutate(birth_date_day = str_pad(birth_date_day, 2, pad = '0'))
+  
+ s_12_date_of_birth_test_df$"birth_date" =
+   paste(s_12_date_of_birth_test_df$birth_date_year, 
+         s_12_date_of_birth_test_df$birth_date_month, 
+         s_12_date_of_birth_test_df$birth_date_day, sep = "-")
+ 
+ s_12_date_of_birth_test_df <- s_12_date_of_birth_test_df %>%
+  mutate(birth_date = as_date(birth_date)) %>% 
+   select(birth_date)
+ 
+
+   
+
+DT::datatable(s_12_date_of_birth_test_df, rownames=FALSE)
+```
+
+### Now let's see if we can pull in real data
+
+```{r}
+### We pull the data we want from the report database REPT 
+library(here)
+source(here::here("R", "data_io_util.R"))
+
+real_df <- get_data_from_sql_file(file_name="s_12_date_of_birth.sql",
+                             dsn="edify")
+# display data pulled in table
+DT::datatable(s_12_date_of_birth_real_df, rownames=FALSE)
+```
+
+
+## Here is the R script
+
+The first thing I need to do is to figure out how to
+
+```{r}
+
+change_s_12_date_of_birth_df <- s_12_date_of_birth_test_df
+ 
+  change_s_12_date_of_birth_df$birth_date <- gsub("-", "", change_s_12_date_of_birth_df$birth_date)
+    
+  
+
+
+DT::datatable(change_s_12_date_of_birth_df, rownames=FALSE)
+
+
+
+```
+
+## Making a function
+
+```{r}
+
+format_s_12_date_of_birth <- function(input_df) {
+  
+  output_df <- input_df %>%  
+ 
+    output_df$birth_date <- gsub("-", "", output_df$birth_date) 
+  
+  
+  return(output_df)
+  
+}
+```
+## Choose which data frame you want pass through the function 
+
+s_12_date_of_birth_test_df for the fake data set
+```{r}
+DT::datatable(format_s_12_date_of_birth(s_12_date_of_birth_test_df), rownames=FALSE)
+```
+
+s_12_date_of_birth_real_df for the real data
+```{r}
+DT::datatable(format_s_12_date_of_birth(s_12_date_of_birth_real_df), rownames=FALSE)
+```
+
