@@ -22,10 +22,13 @@ library(DT)
 library(purrr)
 library(here)
 ```
-## This is part of the 
+## This is part of the Course Data
+ELEMENT NAME: Delivery Model 
+FIELD NAME: C_ DELIVERY_MODEL 
+FIELD FORMAT: Varchar, 1 Character 
+DEFINITION: The model in which the course was taught. 
 
-
-## This data is found in Edify from export.student_section, instruction_method_code.
+This data is found in Edify from export.student_section, instruction_method_code.
 ```{}
 SELECT DISTINCT (instruction_method_code)
 FROM student_section;
@@ -49,7 +52,7 @@ DT::datatable(c_50_delivery_model_test_df, rownames=FALSE)
 library(here)
 source(here::here("R", "data_io_util.R"))
 
-real_df <- get_data_from_sql_file(file_name="c_50.sql",
+c_50_delivery_model_real_df <- get_data_from_sql_file(file_name="c_50.sql",
                              dsn="edify")
 # display data pulled in table
 DT::datatable(c_50_delivery_model_real_df, rownames=FALSE)
@@ -65,13 +68,13 @@ The first thing I need to do is to figure out how to
 change_c_50_delivery_model_df <- c_50_delivery_model_test_df %>%
    mutate(c_50_delivery_model = case_when(
     instruction_method_code == "B" ~ 'B',
-    instruction_method_code == "V" ~ '?',
-    instruction_method_code == " " ~ "P",
-    instruction_method_code == "E" ~ 'H',
-    instruction_method_code == "R" ~ '?',
-    instruction_method_code == "I" ~ '?',
-    instruction_method_code == "P" ~ '?',
-    instruction_method_code == "H" ~ '?',
+    instruction_method_code == "V" ~ '?', # need to check
+    instruction_method_code == " " ~ "P", # need to check
+    instruction_method_code == "E" ~ 'H', # need to check
+    instruction_method_code == "R" ~ '?', # need to check
+    instruction_method_code == "I" ~ '?', # need to check
+    instruction_method_code == "P" ~ '?', # need to check
+    instruction_method_code == "H" ~ '?', # need to check
     instruction_method_code == "O" ~ 'O',
     instruction_method_code == "T" ~ 'T',
     TRUE ~ 'instruction_method_code'))
@@ -89,11 +92,23 @@ DT::datatable(change_c_50_delivery_model_df, rownames=FALSE)
 
 format_c_50_delivery_model <- function(input_df) {
   
-  output_df <- input_df %>%  
+  output_df <- input_df %>% 
+  mutate(delivery_model = case_when(
+    instruction_method_code == "B" ~ 'B',
+    instruction_method_code == "V" ~ '?', # need to check
+    instruction_method_code == " " ~ "P", # need to check
+    instruction_method_code == "E" ~ 'H', # need to check
+    instruction_method_code == "R" ~ '?', # need to check
+    instruction_method_code == "I" ~ '?', # need to check
+    instruction_method_code == "P" ~ '?', # need to check
+    instruction_method_code == "H" ~ '?', # need to check
+    instruction_method_code == "O" ~ 'O',
+    instruction_method_code == "T" ~ 'T',
+    TRUE ~ 'instruction_method_code'))
  
   
   output_df <- output_df %>% 
-  select()
+  #select(delivery_model)
   
   return(output_df)
   
@@ -103,10 +118,10 @@ format_c_50_delivery_model <- function(input_df) {
 
 c_50_delivery_model_test_df for the fake data set
 ```{r}
-DT::datatable(format_place_holder(c_50_delivery_model_test_df), rownames=FALSE)
+DT::datatable(format_c_50_delivery_model(c_50_delivery_model_test_df), rownames=FALSE)
 ```
 
 c_50_delivery_model_real_df for the real data
 ```{r}
-DT::datatable(format_place_holder(c_50_delivery_model_real_df), rownames=FALSE)
+DT::datatable(format_c_50_delivery_model(c_50_delivery_model_real_df), rownames=FALSE)
 ```
