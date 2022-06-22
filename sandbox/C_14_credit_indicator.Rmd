@@ -1,0 +1,120 @@
+---
+title: "C_14_credit_indicator"
+author: "Craig Demke"
+date: '2022-06-21'
+output: html_document
+---
+---
+title: "c_14_credit_indicator"
+output: html_document
+date: '2022-06-01'
+---
+
+```{r set global chunks, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, message = FALSE
+)
+```
+
+```{r load libraries}
+library(tidyverse)
+library(datasets)
+library(plotly)
+library(gt)
+library(glue)
+library(stringr)
+library(DT)
+library(purrr)
+library(here)
+```
+## This is part of the Course Data
+ELEMENT NAME: Credit Indicator 
+FIELD NAME: C_CREDIT_IND 
+FIELD FORMAT: Varchar, 1 Character 
+DEFINITION: A code indicating whether the course is offered for credit or not. 
+
+## This data is found in Edify from export.course, course_level_id.
+```{}
+SELECT DISTINCT (course_level_id)
+FROM course;
+```
+
+
+### Create fake data that matches this.
+
+```{r}
+c_14_credit_indicator_test_df <- tibble(
+  course_reference_number = sample(1:99999, 10),
+  course_level_id = sample(c("CE", "UG", "GR", "NC", NULL), 10, replace = TRUE))
+
+DT::datatable(c_14_credit_indicator_test_df, rownames=FALSE)
+```
+
+### Now let's see if we can pull in real data
+
+```{r}
+### We pull the data we want from the report database REPT 
+library(here)
+source(here::here("R", "data_io_util.R"))
+
+c_14_credit_indicator_real_df <- get_data_from_sql_file(file_name="c_14.sql",
+                             dsn="edify")
+# display data pulled in table
+DT::datatable(c_14_credit_indicator_real_df, rownames=FALSE)
+```
+
+
+## Here is the R script
+
+The first thing I need to do is to figure out how to
+
+```{r}
+
+change_c_14_credit_indicator_df <- c_14_credit_indicator_test_df %>%
+   mutate(c_credit_ind = case_when(
+  course_level_id == "CE" ~ 'N',
+  course_level_id == "UG" ~ 'C',
+  course_level_id == "GR" ~ 'C',
+  course_level_id == "NC" ~ 'N',
+  TRUE ~ 'error'))
+
+
+DT::datatable(change_c_14_credit_indicator_df, rownames=FALSE)
+
+
+
+```
+
+## Making a function
+
+```{r}
+
+format_c_14_credit_indicator <- function(input_df) {
+  
+  output_df <- input_df %>%  
+    mutate(c_credit_ind = case_when(
+    course_level_id == "CE" ~ 'N',
+    course_level_id == "UG" ~ 'C',
+    course_level_id == "GR" ~ 'C',
+    course_level_id == "NC" ~ 'N',
+    TRUE ~ 'error')) # what do we want to put for null?
+  
+  output_df <- output_df %>% 
+
+  
+  return(output_df)
+  
+}
+```
+## Choose which data frame you want pass through the function 
+
+c_14_credit_indicator_test_df for the fake data set
+```{r}
+DT::datatable(format_c_14_credit_indicator(c_14_credit_indicator_test_df), rownames=FALSE)
+```
+
+c_14_credit_indicator_real_df for the real data
+```{r}
+DT::datatable(format_c_14_credit_indicator(c_14_credit_indicator_real_df), rownames=FALSE)
+```
+
