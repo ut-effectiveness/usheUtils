@@ -1,0 +1,130 @@
+---
+title: "C-51_course_level"
+author: "Craig Demke"
+date: '2022-06-22'
+output: html_document
+---
+
+title: "c_51_course_level"
+output: html_document
+date: '2022-06-01'
+---
+
+```{r set global chunks, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, message = FALSE
+)
+```
+
+```{r load libraries}
+library(tidyverse)
+library(datasets)
+library(plotly)
+library(gt)
+library(glue)
+library(stringr)
+library(DT)
+library(purrr)
+library(here)
+```
+## This is part of the Course Data
+ELEMENT NAME: Course Level 
+FIELD NAME: C_ LEVEL 
+FIELD FORMAT: Varchar, 1 Character 
+DEFINITION: Indicates whether the course is offered as remedial or for undergraduate or  graduate level credit. 
+
+
+## This data is found in Edify from Why are we not pulling in course_level_id?
+```{}
+SELECT DISTINCT (course_number),
+                subject_code,
+                course_level_id
+FROM student_section;
+```
+
+
+### Create fake data that matches this.
+
+```{r}
+c_51_course_level_test_df <- tibble(
+  course_number = sample(1:4999, 10),
+  subject_code = sample(c("MATH", "ENGL", "ESL", "OTHER"), 10, replace = TRUE),
+  course_level_id = sample(c("UG", "NC", "GR", "CE"), 10, replace = TRUE)
+)
+
+DT::datatable(c_51_course_level_test_df, rownames=FALSE)
+```
+
+### Now let's see if we can pull in real data
+
+```{r}
+### We pull the data we want from the report database REPT 
+library(here)
+source(here::here("R", "data_io_util.R"))
+
+c_51_course_level_real_df <- get_data_from_sql_file(file_name="c_51.sql",
+                             dsn="edify")
+# display data pulled in table
+DT::datatable(c_51_course_level_real_df, rownames=FALSE)
+```
+
+
+## Here is the R script
+
+The first thing I need to do is to figure out how to find the remedial level courses there are 3 data points we need to have to get these. level id (UG), subject code (ENGL, MATH, ESL), and course number (< 1000)
+
+```{r}
+
+change_c_51_course_level_df <- c_51_course_level_test_df %>%
+   mutate(course_level = case_when(
+    course_level_id == "UG" & course_number <= 1000 &
+      (subject_code == "ENGL" | subject_code == "ESL" | subject_code == "MATH")  ~ 'R',
+    course_level_id == "UG" ~ 'U',
+    course_level_id == "GR" ~ 'G',
+    course_level_id == "NC" ~ 'U',
+    course_level_id == "CE" ~ 'U',# is this right?
+      TRUE ~ "error"))
+  
+
+
+DT::datatable(change_c_51_course_level_df, rownames=FALSE)
+
+
+
+```
+
+## Making a function
+
+```{r}
+
+format_c_51_course_level <- function(input_df) {
+  
+  output_df <- input_df %>%
+  mutate(course_level = case_when(   
+    course_level_id == "UG" & course_number <= 1000 &
+      (subject_code == "ENGL" | subject_code == "ESL" | subject_code == "MATH")  ~ 'R',
+    course_level_id == "UG" ~ 'U',
+    course_level_id == "GR" ~ 'G',
+    course_level_id == "NC" ~ 'U',
+    course_level_id == "CE" ~ 'U',
+      TRUE ~ "error"))
+ 
+  
+  output_df <- output_df %>% 
+  #select(course_level)
+  
+  return(output_df)
+  
+}
+```
+## Choose which data frame you want pass through the function 
+
+c_51_course_level_test_df for the fake data set
+```{r}
+DT::datatable(format_c_51_course_level(c_51_course_level_test_df), rownames=FALSE)
+```
+
+c_51_course_level_real_df for the real data
+```{r}
+DT::datatable(format_c_51_course_level(c_51_course_level_real_df), rownames=FALSE)
+```
