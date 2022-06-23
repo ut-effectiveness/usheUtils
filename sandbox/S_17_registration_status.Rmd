@@ -62,8 +62,15 @@ DT::datatable(s_17_registration_status_real_df, rownames=FALSE)
 
 ### Here is the R script
 
-The first thing I need to do is to figure out how to convert Utah Tech student_type_code to USHE s_reg_status
+The first thing I need to do is to figure out how to convert Utah Tech student_type_code to USHE s_reg_status. I used the banner validation table to see what our codes were. 
 
+```{}
+SELECT stvstyp_code,
+       stvstyp_desc
+FROM banner.stvstyp;
+```
+
+Here is the R script
 ```{r}
 
 change_s_17_registration_status_df <- s_17_registration_status_test_df %>%
