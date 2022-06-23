@@ -28,12 +28,10 @@ library(DT)
 library(purrr)
 library(here)
 ```
-## This is part of the 
+### This is part of the 
 * 
-* 
-*
-*
-## This data is found in Edify from 
+
+### This data is found in Edify from 
 ```{}
 
 ```
@@ -101,11 +99,11 @@ format_placeholder <- function(input_df) {
 
 placeholder_test_df for the fake data set
 ```{r}
-DT::datatable(format_place_holder(placeholder_test_df), rownames=FALSE)
+DT::datatable(format_placeholder(placeholder_test_df), rownames=FALSE)
 ```
 
 placeholder_real_df for the real data
 ```{r}
-DT::datatable(format_place_holder(placeholder_real_df), rownames=FALSE)
+DT::datatable(format_placeholder(placeholder_real_df), rownames=FALSE)
 ```
 
