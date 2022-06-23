@@ -1,5 +1,5 @@
 ---
-title: "S_12_date_of_birth"
+title: "S-12 date of birth"
 author: "Craig Demke"
 date: '2022-06-22'
 output: html_document
@@ -23,17 +23,20 @@ library(purrr)
 library(here)
 library(lubridate)
 ```
-## This is part of the 
+### This is part of the Students Data 
+* ELEMENT NAME: Date of Birth 
+* FIELD NAME: S_BIRTH_DT 
+* FIELD FORMAT: Varchar, 8 Characters (YYYYMMDD), 
+* DEFINITION: The calendar student date of birth, as designated by student. 
 
-
-## This data is found in Edify from 
+### This data is found in Edify from export.student, birth_date
 ```{}
 SELECT birth_date
-FROM studen;
+FROM student;
 ```
 
 
-### Create fake data that matches this.
+### Create fake data that matches this. we need to make some fake data that is in theis format yyyy-mm-dd
 
 ```{r}
 s_12_date_of_birth_test_df <- tibble(
@@ -65,16 +68,16 @@ DT::datatable(s_12_date_of_birth_test_df, rownames=FALSE)
 library(here)
 source(here::here("R", "data_io_util.R"))
 
-real_df <- get_data_from_sql_file(file_name="s_12_date_of_birth.sql",
+s_12_date_of_birth_real_df <- get_data_from_sql_file(file_name="s_12.sql",
                              dsn="edify")
 # display data pulled in table
 DT::datatable(s_12_date_of_birth_real_df, rownames=FALSE)
 ```
 
 
-## Here is the R script
+### Here is the R script
 
-The first thing I need to do is to figure out how to
+The first thing I need to do is to figure out how to remove the dashes in the date format. We need to convert yyyy-mm-dd to yyyymmdd. We can do this by using a gsub function.
 
 ```{r}
 
@@ -91,13 +94,13 @@ DT::datatable(change_s_12_date_of_birth_df, rownames=FALSE)
 
 ```
 
-## Making a function
+### Making a function that will pass any data frame with the date of birth varable in the original format
 
 ```{r}
 
 format_s_12_date_of_birth <- function(input_df) {
   
-  output_df <- input_df %>%  
+  output_df <- input_df 
  
     output_df$birth_date <- gsub("-", "", output_df$birth_date) 
   
