@@ -1,0 +1,126 @@
+---
+title: "S-15 Regent Residency Status"
+author: "Craig Demke"
+date: '2022-06-23'
+output: html_document
+---
+
+
+```{r set global chunks, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, message = FALSE
+)
+```
+
+```{r load libraries}
+library(tidyverse)
+library(datasets)
+library(plotly)
+library(gt)
+library(glue)
+library(stringr)
+library(DT)
+library(purrr)
+library(here)
+```
+### This is part of the Students Data Element: S-15 
+* ELEMENT NAME: Regent Residency Status 
+* FIELD NAME: S_REGENT_RES 
+* FIELD FORMAT: Varchar, 1 Character, 
+
+### This data is found in Edify from export.student_term_level, residency code
+```{}
+SELECT residency_code
+FROM student_term_level;
+```
+
+
+### Create fake data that matches this.
+
+```{r}
+s_15_regent_residency_status_test_df <- tibble(
+ residency_code = sample(c("S", "R", "A", "N", "C", "0", "H", "M", "G"), 10, replace = TRUE)) 
+# this is a zero and not the letter O
+
+   
+
+DT::datatable(s_15_regent_residency_status_test_df, rownames=FALSE)
+```
+
+### Now let's see if we can pull in real data
+
+```{r}
+### We pull the data we want from the report database REPT 
+library(here)
+source(here::here("R", "data_io_util.R"))
+
+s_15_regent_residency_status_real_df <- get_data_from_sql_file(file_name="s_15.sql",
+                             dsn="edify")
+
+# display data pulled in table
+DT::datatable(s_15_regent_residency_status_real_df, rownames=FALSE)
+```
+
+
+### Here is the R script
+
+The first thing we do is convert the Utah Tech residency code to the USHE s_regent_res code.
+
+```{r}
+
+change_s_15_regent_residency_status_df <- s_15_regent_residency_status_test_df %>%
+   mutate( s_regent_res = case_when(
+     residency_code == "R" ~ 'R',
+     residency_code == "C" ~ 'R',
+     residency_code == "N" ~ 'N',
+     residency_code == "S" ~ ' ',
+     residency_code == "H" ~ 'N',
+     residency_code == "0" ~ ' ', # this is a zero and not the letter O
+     residency_code == "A" ~ 'A',
+     residency_code == "M" ~ 'M',
+     residency_code == "G" ~ 'G',
+     TRUE ~ "error"))
+  
+
+
+DT::datatable(change_s_15_regent_residency_status_df, rownames=FALSE)
+
+
+
+```
+
+### Making a function  
+
+
+```{r}
+
+format_s_15_regent_residency_status <- function(input_df) {
+  
+  output_df <- input_df %>%  
+     mutate( s_regent_res = case_when(
+     residency_code == "R" ~ 'R',
+     residency_code == "C" ~ 'R',
+     residency_code == "N" ~ 'N',
+     residency_code == "S" ~ ' ',
+     residency_code == "H" ~ 'N',
+     residency_code == "0" ~ ' ', # this is a zero and not the letter O
+     residency_code == "A" ~ 'A',
+     residency_code == "M" ~ 'M',
+     residency_code == "G" ~ 'G',
+     TRUE ~ "error"))
+
+  return(output_df)
+  
+}
+```
+### Choose which data frame you want pass through the function 
+
+s_15_regent_residency_status_test_df for the fake data set
+```{r}
+DT::datatable(format_s_15_regent_residency_status(s_15_regent_residency_status_test_df), rownames=FALSE)
+```
+
+s_15_regent_residency_status_real_df for the real data
+```{r}
+DT::datatable(format_s_15_regent_residency_status(s_15_regent_residency_status_real_df), rownames=FALSE)
+```
