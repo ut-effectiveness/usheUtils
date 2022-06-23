@@ -77,7 +77,7 @@ change_c_50_delivery_model_df <- c_50_delivery_model_test_df %>%
     instruction_method_code == "H" ~ '?', # need to check
     instruction_method_code == "O" ~ 'O',
     instruction_method_code == "T" ~ 'T',
-    TRUE ~ 'instruction_method_code'))
+    TRUE ~ instruction_method_code))
 
 
 DT::datatable(change_c_50_delivery_model_df, rownames=FALSE)
@@ -104,7 +104,7 @@ format_c_50_delivery_model <- function(input_df) {
     instruction_method_code == "H" ~ '?', # need to check
     instruction_method_code == "O" ~ 'O',
     instruction_method_code == "T" ~ 'T',
-    TRUE ~ 'instruction_method_code'))
+    TRUE ~ instruction_method_code))
  
   
   output_df <- output_df %>% 
