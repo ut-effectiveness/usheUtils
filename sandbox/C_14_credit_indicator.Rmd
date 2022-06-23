@@ -27,13 +27,10 @@ library(DT)
 library(purrr)
 library(here)
 ```
-## This is part of the Course Data
-ELEMENT NAME: Credit Indicator 
-FIELD NAME: C_CREDIT_IND 
-FIELD FORMAT: Varchar, 1 Character 
-DEFINITION: A code indicating whether the course is offered for credit or not. 
+## This is part of the 
 
-## This data is found in Edify from export.course, course_level_id.
+
+## This data is found in Edify from 
 ```{}
 SELECT DISTINCT (course_level_id)
 FROM course;
