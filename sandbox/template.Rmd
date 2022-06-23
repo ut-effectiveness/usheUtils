@@ -57,7 +57,7 @@ DT::datatable(placeholder_test_df, rownames=FALSE)
 library(here)
 source(here::here("R", "data_io_util.R"))
 
-real_df <- get_data_from_sql_file(file_name="placeholder.sql",
+placeholder_real_df <- get_data_from_sql_file(file_name="placeholder.sql",
                              dsn="edify")
 # display data pulled in table
 DT::datatable(placeholder_real_df, rownames=FALSE)
@@ -75,7 +75,7 @@ change_placeholder_df <- placeholder_test_df %>%
   
 
 
-DT::datatable(change_placeholder, rownames=FALSE)
+DT::datatable(change_placeholder_df, rownames=FALSE)
 
 
 
