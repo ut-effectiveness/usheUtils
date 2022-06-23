@@ -26,3 +26,5 @@ s_04  <- get_data_from_sql_file('s_04.sql', 'edify')
 s_12  <- get_data_from_sql_file('s_12.sql', 'edify')
 
 s_15  <- get_data_from_sql_file('s_15.sql', 'edify')
+
+s_17  <- get_data_from_sql_file('s_17.sql', 'edify')
