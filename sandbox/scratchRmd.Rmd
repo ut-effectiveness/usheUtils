@@ -60,7 +60,7 @@ s_12_date_of_birth_test_df <- tibble(
 DT::datatable(s_12_date_of_birth_test_df, rownames=FALSE)
 ```
 ```{r}
-age <- s_12_date_of_birth_test_df %>% 
+age <- placeholder_test_df %>% 
 select(birth_date, version_date) %>% 
 mutate(age = trunc((birth_date %--% version_date) / years(1)))
 
