@@ -1,5 +1,5 @@
 ---
-title: "S-14"
+title: "S-14 Ethnic Origin "
 output: html_document
 date: '2022-06-01'
 ---
@@ -21,13 +21,13 @@ library(DT)
 library(purrr)
 library(here)
 ```
-## This is part of the Student Data Submission to USHE Element S-14
-ELEMENT NAME: Ethnic Origin 
-FIELD NAME: S_ETHNIC 
-FIELD FORMAT: Varchar, 8 Characters,  
-DEFINITION: The racial and ethnic categories used to classify students.
+### This is part of the Student Data Submission to USHE Element S-14
+* ELEMENT NAME: Ethnic Origin 
+* FIELD NAME: S_ETHNIC 
+* FIELD FORMAT: Varchar, 8 Characters,  
+* DEFINITION: The racial and ethnic categories used to classify students.
 
-## This data is found in Edify from export.student table
+### This data is found in Edify from export.student table
 ```{}
 SELECT s.student_id,
        s.is_hispanic_latino_ethnicity,
@@ -45,7 +45,7 @@ FROM export.student s;
 ### Create fake data that matches this.
 
 ```{r}
-test_df <- tibble(
+s_14_ethnic_origin_test_df <- tibble(
   student_id = sample(1:999999, 10),
   is_hispanic_latino_ethnicity = sample(c(TRUE, FALSE), 10, replace = TRUE),
   is_asian = sample(c(TRUE, FALSE), 10, replace = TRUE),
@@ -56,9 +56,9 @@ test_df <- tibble(
   is_international = sample(c(TRUE, FALSE), 10, replace = TRUE),
   is_other_race = sample(c(TRUE, FALSE), 10, replace = TRUE)
 ) %>% 
-    mutate(person_id = str_pad(student_id, 8, pad = '0'))
+    mutate(student_id = str_pad(student_id, 8, pad = '0'))
 
-DT::datatable(test_df)
+DT::datatable(s_14_ethnic_origin_test_df)
 ```
 
 ### Now let's see if we can pull in real data
@@ -68,10 +68,10 @@ DT::datatable(test_df)
 library(here)
 source(here::here("R", "data_io_util.R"))
 
-real_df <- get_data_from_sql_file(file_name="s_14.sql",
+s_14_ethnic_origin_test_real_df <- get_data_from_sql_file(file_name="s_14.sql",
                              dsn="edify")
 # display data pulled in table
-DT::datatable(real_df, rownames=FALSE)
+DT::datatable(s_14_ethnic_origin_test_real_df, rownames=FALSE)
 ```
 
 
@@ -80,10 +80,8 @@ DT::datatable(real_df, rownames=FALSE)
 The first thing I need to do is to figure out how to turn a true into a letter and false into a space. We use a case_when statement to changes the boolean logic of true or false into the USHE race field value. example: If is_hispanic_latino_ethnicity is coded as TRUE then there will be a new variable called "H" in the column called H
 
 ```{r}
-# TODO: talk with Andrea about what to do with missing values.
-  # TODO: What to do if the input is not a boolean value.
 
-change_race <- test_df %>%  
+change_s_14_ethnic_origin_df <- s_14_ethnic_origin_test_df %>%  
   mutate(H = case_when(
     is_hispanic_latino_ethnicity == TRUE ~ "H",
     is_hispanic_latino_ethnicity == FALSE ~ " ",
@@ -117,75 +115,67 @@ change_race <- test_df %>%
     is_other_race == FALSE ~ " ",
     TRUE ~ " ")) # here I took out "mistake" and just put in a space because it was NA
 
-change_race$"S-14" = paste(change_race$H, change_race$A, change_race$B,
-                           change_race$I,change_race$P, change_race$W,
-                           change_race$N, change_race$U)
+change_s_14_ethnic_origin_df$"ethnic_origin" = paste(change_s_14_ethnic_origin_df$H, 
+                                            change_s_14_ethnic_origin_df$A, 
+                                            change_s_14_ethnic_origin_df$B,
+                                            change_s_14_ethnic_origin_df$I,
+                                            change_s_14_ethnic_origin_df$P, 
+                                            change_s_14_ethnic_origin_df$W,
+                                            change_s_14_ethnic_origin_df$N, 
+                                            change_s_14_ethnic_origin_df$U,
+                                            sep = "")
 
-change_race$"S-14" <- gsub('\\s  ', '', change_race$"S-14")
-
-
-DT::datatable(change_race)
-
-
-
-```
-
-Here we want to only run the d-numbers and ushe data. This data should have all of the spaces included in the raw table only_numbers_and_ushe_data
-```{r}
-only_numbers_and_ushe_data <- change_race %>% 
-  select(student_id, "S-14")
-
-DT::datatable(only_numbers_and_ushe_data)
-
+DT::datatable(change_s_14_ethnic_origin_df)
 
 ```
+
 
 ## Making a function
 
 ```{r}
 
-format_s_14 <- function(input_df) {
+format_s_14_ethnic_origin_df <- function(input_df) {
   
   output_df <- input_df %>%  
   mutate(H = case_when(
     is_hispanic_latino_ethnicity == TRUE ~ "H",
-    is_hispanic_latino_ethnicity == FALSE ~ "",
-    TRUE ~ "mistake")) %>% 
+    is_hispanic_latino_ethnicity == FALSE ~ " ",
+    TRUE ~ " ")) %>% 
   mutate(A = case_when(
     is_asian == TRUE ~ "A",
-    is_asian == FALSE ~ "",
-    TRUE ~ "mistake")) %>%
+    is_asian == FALSE ~ " ",
+    TRUE ~ " ")) %>%
   mutate(B = case_when(
     is_black ==  TRUE ~ "B",
-    is_black == FALSE ~ "",
-    TRUE ~ "mistake")) %>%
+    is_black == FALSE ~ " ",
+    TRUE ~ " ")) %>%
   mutate(I = case_when(
     is_american_indian_alaskan == TRUE ~ "I",
-    is_american_indian_alaskan == FALSE ~ "",
-    TRUE ~ "mistake")) %>%
+    is_american_indian_alaskan == FALSE ~ " ",
+    TRUE ~ " ")) %>%
   mutate(P = case_when(
     is_hawaiian_pacific_islander == TRUE ~ "P",
-    is_hawaiian_pacific_islander == FALSE ~ "",
-    TRUE ~ "mistake")) %>%
+    is_hawaiian_pacific_islander == FALSE ~ " ",
+    TRUE ~ " ")) %>%
   mutate(W = case_when(
     is_white == TRUE ~ "W",
-    is_white == FALSE ~ "",
-    TRUE ~ "mistake")) %>%
+    is_white == FALSE ~ " ",
+    TRUE ~ " ")) %>%
   mutate(N = case_when(
     is_international == TRUE ~ "N",
-    is_international == FALSE ~ "",
-    TRUE ~ "mistake")) %>%
+    is_international == FALSE ~ " ",
+    TRUE ~ " ")) %>%
   mutate(U = case_when(
     is_other_race == TRUE ~ "U",
-    is_other_race == FALSE ~ "",
-    TRUE ~ "")) # here I took out "mistake" and just put in a space because it was NA
-  
-  output_df$"S-14" = paste(output_df$H, output_df$A, output_df$B, 
-                           output_df$I, output_df$P, output_df$W, 
-                           output_df$N, output_df$U)
+    is_other_race == FALSE ~ " ",
+    TRUE ~ " ")) 
+
+output_df$"ethnic_origin" = paste(output_df$H, output_df$A, output_df$B,
+                                  output_df$I, output_df$P, output_df$W,
+                                  output_df$N, output_df$U, sep = "")
   
   output_df <- output_df %>% 
-  select(student_id, "S-14")
+  select(student_id, "ethnic_origin")
   
   return(output_df)
   
@@ -193,13 +183,13 @@ format_s_14 <- function(input_df) {
 ```
 ## Choose which data frame you want pass through the function 
 
-meets_test_df for the fake data set
+s_14_ethnic_origin_test_df for the fake data set
 ```{r}
-DT::datatable(format_s_14(test_df))
+DT::datatable(format_s_14_ethnic_origin_df(s_14_ethnic_origin_test_df))
 ```
 
-real_c17_df for the real data
+s_14_ethnic_origin_test_real_df for the real data
 ```{r}
-DT::datatable(format_s_14(real_df))
+DT::datatable(format_s_14_ethnic_origin_df(s_14_ethnic_origin_test_real_df))
 ```
 
