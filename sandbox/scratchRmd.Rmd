@@ -5,26 +5,84 @@ date: '2022-06-23'
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r set global chunks, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, message = FALSE
+)
 ```
 
-## R Markdown
+```{r load libraries}
+library(tidyverse)
+library(datasets)
+library(plotly)
+library(gt)
+library(glue)
+library(stringr)
+library(DT)
+library(purrr)
+library(here)
+library(lubridate)
+```
+### This is part of the Students Data 
+* ELEMENT NAME: Date of Birth 
+* FIELD NAME: S_BIRTH_DT 
+* FIELD FORMAT: Varchar, 8 Characters (YYYYMMDD), 
+* DEFINITION: The calendar student date of birth, as designated by student. 
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+### This data is found in Edify from export.student, birth_date
+```{}
+SELECT birth_date
+FROM student;
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
+### Create fake data that matches this. we need to make some fake data that is in theis format yyyy-mm-dd
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r}
+s_12_date_of_birth_test_df <- tibble(
+  version_date = as_date("2022-06-24"),
+  birth_date_year = sample(1978:2010, 10, replace = TRUE),
+  birth_date_month = sample(01:12, 10, replace = TRUE),
+  birth_date_day = sample(01:29, 10, replace = TRUE)) %>% 
+  mutate(birth_date_month = str_pad(birth_date_month, 2, pad = '0')) %>% 
+  mutate(birth_date_day = str_pad(birth_date_day, 2, pad = '0')) 
+  
+  
+ s_12_date_of_birth_test_df$"birth_date" =
+   paste(s_12_date_of_birth_test_df$birth_date_year, 
+         s_12_date_of_birth_test_df$birth_date_month, 
+         s_12_date_of_birth_test_df$birth_date_day, sep = "-")
+
+ s_12_date_of_birth_test_df <- s_12_date_of_birth_test_df %>%
+  mutate(birth_date = as_date(birth_date)) %>% 
+   select(birth_date, version_date)  
+
+DT::datatable(s_12_date_of_birth_test_df, rownames=FALSE)
+```
+```{r}
+age <- s_12_date_of_birth_test_df %>% 
+select(birth_date, version_date) %>% 
+mutate(age = trunc((birth_date %--% version_date) / years(1)))
+
+DT::datatable(age, rownames=FALSE)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r}
+age_calc <- function(input_df) {
+
+output_df <- input_df %>% 
+mutate(age = trunc((birth_date %--% version_date) / years(1)))
+
+ output_df <- output_df %>% 
+  select(age)
+
+ return(output_df)
+
+}
+
+DT::datatable(age_calc(s_12_date_of_birth_test_df), rownames=FALSE)
+
+
+```
+
