@@ -1,0 +1,119 @@
+---
+title: "G-10 Degree Type"
+author: "Craig Demke"
+date: '2022-06-24'
+output: html_document
+---
+
+```{r set global chunks, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, message = FALSE
+)
+```
+
+```{r load libraries}
+library(tidyverse)
+library(datasets)
+library(plotly)
+library(gt)
+library(glue)
+library(stringr)
+library(DT)
+library(purrr)
+library(here)
+```
+### This is part of the Graduation Data Element: G-10 
+* ELEMENT NAME: Degree Type 
+* FIELD NAME: G_DEG_TYPE 
+* FIELD FORMAT: Varchar, 6 Characters 
+* DEFINITION: The Level of Degree or Certificate Completed for the award conferred. Refer to the  Degree Type Table for all degrees. 
+
+
+### This data is found in Edify from export.degrees_awarded, degree_ie and degree_status_code
+```{}
+SELECT DISTINCT (degree_id),
+                degree_status_code
+FROM degrees_awarded;
+```
+
+
+### Create fake data that matches the degree type in Edify
+
+```{r}
+g_10_degree_type_test_df <- tibble(
+  degree_id = sample(c("AS", "BME", "MAT", "TR", "AB", "BAS", "BFA",
+                              "CER1", "APE", "AC", "MA", "CER0", "AAS",
+                              "BIS", "BSN", "MACC", "BA", "ND", "BM", "AA",
+                              "MMFT", "BS"), 23, replace = TRUE),
+  degree_status_code = sample(c("AW", "SO", "PN", "WD", "DN", ""), 23, replace = TRUE)
+  
+  
+)
+   
+
+DT::datatable(g_10_degree_type_test_df, rownames=FALSE)
+```
+
+### Now let's see if we can pull in real data
+
+```{r}
+### We pull the data we want from the report database REPT 
+library(here)
+source(here::here("R", "data_io_util.R"))
+
+g_10_degree_type_real_df <- get_data_from_sql_file(file_name="g_10.sql",
+                             dsn="edify")
+# display data pulled in table
+DT::datatable(g_10_degree_type_real_df, rownames=FALSE)
+```
+
+
+### Here is the R script
+
+The first thing I need to do is to figure out how to filter out any degrees which have not been awarded
+
+```{r}
+
+change_g_10_degree_type_df <- g_10_degree_type_test_df %>%
+   mutate(degree_type = case_when(
+   degree_status_code == "AW" ~ degree_id,
+   TRUE ~ "not awarded"))
+
+
+DT::datatable(change_g_10_degree_type_df, rownames=FALSE)
+
+
+
+```
+
+### Making a function
+
+```{r}
+
+format_g_10_degree_type <- function(input_df) {
+  
+  output_df <- input_df %>%  
+  mutate(degree_type = case_when(
+  degree_status_code == "AW" ~ degree_id,
+  TRUE ~ "not awarded"))
+  
+  output_df <- output_df %>% 
+  select(degree_type) %>% 
+    filter(degree_type != "not awarded")
+  
+  return(output_df)
+  
+}
+```
+### Choose which data frame you want pass through the function 
+
+g_10_degree_type_test_df for the fake data set
+```{r}
+DT::datatable(format_g_10_degree_type(g_10_degree_type_test_df), rownames=FALSE)
+```
+
+g_10_degree_type_real_df for the real data
+```{r}
+DT::datatable(format_g_10_degree_type(g_10_degree_type_real_df), rownames=FALSE)
+```
+
