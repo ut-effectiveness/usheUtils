@@ -1,0 +1,123 @@
+---
+title: "Utah Tech USHE ID number"
+author: "Craig Demke"
+date: '2022-06-27'
+output: html_document
+---
+
+
+```{r set global chunks, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, message = FALSE
+)
+```
+
+```{r load libraries}
+library(tidyverse)
+library(datasets)
+library(plotly)
+library(gt)
+library(glue)
+library(stringr)
+library(DT)
+library(purrr)
+library(here)
+```
+### This is part of the  Elements: C-1, S-1, G-1, SC-1, M-1, F-1, R-1, B-1, & PF-1
+* ELEMENT NAME: Institution 
+* FIELD NAME: C_INST, S_INST, G_INST, SC_INST, M_INST, F_INST, R_INST, B_INST, & PF_INST
+* FIELD FORMAT: Varchar, 4 Characters 
+* DEFINITION: The identification number used by the U.S. Department of Education’s Office of  Postsecondary Education (OPE) to identify schools that have Program Participation Agreements (PPA)  so that its students are eligible to participate in Federal Student Financial Assistance programs under  Title IV regulations. This is a 6-digit number followed by a 2-digit suffix used to identify branches,  additional locations, and other entities that are part of the eligible institution. USHE will use the last 4  digits of the 6-digit number for the field value as additional locations will be specified by C-09 Line  Item. 
+ 
+
+
+### This data is hard coded
+```{}
+
+```
+
+
+### pulling in a data frame from another function 
+
+```{r}
+g_10_degree_type_test_df <- tibble(
+  degree_id = sample(c("AS", "BME", "MAT", "TR", "AB", "BAS", "BFA",
+                              "CER1", "APE", "AC", "MA", "CER0", "AAS",
+                              "BIS", "BSN", "MACC", "BA", "ND", "BM", "AA",
+                              "MMFT", "BS"), 23, replace = TRUE),
+  degree_status_code = sample(c("AW", "SO", "PN", "WD", "DN", ""), 23, replace = TRUE)
+
+)
+
+```
+
+
+```{r}
+### We pull the data we want from the report database REPT 
+library(here)
+source(here::here("R", "data_io_util.R"))
+
+g_10_degree_type_real_df <- get_data_from_sql_file(file_name="g_10.sql",
+                             dsn="edify")
+# display data pulled in table
+
+```
+
+
+```{r}
+
+change_g_10_degree_type_df <- g_10_degree_type_test_df %>%
+   mutate(degree_type = case_when(
+   degree_status_code == "AW" ~ degree_id,
+   TRUE ~ "not awarded"))
+
+```
+
+
+
+```{r}
+
+format_g_10_degree_type <- function(input_df) {
+  
+  output_df <- input_df %>%  
+  mutate(degree_type = case_when(
+  degree_status_code == "AW" ~ degree_id,
+  TRUE ~ "not awarded"))
+  
+  output_df <- output_df %>% 
+  select(degree_type) %>% 
+    filter(degree_type != "not awarded")
+  
+  return(output_df)
+  
+}
+```
+
+
+### Making a function
+
+```{r}
+format_ushe_id <- function(input_df) {
+  
+  output_df <- input_df
+  output_df$ushe_id <- "3671"
+  
+output_df <- output_df %>% 
+  relocate(ushe_id, .before = )
+  
+  return(output_df)
+  
+}
+```
+
+### Choose which data frame you want pass through the function 
+
+g_10_degree_type_test_df for the fake data set
+```{r}
+DT::datatable(format_ushe_id(g_10_degree_type_test_df), rownames=FALSE)
+```
+
+g_10_degree_type_real_df for the real data
+```{r}
+DT::datatable(format_ushe_id(g_10_degree_type_real_df), rownames=FALSE)
+```
