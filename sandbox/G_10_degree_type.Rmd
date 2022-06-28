@@ -41,7 +41,7 @@ FROM degrees_awarded;
 
 ```{r}
 g_10_degree_type_test_df <- tibble(
-  degree_id = sample(c("AS", "BME", "MAT", "TR", "AB", "BAS", "BFA",
+  subject_code = sample(c("AS", "BME", "MAT", "TR", "AB", "BAS", "BFA",
                               "CER1", "APE", "AC", "MA", "CER0", "AAS",
                               "BIS", "BSN", "MACC", "BA", "ND", "BM", "AA",
                               "MMFT", "BS"), 23, replace = TRUE),
