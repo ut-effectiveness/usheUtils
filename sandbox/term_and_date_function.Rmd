@@ -1,0 +1,54 @@
+---
+title: "Term and Date Function"
+author: "Craig Demke"
+date: '2022-06-28'
+output: html_document
+---
+
+```{r set global chunks, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, message = FALSE
+)
+```
+
+```{r load libraries}
+library(tidyverse)
+library(datasets)
+library(plotly)
+library(gt)
+library(glue)
+library(stringr)
+library(DT)
+library(purrr)
+library(lubridate)
+```
+
+
+### this is a fuction to take todays date and only keep the current year
+
+```{r}
+term <- gsub("-", "", today())
+
+year <- str_sub(term, 1, 4) 
+
+year <- as.numeric(year)
+
+today_date <- today()
+
+```
+
+Here we take the year function and make a tibble for it with semester terms
+```{r}
+dates_df <- tibble(
+  today = (today_date),
+  year = (year),
+  prev_year = (year - 1),
+  prev_summer_term = ((prev_year * 100) + 30),
+  prev_fall_term = ((prev_year * 100) + 40),
+  prev_spring_term = ((year * 100) + 20)
+  )
+  
+
+DT::datatable(dates_df, rownames=FALSE)
+
+```
