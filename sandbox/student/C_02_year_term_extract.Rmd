@@ -1,0 +1,146 @@
+---
+title: "C-02"
+author: "Craig Demke"
+date: '2022-06-15'
+output: html_document
+---
+
+---
+```{r set global chunks, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, message = FALSE
+)
+```
+
+```{r load libraries}
+library(tidyverse)
+library(datasets)
+library(plotly)
+library(gt)
+library(glue)
+library(stringr)
+library(DT)
+library(purrr)
+```
+## This is part of the Course Data Submission to USHE Element C-02
+ELEMENT NAME: Year, Term & Extract Code 
+FIELD NAME: C_TERM_ID 
+FIELD FORMAT: Number, 4 Characters (YYYY format) 
+ Number, 1 Character (T format) 
+ Varchar, 1 character (E format) 
+DEFINITION: The current academic year, term, and extract in which course is offered. Format  YYYYTE is made up of academic year YYYY, academic term T, and extract E (3rd week or End of  Term). 
+
+## This data is found in Edify from export.course_verson, and export.term
+```{}
+SELECT DISTINCT (s.course_id),
+       t.academic_year_code,
+       t.season,
+       s.version_id
+FROM export.student_section_version s
+LEFT JOIN term t
+    ON t.term_id = s.term_id
+WHERE s.term_id = '202140'
+LIMIT 10;
+```
+
+
+### Create fake data that matches this.
+
+```{r}
+year_term_extract_test_df <- tibble(
+  academic_year_code = (2022),
+  season = sample(c("Summer", "Fall", "Spring"), 10, replace = TRUE),
+  version_id = sample(c(2, 3), 10, replace = TRUE)
+) 
+
+DT::datatable(year_term_extract_test_df, rownames=FALSE)
+```
+
+### Now let's see if we can pull in real data
+
+```{r}
+#We pull the data we want from Edify
+library(here)
+source(here::here("R", "data_io_util.R"))
+
+real_c_02_df <- get_data_from_sql_file(file_name="c_02.sql",
+                           dsn="edify")
+ #display data pulled in table
+DT::datatable(real_c_02_df, rownames=FALSE)
+```
+
+## Here is the R script
+
+The first thing I need to do is to figure out how to
+```{r}
+# Adding conditional logic to determine c_term_id
+
+change_year_term_extract <- year_term_extract_test_df %>%
+  mutate(t_format = case_when(
+    season == "Summer" ~ '1',
+    season == "Fall" ~ '2',
+    season == 'Spring' ~ '3',
+    TRUE ~ "mistake")) %>% 
+  mutate(v_format = case_when(
+    version_id == '1' ~ 'current',
+    version_id == '2' ~ '3',
+    version_id == '3' ~ 'E',
+    TRUE ~ "error"))
+
+change_year_term_extract$"year_term_extract" = paste(change_year_term_extract$academic_year_code,
+                                        change_year_term_extract$t_format,
+                                        change_year_term_extract$v_format)
+
+change_year_term_extract$Remove_all_space <- gsub('\\s+', '', change_year_term_extract$"year_term_extract")
+
+DT::datatable(change_year_term_extract)
+
+```
+
+Now we write the function
+```{r}
+ormat_ushe_year_term_extract <- function(input_df) {
+  
+  output_df <- input_df %>%
+    mutate(academic_year = str_sub(term_id, 1, 4)) %>% 
+    mutate(ushe_year = (as.numeric(academic_year) + 1)) %>%
+    mutate(season = str_sub(term_id, 5, 6)) %>%  
+    mutate(academic_year_code = case_when(
+      season == "30" ~ as.character(ushe_year),
+      season == "40" ~ as.character(ushe_year),
+      season == '20' ~ as.character(academic_year),
+      TRUE ~ "error")) %>% 
+    mutate(t_format = case_when(
+      season == "30" ~ '1',
+      season == "40" ~ '2',
+      season == '20' ~ '3',
+      TRUE ~ "mistake")) %>% 
+    mutate(v_format = case_when(
+      version_id == '1' ~ 'current',
+      version_id == '2' ~ '3',
+      version_id == '3' ~ 'E',
+      TRUE ~ "error"))
+
+output_df$"year_term_extract" = paste(output_df$academic_year_code,
+                                        output_df$t_format,
+                                        output_df$v_format, sep = "")
+
+
+output_df <- output_df %>%
+
+return(output_df)
+
+}
+```
+## Choose which data frame you want pass through the function 
+
+ for the fake data set
+```{r}
+DT::datatable(format_ushe_year_term_extract(year_term_extract_test_df))
+```
+
+--- for the real data
+```{r}
+DT::datatable(format_ushe_year_term_extract(real_c_02_df))
+```
+
