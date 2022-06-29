@@ -23,65 +23,86 @@ library(purrr)
 library(here)
 library(lubridate)
 ```
-### This is part of the Students Data 
-* ELEMENT NAME: Date of Birth 
-* FIELD NAME: S_BIRTH_DT 
-* FIELD FORMAT: Varchar, 8 Characters (YYYYMMDD), 
-* DEFINITION: The calendar student date of birth, as designated by student. 
+### 
 
-### This data is found in Edify from export.student, birth_date
-```{}
-SELECT birth_date
-FROM student;
+```{r}
+library(here)
+source(here::here("R", "data_io_util.R"))
+
+student_file <- get_data_from_sql_file(file_name="student_file.sql",
+                             dsn="edify")
+```
+
+```{r}
+term <- '202230'
+version <- 'Current'
+
+summer_student_file <- student_file %>% 
+  filter(term_id == term & version_desc == version)
+
+#DT::datatable(student_file, rownames=FALSE)
 ```
 
 
-### Create fake data that matches this. we need to make some fake data that is in theis format yyyy-mm-dd
-
+function for S-01
 ```{r}
-s_12_date_of_birth_test_df <- tibble(
-  version_date = as_date("2022-06-24"),
-  birth_date_year = sample(1978:2010, 10, replace = TRUE),
-  birth_date_month = sample(01:12, 10, replace = TRUE),
-  birth_date_day = sample(01:29, 10, replace = TRUE)) %>% 
-  mutate(birth_date_month = str_pad(birth_date_month, 2, pad = '0')) %>% 
-  mutate(birth_date_day = str_pad(birth_date_day, 2, pad = '0')) 
+format_ushe_id <- function(input_df) {
   
+  output_df <- input_df
+  output_df$ushe_id <- "3671"
   
- s_12_date_of_birth_test_df$"birth_date" =
-   paste(s_12_date_of_birth_test_df$birth_date_year, 
-         s_12_date_of_birth_test_df$birth_date_month, 
-         s_12_date_of_birth_test_df$birth_date_day, sep = "-")
-
- s_12_date_of_birth_test_df <- s_12_date_of_birth_test_df %>%
-  mutate(birth_date = as_date(birth_date)) %>% 
-   select(birth_date, version_date)  
-
-DT::datatable(s_12_date_of_birth_test_df, rownames=FALSE)
-```
-```{r}
-age <- placeholder_test_df %>% 
-select(birth_date, version_date) %>% 
-mutate(age = trunc((birth_date %--% version_date) / years(1)))
-
-DT::datatable(age, rownames=FALSE)
-```
-
-
-```{r}
-age_calc <- function(input_df) {
-
-output_df <- input_df %>% 
-mutate(age = trunc((birth_date %--% version_date) / years(1)))
-
- output_df <- output_df %>% 
-  select(age)
-
- return(output_df)
-
+output_df <- output_df %>% 
+  relocate(ushe_id, .before = )
+  
+  return(output_df)
+  
 }
+```
 
-DT::datatable(age_calc(s_12_date_of_birth_test_df), rownames=FALSE)
+Function for S-02
+```{r}
+format_ushe_year_term_extract <- function(input_df) {
+  
+  output_df <- input_df %>%
+    mutate(academic_year = str_sub(term_id, 1, 4)) %>% 
+    mutate(last_year = (as.numeric(academic_year) - 1)) %>%
+    mutate(season = str_sub(term_id, 5, 6)) %>%  
+    mutate(academic_year_code = case_when(
+      season == "30" ~ as.character(last_year),
+      season == "40" ~ as.character(last_year),
+      season == '20' ~ as.character(last_year),
+      TRUE ~ "error")) %>% 
+    mutate(t_format = case_when(
+      season == "30" ~ '1',
+      season == "40" ~ '2',
+      season == '20' ~ '3',
+      TRUE ~ "mistake")) %>% 
+    mutate(v_format = case_when(
+      version_id == '1' ~ 'current',
+      version_id == '2' ~ '3',
+      version_id == '3' ~ 'E',
+      TRUE ~ "error"))
+
+output_df$"year_term_extract" = paste(output_df$academic_year_code,
+                                        output_df$t_format,
+                                        output_df$v_format, sep = "")
+
+#output_df$year_term_extract <- gsub('\\s+', '', output_df$"year_term_extract") %>% 
+#relocate(year_term_extract, .before)
+
+output_df <- output_df %>%
+ relocate(year_term_extract, .before = 2)
+
+
+return(output_df)
+}
+```
+
+```{r}
+
+New_student_file <- format_ushe_id(summer_student_file)
+
+New_student_file <- format_ushe_year_term_extract(New_student_file)
 
 
 ```
