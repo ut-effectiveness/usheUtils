@@ -43,7 +43,7 @@ mung_dataframe <- function(df) {
 
 get_data_from_sql_file <- function(file_name, dsn) {
   conn <- get_conn(dsn)
-  query <- read_file( here::here('sql', file_name) )
+  query <- read_file( here::here('sandbox/sql', file_name) )
   df <- dbGetQuery(conn, query) %>%
     mung_dataframe()
   return(df)
