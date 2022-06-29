@@ -1,0 +1,114 @@
+---
+title: "G-22 Workforce Education Earned Contact  Hours"
+author: "Craig Demke"
+date: '2022-06-27'
+output: html_document
+---
+
+```{r set global chunks, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, message = FALSE
+)
+```
+
+```{r load libraries}
+library(tidyverse)
+library(datasets)
+library(plotly)
+library(gt)
+library(glue)
+library(stringr)
+library(DT)
+library(purrr)
+library(here)
+```
+### This is part of the Graduation Data G-22 and G-23
+
+* This both of these should be 0 zero for Utah Tech
+
+### This data is not found in Edify 
+```{}
+
+```
+
+
+### Create fake data to hard code zero 0, I just used the student id as a data point
+
+```{r}
+g_22_workforce_ed_earned_contact_hours_test_df <- tibble(
+  student_id = sample(1:999999, 10),
+) %>% 
+    mutate(student_id = str_pad(student_id, 8, pad = '0'))
+   
+
+DT::datatable(g_22_workforce_ed_earned_contact_hours_test_df, rownames=FALSE)
+```
+
+### Now let's see if we can pull in real data
+
+```{r}
+### We pull the data we want from the report database REPT 
+library(here)
+source(here::here("R", "data_io_util.R"))
+
+g_22_workforce_ed_earned_contact_hours_real_df <- get_data_from_sql_file(file_name="g_21.sql",
+                             dsn="edify")
+# display data pulled in table
+DT::datatable(g_22_workforce_ed_earned_contact_hours_real_df, rownames=FALSE)
+```
+
+
+### Here is the R script
+
+The first thing I need to do is to figure out how hard code a zero. If the student id is the student id then 0
+
+```{r}
+
+change_g_22_workforce_ed_earned_contact_hours_df <- g_22_workforce_ed_earned_contact_hours_test_df %>%
+   mutate(G_WE_EARNED_CONTACT_HRS = case_when(
+     student_id == student_id ~ "0",
+   TRUE ~ "error")) %>% 
+  mutate(G_WE_PROGRAM_HRS = case_when(
+     student_id == student_id ~ "0",
+   TRUE ~ "error"))
+  
+
+
+DT::datatable(change_g_22_workforce_ed_earned_contact_hours_df, rownames=FALSE)
+
+
+
+```
+
+### Making a function
+
+```{r}
+
+format_g_22_workforce_ed_earned_contact_hours <- function(input_df) {
+  
+  output_df <- input_df %>%  
+    mutate(G_WE_EARNED_CONTACT_HRS = case_when(
+     student_id == student_id ~ "0",
+   TRUE ~ "error")) %>% 
+  mutate(G_WE_PROGRAM_HRS = case_when(
+     student_id == student_id ~ "0",
+   TRUE ~ "error"))
+  
+  output_df <- output_df %>% 
+  select(G_WE_EARNED_CONTACT_HRS, G_WE_PROGRAM_HRS)
+  
+  return(output_df)
+  
+}
+```
+### Choose which data frame you want pass through the function 
+
+g_22_workforce_ed_earned_contact_hours_test_df for the fake data set
+```{r}
+DT::datatable(format_g_22_workforce_ed_earned_contact_hours(g_22_workforce_ed_earned_contact_hours_test_df), rownames=FALSE)
+```
+
+g_22_workforce_ed_earned_contact_hours_real_df for the real data
+```{r}
+DT::datatable(format_g_22_workforce_ed_earned_contact_hours(g_22_workforce_ed_earned_contact_hours_real_df), rownames=FALSE)
+```

@@ -1,0 +1,113 @@
+---
+title: "S-44 Pell Indicator"
+author: "Craig Demke"
+date: '2022-06-24'
+output: html_document
+---
+
+
+```{r set global chunks, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, message = FALSE
+)
+```
+
+```{r load libraries}
+library(tidyverse)
+library(datasets)
+library(plotly)
+library(gt)
+library(glue)
+library(stringr)
+library(DT)
+library(purrr)
+library(here)
+```
+### This is part of the Students Data Element: S-44
+* ELEMENT NAME: Pell Indicator 
+* FIELD NAME: S_PELL 
+* FIELD FORMAT: Varchar, 1 Character,  
+* DEFINITION: This flags the student as having received a Pell grant during the reporting semester.  This field is needed for end of term extracts only. It will be accepted at 3rd week if it is convenient for  the institution to provide it.
+
+### This data is found in Edify from export.student_term_level, is_pell_eligible, is_pell_awarded
+```{}
+
+```
+
+
+### Create fake data that matches this.
+
+```{r}
+s_44_pell_indicator_test_df <- tibble(
+  is_pell_eligible = sample(c(TRUE, FALSE), 10, replace = TRUE),
+  is_pell_awarded = sample(c(TRUE, FALSE), 10, replace = TRUE)
+)
+   
+
+DT::datatable(s_44_pell_indicator_test_df, rownames=FALSE)
+```
+
+### Now let's see if we can pull in real data
+
+```{r}
+### We pull the data we want from the report database REPT 
+library(here)
+source(here::here("R", "data_io_util.R"))
+
+s_44_pell_indicator_real_df <- get_data_from_sql_file(file_name="s_44.sql",
+                             dsn="edify")
+# display data pulled in table
+DT::datatable(s_44_pell_indicator_real_df, rownames=FALSE)
+```
+
+
+### Here is the R script
+
+The first thing I need to do is to figure out how to
+
+```{r}
+
+change_s_44_pell_indicator_df <- s_44_pell_indicator_test_df %>%
+   mutate(pell_indicator = case_when(
+    is_pell_eligible == TRUE ~ "E",
+    is_pell_awarded == TRUE ~ "R",
+    TRUE ~ " "))
+
+  
+DT::datatable(change_s_44_pell_indicator_df, rownames=FALSE)
+
+
+
+```
+
+### Making a function
+
+```{r}
+
+format_s_44_pell_indicator <- function(input_df) {
+  
+  output_df <- input_df %>%  
+    mutate(pell_indicator = case_when(
+    is_pell_eligible == TRUE ~ "E",
+    is_pell_awarded == TRUE ~ "R",
+    TRUE ~ " "))
+  
+  #output_df <- output_df %>% 
+  #select(pell_indicator)
+  
+  return(output_df)
+  
+}
+```
+### Choose which data frame you want pass through the function 
+
+s_44_pell_indicator_test_df for the fake data set
+```{r}
+DT::datatable(format_s_44_pell_indicator(s_44_pell_indicator_test_df), rownames=FALSE)
+```
+
+s_44_pell_indicator_real_df for the real data
+```{r}
+DT::datatable(format_s_44_pell_indicator(s_44_pell_indicator_real_df), rownames=FALSE)
+```
+

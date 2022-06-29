@@ -1,0 +1,105 @@
+---
+title: "G-17 IPEDS Award Level Code"
+author: "Craig Demke"
+date: '2022-06-27'
+output: html_document
+---
+```{r set global chunks, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, message = FALSE
+)
+```
+
+```{r load libraries}
+library(tidyverse)
+library(datasets)
+library(plotly)
+library(gt)
+library(glue)
+library(stringr)
+library(DT)
+library(purrr)
+library(here)
+```
+### This is part of the Graduation Data Element: G-21 
+*  ELEMENT NAME: Institutionally Assigned ID 
+* FIELD NAME: G_BANNER_ID 
+* FIELD FORMAT: Varchar, 9 Characters 
+* DEFINITION: The unique institutionally assigned identification number for each student intended to  be used in lieu of using a student’s social security number. G_Banner_ID must begin with an Alpha  character representing the institution  
+
+
+### This data is found in Edify from export.student, student_id 
+```{}
+SELECT student_id
+FROM export.student
+LIMIT 10;
+```
+
+
+### Create fake data that matches the ipeds_award_level_code data in Edify
+
+```{r}
+g_21_institutional_assigned_id_test_df <- tibble(
+  student_id = sample(1:999999, 10),
+) %>% 
+    mutate(student_id = str_pad(student_id, 8, pad = '0'))
+   
+
+DT::datatable(g_21_institutional_assigned_id_test_df, rownames=FALSE)
+```
+
+### Now let's see if we can pull in real data
+
+```{r}
+### We pull the data we want from the report database REPT 
+library(here)
+source(here::here("R", "data_io_util.R"))
+
+g_21_institutional_assigned_id_real_df <- get_data_from_sql_file(file_name="g_21.sql",
+                             dsn="edify")
+# display data pulled in table
+DT::datatable(g_21_institutional_assigned_id_real_df, rownames=FALSE)
+```
+
+
+### Here is the R script
+
+The first thing I need to do is to figure out how to
+
+```{r}
+
+change_g_21_institutional_assigned_id_df <- g_21_institutional_assigned_id_test_df %>% 
+mutate(institutional_assigned_id = paste("D", student_id, sep = ""))
+
+DT::datatable(change_g_21_institutional_assigned_id_df)
+
+```
+
+### Making a function
+
+```{r}
+
+format_g_21_institutional_assigned_id <- function(input_df) {
+  
+  output_df <- input_df %>%  
+ mutate(institutional_assigned_id = paste("D", student_id, sep = ""))
+  
+  output_df <- output_df %>% 
+  select(institutional_assigned_id)
+  
+  return(output_df)
+  
+}
+```
+### Choose which data frame you want pass through the function 
+
+g_21_institutional_assigned_id_test_df for the fake data set
+```{r}
+DT::datatable(format_g_21_institutional_assigned_id(g_21_institutional_assigned_id_test_df), rownames=FALSE)
+```
+
+g_21_institutional_assigned_id_real_df for the real data
+```{r}
+DT::datatable(format_g_21_institutional_assigned_id(g_21_institutional_assigned_id_real_df), rownames=FALSE)
+```
+

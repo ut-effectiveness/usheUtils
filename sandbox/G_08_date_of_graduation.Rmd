@@ -1,0 +1,122 @@
+---
+title: "G-08 Date of Graduation"
+author: "Craig Demke"
+date: '2022-06-27'
+output: html_document
+---
+
+```{r set global chunks, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, message = FALSE
+)
+```
+
+```{r load libraries}
+library(tidyverse)
+library(datasets)
+library(plotly)
+library(gt)
+library(glue)
+library(stringr)
+library(DT)
+library(purrr)
+library(here)
+library(lubridate)
+```
+### This is part of the Graduatation Data Element: G-08
+* ELEMENT NAME: Date of Graduation 
+* FIELD NAME: G_DATE 
+* FIELD FORMAT: Varchar, 8 Characters (YYYYMMDD Format) 
+* DEFINITION: The calendar date the formal award was conferred by the institution. 
+
+### This data is found in Edify from export.student, graduation_date
+```{}
+SELECT graduation_date
+FROM export.degrees_awarded;
+```
+
+
+### Create fake data that matches this. we need to make some fake data that is in this format yyyy-mm-dd
+
+```{r}
+g_08_date_of_graduation_test_df <- tibble(
+  graduation_date_year = sample(1978:2010, 10, replace = TRUE),
+  graduation_date_month = sample(01:12, 10, replace = TRUE),
+  graduation_date_day = sample(01:29, 10, replace = TRUE)) %>% 
+  mutate(graduation_date_month = str_pad(graduation_date_month, 2, pad = '0')) %>% 
+  mutate(graduation_date_day = str_pad(graduation_date_day, 2, pad = '0'))
+  
+ g_08_date_of_graduation_test_df$"graduation_date" =
+   paste(g_08_date_of_graduation_test_df$graduation_date_year, 
+         g_08_date_of_graduation_test_df$graduation_date_month, 
+         g_08_date_of_graduation_test_df$graduation_date_day, sep = "-")
+ 
+ g_08_date_of_graduation_test_df <- g_08_date_of_graduation_test_df %>%
+  mutate(graduation_date = as_date(graduation_date)) %>% 
+   select(graduation_date)
+ 
+
+   
+
+DT::datatable(g_08_date_of_graduation_test_df, rownames=FALSE)
+```
+
+### Now let's see if we can pull in real data
+
+```{r}
+### We pull the data we want from the report database REPT 
+library(here)
+source(here::here("R", "data_io_util.R"))
+
+g_08_date_of_graduation_real_df <- get_data_from_sql_file(file_name="g_08.sql",
+                             dsn="edify")
+# display data pulled in table
+DT::datatable(g_08_date_of_graduation_real_df, rownames=FALSE)
+```
+
+
+### Here is the R script
+
+The first thing I need to do is to figure out how to remove the dashes in the date format. We need to convert yyyy-mm-dd to yyyymmdd. We can do this by using a gsub function.
+
+```{r}
+
+change_g_08_date_of_graduation_df <- g_08_date_of_graduation_test_df
+ 
+  change_g_08_date_of_graduation_df$graduation_date <- gsub("-", "", change_g_08_date_of_graduation_df$graduation_date)
+    
+  
+
+
+DT::datatable(change_g_08_date_of_graduation_df, rownames=FALSE)
+
+
+
+```
+
+### Making a function that will pass any data frame with the date of birth varable in the original format
+
+```{r}
+
+format_g_08_date_of_graduation <- function(input_df) {
+  
+  output_df <- input_df 
+ 
+    output_df$graduation_date <- gsub("-", "", output_df$graduation_date) 
+  
+  
+  return(output_df)
+  
+}
+```
+## Choose which data frame you want pass through the function 
+
+g_08_date_of_graduation_test_df for the fake data set
+```{r}
+DT::datatable(format_g_08_date_of_graduation(g_08_date_of_graduation_test_df), rownames=FALSE)
+```
+
+g_08_date_of_graduation_real_df for the real data
+```{r}
+DT::datatable(format_g_08_date_of_graduation(g_08_date_of_graduation_real_df), rownames=FALSE)
+```
