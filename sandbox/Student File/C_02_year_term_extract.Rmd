@@ -102,28 +102,34 @@ Now we write the function
 format_ushe_year_term_extract <- function(input_df) {
   
   output_df <- input_df %>%
-  mutate(t_format = case_when(
-    season == "Summer" ~ '1',
-    season == "Fall" ~ '2',
-    season == 'Spring' ~ '3',
-    TRUE ~ "mistake")) %>% 
-  mutate(v_format = case_when(
-    version_id == '1' ~ 'current',
-    version_id == '2' ~ '3',
-    version_id == '3' ~ 'E',
-    TRUE ~ "error"))
+    mutate(academic_year = str_sub(term_id, 1, 4)) %>% 
+    mutate(last_year = (as.numeric(academic_year) - 1)) %>%
+    mutate(season = str_sub(term_id, 5, 6)) %>%  
+    mutate(academic_year_code = case_when(
+      season == "30" ~ as.character(last_year),
+      season == "40" ~ as.character(last_year),
+      season == '20' ~ as.character(last_year),
+      TRUE ~ "error")) %>% 
+    mutate(t_format = case_when(
+      season == "30" ~ '1',
+      season == "40" ~ '2',
+      season == '20' ~ '3',
+      TRUE ~ "mistake")) %>% 
+    mutate(v_format = case_when(
+      version_id == '1' ~ 'current',
+      version_id == '2' ~ '3',
+      version_id == '3' ~ 'E',
+      TRUE ~ "error"))
 
 output_df$"year_term_extract" = paste(output_df$academic_year_code,
                                         output_df$t_format,
-                                        output_df$v_format)
+                                        output_df$v_format, sep = "")
 
-output_df$year_term_extract <- gsub('\\s+', '', output_df$"year_term_extract")
 
-output_df <- output_df %>% 
-  select(year_term_extract)
-
+output_df <- output_df %>%
 
 return(output_df)
+
 }
 ```
 ## Choose which data frame you want pass through the function 
