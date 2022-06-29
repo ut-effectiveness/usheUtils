@@ -99,16 +99,16 @@ DT::datatable(change_year_term_extract)
 
 Now we write the function
 ```{r}
-format_ushe_year_term_extract <- function(input_df) {
+ormat_ushe_year_term_extract <- function(input_df) {
   
   output_df <- input_df %>%
     mutate(academic_year = str_sub(term_id, 1, 4)) %>% 
-    mutate(last_year = (as.numeric(academic_year) - 1)) %>%
+    mutate(ushe_year = (as.numeric(academic_year) + 1)) %>%
     mutate(season = str_sub(term_id, 5, 6)) %>%  
     mutate(academic_year_code = case_when(
-      season == "30" ~ as.character(last_year),
-      season == "40" ~ as.character(last_year),
-      season == '20' ~ as.character(last_year),
+      season == "30" ~ as.character(ushe_year),
+      season == "40" ~ as.character(ushe_year),
+      season == '20' ~ as.character(academic_year),
       TRUE ~ "error")) %>% 
     mutate(t_format = case_when(
       season == "30" ~ '1',
