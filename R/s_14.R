@@ -4,19 +4,20 @@
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
 #' @importFrom dplyr case_when
+#' @importFrom dplyr select
 #'
 #' @param input_df
 #'
-#' @return Original data frame, with USHE data Element S14 appended.
+#' @return Original data frame, with USHE data Element s_14 appended.
 #' @export
 #'
 #' @examples
-#' append_column_S14()
+#' s_14()
 #'
-append_column_S14 <- function(input_df=fake_student_df) {
+s_14 <- function(input_df=fake_student_df) {
 
   output_df <- input_df %>%
-    mutate(H = case_when( is_hispanic_latino_ethnicity ~ "H",
+    mutate(H = case_when(is_hispanic_latino_ethnicity ~ "H",
                           TRUE ~ " "),
            A = case_when(is_asian ~ "A",
                           TRUE ~ " "),
@@ -31,11 +32,10 @@ append_column_S14 <- function(input_df=fake_student_df) {
            N = case_when(is_international ~ "N",
                           TRUE ~ " "),
            U = case_when(is_other_race ~ "U",
-                          TRUE ~ " "))
-
-  output_df$"S14" = paste0(output_df$H, output_df$A, output_df$B,
-                           output_df$I, output_df$P, output_df$W,
-                           output_df$N, output_df$U)
+                          TRUE ~ " ")) %>%
+    mutate( s_14=paste0(H, A, B, I, P, W, N, U) ) %>%
+    # Remove data fields used for intermediate calculations
+    select( -c(H, A, B, I, P, W, N, U) )
 
   return(output_df)
 
