@@ -1,8 +1,11 @@
 Package: usheUtils
-Title: A collection of functions used to create USHE reports.
+Title: A collection of functions used to create USHE reports
 Version: 0.0.0.9000
-Authors@R: 
-    person("Matt", "Nickodemus", , "mattthewnickodemus@gmail.com", role = c("aut", "cre"))
+Authors@R: c(
+    person("Matt", "Nickodemus", , "mattthewnickodemus@gmail.com", role = c("aut", "cre")),
+    person("LaVoy", "Canfield", email = "brentenlavoy@gmail.com", role = "aut"),
+    person("Craig", "Demke", email = "craig.demke@utahtech.edu", role = "aut")
+    )
 Description: This package contains all the R functions the Office of Institutional Effectiveness uses for it's USHE reporting.
 License: MIT + file LICENSE
 Encoding: UTF-8
@@ -10,3 +13,12 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 URL: https://github.com/dsu-effectiveness/usheUtils
 BugReports: https://github.com/dsu-effectiveness/usheUtils/issues
+Imports: 
+    dplyr,
+    magrittr,
+    utHelpR (>= 0.0.0.9000)
+Remotes: 
+    dsu-effectiveness/utHelpR
+Depends: 
+    R (>= 2.10)
+LazyData: true

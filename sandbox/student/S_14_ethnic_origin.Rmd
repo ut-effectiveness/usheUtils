@@ -65,11 +65,10 @@ DT::datatable(s_14_ethnic_origin_test_df)
 
 ```{r}
 ### We pull the data we want from the report database REPT 
-library(here)
-source(here::here("R", "data_io_util.R"))
 
-s_14_ethnic_origin_test_real_df <- get_data_from_sql_file(file_name="s_14.sql",
-                             dsn="edify")
+s_14_ethnic_origin_test_real_df <- utHelpR::get_data_from_sql_file(file_name="s_14.sql",
+                                                                   dsn="edify",
+                                                                   context="sandbox")
 # display data pulled in table
 DT::datatable(s_14_ethnic_origin_test_real_df, rownames=FALSE)
 ```
@@ -170,12 +169,12 @@ format_s_14_ethnic_origin_df <- function(input_df) {
     is_other_race == FALSE ~ " ",
     TRUE ~ " ")) 
 
-output_df$"ethnic_origin" = paste(output_df$H, output_df$A, output_df$B,
-                                  output_df$I, output_df$P, output_df$W,
-                                  output_df$N, output_df$U, sep = "")
+  output_df$"ethnic_origin" = paste(output_df$H, output_df$A, output_df$B,
+                                    output_df$I, output_df$P, output_df$W,
+                                    output_df$N, output_df$U, sep = "")
   
   output_df <- output_df %>% 
-  select(student_id, "ethnic_origin")
+    select(student_id, "ethnic_origin")
   
   return(output_df)
   
