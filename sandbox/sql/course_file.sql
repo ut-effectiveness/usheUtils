@@ -1,4 +1,4 @@
-/* Course File with version */
+/* Course File with versioning */
       SELECT DISTINCT
              a.term_id,
              a.course_number,
@@ -31,9 +31,9 @@
              COALESCE(f.course_max_credits, f.course_min_credits) AS course_max_credits,
              f.course_min_credits,
              f.program_type,
-             c.meet_room_number,
-             d.meet_room_number,
-             e.meet_room_number,
+             c.meet_room_number AS meet_room_number_1,
+             d.meet_room_number AS meet_room_number_2,
+             e.meet_room_number AS meet_room_number_3,
              c.room_max_occupancy AS room_max_occupancy_1,
              d.room_max_occupancy AS room_max_occupancy_2,
              e.room_max_occupancy AS room_max_occupancy_3,
@@ -41,12 +41,12 @@
              d.room_use_code AS room_use_code_2,
              e.room_use_code AS room_use_code_3,
              a.campus_id,
-             c.meet_start_time,
-             d.meet_start_time,
-             e.meet_start_time,
-             c.meet_end_time,
-             d.meet_end_time,
-             e.meet_end_time,
+             c.meet_start_time AS meet_start_time_1,
+             d.meet_start_time AS meet_start_time_2,
+             e.meet_start_time AS meet_start_time_3,
+             c.meet_end_time AS meet_end_time_1,
+             d.meet_end_time AS meet_end_time_2,
+             e.meet_end_time AS meet_end_time_3,
              f.course_title,
              a.course_reference_number,
              a.version_desc
@@ -55,7 +55,7 @@
           ON b.section_id = a.section_id
          AND b.is_primary_instructor
          AND b.version_snapshot_id = a.version_snapshot_id
-   /* Pivot buildings on rooms based on building_room_rank */
+   /* Pivot buildings and rooms on crn based on building_room_rank */
    LEFT JOIN export.section_schedule_version c
           ON c.section_id = a.section_id
          AND c.building_room_rank = '1'
