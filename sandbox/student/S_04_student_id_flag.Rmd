@@ -62,11 +62,10 @@ DT::datatable(s_04_student_id_flag_test_df, rownames=FALSE)
 
 ```{r}
 ### We pull the data we want from the report database REPT 
-library(here)
-source(here::here("R", "data_io_util.R"))
 
-s_04_student_id_flag_real_df <- get_data_from_sql_file(file_name="s_04.sql",
-                             dsn="edify")
+s_04_student_id_flag_real_df <- utHelpR::get_data_from_sql_file(file_name="s_04.sql",
+                                               dsn="edify",
+                                               context="sandbox")
 # display data pulled in table
 DT::datatable(s_04_student_id_flag_real_df, rownames=FALSE)
 ```
@@ -79,7 +78,8 @@ The first thing I need to do is to figure out how to
 ```{r}
 
 change_s_04_student_id_flag_df <- s_04_student_id_flag_test_df %>%
-   mutate(s_id = case_when(
+  mutate(student_id = paste("D", student_id, sep = ""))  %>% 
+  mutate(s_id = case_when(
      ssn == "" ~ student_id,
      TRUE ~ ssn)) %>% 
     mutate(student_id_flag = case_when(
@@ -100,7 +100,8 @@ DT::datatable(change_s_04_student_id_flag_df, rownames=FALSE)
 format_s_04_student_id_flag <- function(input_df) {
   
   output_df <- input_df %>% 
-       mutate(s_id = case_when(
+  mutate(student_id = paste("D", student_id, sep = ""))  %>% 
+  mutate(s_id = case_when(
      ssn == "" ~ student_id,
      TRUE ~ ssn)) %>% 
     mutate(student_id_flag = case_when(
