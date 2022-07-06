@@ -1,5 +1,6 @@
 -- student file sql hi there
-SELECT b.version_id,
+SELECT c.season,
+       b.version_id,
        a.student_id,
        b.ssn,
        b.previous_student_id,
@@ -27,7 +28,6 @@ SELECT b.version_id,
        b.is_other_race,
        a.residency_code,
        a.primary_major_cip_code,
-       a.student_type_code,
        a.student_type_code,
        a.primary_level_class_id,
        a.primary_degree_id,
@@ -63,6 +63,8 @@ SELECT b.version_id,
      FROM export.student_term_level_version a
 LEFT JOIN export.student_version b
        ON b.student_id = a.student_id
+LEFT JOIN export.term c
+        ON a.term_id = c.term_id
       AND b.version_snapshot_id = a.version_snapshot_id
     WHERE a.term_id >= (SELECT DISTINCT term_id FROM export.term WHERE is_previous_term = TRUE)
       AND a.is_primary_level IS TRUE
