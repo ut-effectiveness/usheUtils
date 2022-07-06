@@ -1,5 +1,5 @@
 ---
-title: "G-17 IPEDS Award Level Code"
+title: "G-21 Institutionally Assigned ID"
 author: "Craig Demke"
 date: '2022-06-27'
 output: html_document
@@ -52,11 +52,10 @@ DT::datatable(g_21_institutional_assigned_id_test_df, rownames=FALSE)
 
 ```{r}
 ### We pull the data we want from the report database REPT 
-library(here)
-source(here::here("R", "data_io_util.R"))
 
-g_21_institutional_assigned_id_real_df <- get_data_from_sql_file(file_name="g_21.sql",
-                             dsn="edify")
+g_21_institutional_assigned_id_real_df <- utHelpR::get_data_from_sql_file(file_name="g_21.sql",
+                                               dsn="edify",
+                                               context="sandbox")
 # display data pulled in table
 DT::datatable(g_21_institutional_assigned_id_real_df, rownames=FALSE)
 ```
