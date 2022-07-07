@@ -43,7 +43,7 @@ FROM student
 ```{r}
 s_10_utah_county_code_test_df <- tibble(
 first_admit_county_code = sample(c("015","01","017","039","09","027","011","033","019","021","055","047","053","030","051","041","099","07","097","043","031","023","045","025","03","037","029","035","05","057","049","013", ""), 33, FALSE), 
-first_admit_country_code = sample(c("US","XX",""), 33,TRUE),
+first_admit_country_iso_code = sample(c("US","XX",""), 33,TRUE),
 first_admit_state_code = sample(c("UT","CA",""), 33,TRUE)
 )
    
@@ -69,11 +69,11 @@ The first thing I need to do is to figure out how to
 
 ```{r}
 change_s_10_utah_county_code_df <- s_10_utah_county_code_test_df %>% 
-   mutate(S_STATE_ORIGIN = case_when(
+   mutate(s_county_orgin = case_when(
     first_admit_state_code == "UT" ~ paste("UT", first_admit_county_code, sep = ""),
-    first_admit_country_code == "US" ~ "UT099",
-    first_admit_country_code != "US" ~ "UT097",
-    TRUE ~ "error"))
+    first_admit_country_iso_code == "US" ~ "UT099",
+    first_admit_country_iso_code != "US" ~ "UT097",
+    TRUE ~ ""))
   
 DT::datatable(change_s_10_utah_county_code_df, rownames=FALSE)
 ```
@@ -87,8 +87,8 @@ format_s_10_utah_county_code <- function(input_df, with_intermediates=FALSE) {
   output_df <- input_df %>%  
    mutate(s_county_orgin = case_when(
     first_admit_state_code == "UT" ~ paste("UT", first_admit_county_code, sep = ""),
-    first_admit_country_code == "US" ~ "UT099",
-    first_admit_country_code != "US" ~ "UT097",
+    first_admit_country_iso_code == "US" ~ "UT099",
+    first_admit_country_iso_code != "US" ~ "UT097",
     TRUE ~ "")) %>% 
   
     mutate( s_10 = paste0(s_county_orgin) )
@@ -96,7 +96,7 @@ format_s_10_utah_county_code <- function(input_df, with_intermediates=FALSE) {
   if (!with_intermediates) {
       output_df <- output_df %>%
         # Remove fields used for intermediate calculations
-        select( -c(first_admit_state_code, first_admit_country_code, first_admit_county_code, s_county_orgin) )
+        select( -c(first_admit_state_code, first_admit_country_iso_code, first_admit_county_code, s_county_orgin) )
 
  
 }
