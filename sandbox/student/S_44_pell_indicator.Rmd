@@ -51,11 +51,9 @@ DT::datatable(s_44_pell_indicator_test_df, rownames=FALSE)
 
 ```{r}
 ### We pull the data we want from the report database REPT 
-library(here)
-source(here::here("R", "data_io_util.R"))
-
-s_44_pell_indicator_real_df <- get_data_from_sql_file(file_name="s_44.sql",
-                             dsn="edify")
+s_44_pell_indicator_real_df <- utHelpR::get_data_from_sql_file(file_name="s_44.sql",
+                                               dsn="edify",
+                                               context="sandbox")
 # display data pulled in table
 DT::datatable(s_44_pell_indicator_real_df, rownames=FALSE)
 ```
@@ -90,7 +88,7 @@ format_s_44_pell_indicator <- function(input_df) {
     mutate(pell_indicator = case_when(
     is_pell_eligible == TRUE ~ "E",
     is_pell_awarded == TRUE ~ "R",
-    TRUE ~ " "))
+    TRUE ~ ""))
   
   #output_df <- output_df %>% 
   #select(pell_indicator)
