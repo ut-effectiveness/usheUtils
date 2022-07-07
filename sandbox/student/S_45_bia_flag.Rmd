@@ -1,0 +1,108 @@
+---
+title: "S-45 BIA Flag"
+author: "Craig Demke"
+date: '2022-07-07'
+output: html_document
+---
+
+```{r set global chunks, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, message = FALSE
+)
+```
+
+```{r load libraries}
+library(tidyverse)
+library(datasets)
+library(plotly)
+library(gt)
+library(glue)
+library(stringr)
+library(DT)
+library(purrr)
+library(here)
+```
+### This is part of the Students Data Element: S-45 
+* ELEMENT NAME: BIA Flag 
+* FIELD NAME: S_BIA 
+* FIELD FORMAT: Varchar, 1 Character,  
+* DEFINITION: This flags the student as having received assistance from the Bureau of Indian Affairs  (BIA) during the reporting semester. This field is needed for end of term extracts only. It will be  accepted at 3rd week if it is convenient for the institution to provide it. 
+
+### This data is found in Edify from export.student_term_level
+```{}
+SELECT DISTINCT (is_bia)
+FROM student_term_level;
+```
+
+
+### Create fake data that matches boolean logic 
+
+```{r}
+s_45_bia_flag_test_df <- tibble(
+  is_bia = sample(c("TRUE", "FALSE"), 10, replace = TRUE) 
+)
+   
+
+DT::datatable(s_45_bia_flag_test_df, rownames=FALSE)
+```
+
+### Now let's see if we can pull in real data
+
+```{r}
+### We pull the data we want from the report database REPT 
+
+s_45_bia_flag_real_df <- utHelpR::get_data_from_sql_file(file_name="s_45.sql",
+                                               dsn="edify",
+                                               context="sandbox")
+
+# display data pulled in table
+DT::datatable(s_45_bia_flag_real_df, rownames=FALSE)
+```
+
+
+### Here is the R script
+
+The first thing I need to do is to figure out how to
+
+```{r}
+
+change_s_45_bia_flag_df <- s_45_bia_flag_test_df %>%
+    mutate(s_45 = ifelse(is_bia == TRUE, "B", ""))
+
+DT::datatable(change_s_45_bia_flag_df, rownames=FALSE)
+
+```
+
+### Making a function
+
+```{r}
+  
+format_s_45_bia_flag <- function(input_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    mutate(s_45 = ifelse(is_bia == TRUE, "B", ""))
+    
+    
+    if (!with_intermediates) {
+      output_df <- output_df %>%
+      
+        select( -c(is_bia) )
+    }
+
+  return(output_df)
+
+  
+}
+```
+### Choose which data frame you want pass through the function 
+
+s_45_bia_flag_test_df for the fake data set
+```{r}
+DT::datatable(format_s_45_bia_flag(s_45_bia_flag_test_df), rownames=FALSE)
+```
+
+s_45_bia_flag_real_df for the real data
+```{r}
+DT::datatable(format_s_45_bia_flag(s_45_bia_flag_real_df,with_intermediates=TRUE), rownames=FALSE)
+```
+
