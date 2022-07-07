@@ -1,0 +1,120 @@
+---
+title: "S-10 Utah County Code"
+author: "Craig Demke"
+date: '2022-07-07'
+output: html_document
+---
+
+```{r set global chunks, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, message = FALSE
+)
+```
+
+```{r load libraries}
+library(tidyverse)
+library(datasets)
+library(plotly)
+library(gt)
+library(glue)
+library(stringr)
+library(DT)
+library(purrr)
+library(here)
+```
+### This is part of the Student Data Element: S-10 
+* ELEMENT NAME: Utah County Code 
+* FIELD NAME: S_COUNTY_ORIGIN 
+* FIELD FORMAT: Varchar, 5 Characters,  
+* DEFINITION: The Utah county code indicating the student’s county of origin as described at the time  of first application to the institution for enrollment and if the S_STATE_ORIGIN is UT. Enter UT030 if  county is Unknown. Enter UT097 if student is Out of State, Out of US. Enter UT099 if student is Out  of State, In the US. This element should be logically consistent with S-11: S_STATE_ORIGIN and S 27: S_COUNTRY_ORIGIN.
+ 
+
+### This data is found in Edify from export.student, first_admit_county_code first_admit_state_code first_admit_country_code
+```{}
+SELECT first_admit_county_code,
+    first_admit_state_code,
+    first_admit_country_code
+FROM student
+```
+
+
+### Create fake data that matches this.
+
+```{r}
+s_10_utah_county_code_test_df <- tibble(
+first_admit_county_code = sample(c("015","01","017","039","09","027","011","033","019","021","055","047","053","030","051","041","099","07","097","043","031","023","045","025","03","037","029","035","05","057","049","013", ""), 33, FALSE), 
+first_admit_country_iso_code = sample(c("US","XX",""), 33,TRUE),
+first_admit_state_code = sample(c("UT","CA",""), 33,TRUE)
+)
+   
+DT::datatable(s_10_utah_county_code_test_df, rownames=FALSE)
+```
+
+### Now let's see if we can pull in real data
+
+```{r}
+### We pull the data we want from the report database REPT 
+
+s_10_utah_county_code_real_df <- utHelpR::get_data_from_sql_file(file_name="s_10.sql",
+                                               dsn="edify",
+                                               context="sandbox")
+# display data pulled in table
+DT::datatable(s_10_utah_county_code_real_df, rownames=FALSE)
+```
+
+
+### Here is the R script
+
+The first thing I need to do is to figure out how to
+
+```{r}
+change_s_10_utah_county_code_df <- s_10_utah_county_code_test_df %>% 
+   mutate(s_county_orgin = case_when(
+    first_admit_state_code == "UT" ~ paste("UT", first_admit_county_code, sep = ""),
+    first_admit_country_iso_code == "US" ~ "UT099",
+    first_admit_country_iso_code != "US" ~ "UT097",
+    TRUE ~ ""))
+  
+DT::datatable(change_s_10_utah_county_code_df, rownames=FALSE)
+```
+
+### Making a function
+
+```{r}
+
+format_s_10_utah_county_code <- function(input_df, with_intermediates=FALSE) {
+  
+  output_df <- input_df %>%  
+   mutate(s_county_orgin = case_when(
+    first_admit_state_code == "UT" ~ paste("UT", first_admit_county_code, sep = ""),
+    first_admit_country_iso_code == "US" ~ "UT099",
+    first_admit_country_iso_code != "US" ~ "UT097",
+    TRUE ~ "")) %>% 
+  
+    mutate( s_10 = paste0(s_county_orgin) )
+  
+  if (!with_intermediates) {
+      output_df <- output_df %>%
+        # Remove fields used for intermediate calculations
+        select( -c(first_admit_state_code, first_admit_country_iso_code, first_admit_county_code, s_county_orgin) )
+
+ 
+}
+  return(output_df)
+
+  
+}
+
+```
+
+### Choose which data frame you want pass through the function 
+
+s_10_utah_county_code_test_df for the fake data set
+```{r}
+DT::datatable(format_s_10_utah_county_code(s_10_utah_county_code_test_df), rownames=FALSE)
+```
+
+s_10_utah_county_code_real_df for the real data
+```{r}
+DT::datatable(format_s_10_utah_county_code(s_10_utah_county_code_real_df, with_intermediates=TRUE), rownames=FALSE)
+```

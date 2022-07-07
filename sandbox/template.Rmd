@@ -52,11 +52,11 @@ DT::datatable(placeholder_test_df, rownames=FALSE)
 
 ```{r}
 ### We pull the data we want from the report database REPT 
-library(here)
-source(here::here("R", "data_io_util.R"))
 
-placeholder_real_df <- get_data_from_sql_file(file_name="placeholder.sql",
-                             dsn="edify")
+placeholder_real_df <- utHelpR::get_data_from_sql_file(file_name="placeholder.sql",
+                                               dsn="edify",
+                                               context="sandbox")
+
 # display data pulled in table
 DT::datatable(placeholder_real_df, rownames=FALSE)
 ```
@@ -69,7 +69,11 @@ The first thing I need to do is to figure out how to
 ```{r}
 
 change_placeholder_df <- placeholder_test_df %>%
-   mutate(placeholder = case_when(
+    # Calculate intermediate fields
+    mutate( intermediate_field_1 = "1") %>%
+    mutate( intermediate_field_2 = "2") %>%
+    # Append USHE data element s_xx
+    mutate( s_xx = paste0(intermediate_field_1, intermediate_field_2) )
   
 
 
@@ -82,16 +86,24 @@ DT::datatable(change_placeholder_df, rownames=FALSE)
 ### Making a function
 
 ```{r}
+  
+format_placeholder <- function(input_df, with_intermediates=FALSE) {
 
-format_placeholder <- function(input_df) {
-  
-  output_df <- input_df %>%  
- 
-  
-  output_df <- output_df %>% 
-  select()
-  
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate( intermediate_field_1 = "1") %>%
+    mutate( intermediate_field_2 = "2") %>%
+    # Append USHE data element s_xx
+    mutate( s_xx = paste0(intermediate_field_1, intermediate_field_2) )
+
+    if (!with_intermediates) {
+      output_df <- output_df %>%
+        # Remove fields used for intermediate calculations
+        select( -c(intermediate_field_1, intermediate_field_2) )
+    }
+
   return(output_df)
+
   
 }
 ```
