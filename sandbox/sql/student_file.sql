@@ -59,7 +59,7 @@ SELECT b.version_id,
        a.version_desc,
        b.version_desc,
        a.version_snapshot_id,
-       b.version_snapshot_id
+       b.version_snapshot_id,
      FROM export.student_term_level_version a
 LEFT JOIN export.student_version b
        ON b.student_id = a.student_id

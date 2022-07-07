@@ -4,10 +4,10 @@
 \alias{s_14}
 \title{Append Column S14 (Ethnic Origin)}
 \usage{
-s_14(input_df = usheUtils::fake_student_df)
+s_14(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
 }
 \arguments{
-\item{input_df}{}
+\item{with_intermediates}{}
 }
 \value{
 Original data frame, with USHE data Element s_14 appended.

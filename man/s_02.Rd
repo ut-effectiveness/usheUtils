@@ -2,18 +2,32 @@
 % Please edit documentation in R/students.R
 \name{s_02}
 \alias{s_02}
-\title{Append Column s_02 (Year, Term, & Extract)}
+\title{Calculate USHE Element s_02 (Year, Term, & Extract)}
 \usage{
-s_02(input_df = usheUtils::fake_student_df)
+s_02(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
 }
 \arguments{
-\item{input_df}{}
+\item{input_df}{A Data Frame. Must contain the following data fields: (season, academic_year, version_id).}
+
+\item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
 \value{
-Original data frame, with USHE data Element s_02 appended.
+Original data frame, with USHE data element s_02 appended. Will also return appended intermediate calculated fields, if option is set.
 }
 \description{
-Append Column s_02 (Year, Term, & Extract)
+Calculate USHE Element s_02 (Year, Term, & Extract)
+}
+\details{
+\strong{USHE Documentation}
+\itemize{
+\item ELEMENT NAME: Year, Term & Extract Code
+\item FIELD NAME: C_TERM_ID
+\item FIELD FORMAT: Number, 4 Characters (YYYY format)
+\item Number, 1 Character (T format)
+\item Varchar, 1 character (E format)
+\item DEFINITION: The current academic year, term, and extract in which course is offered.
+Format YYYYTE is made up of academic year YYYY, academic term T, and extract E (3rd week or End of Term).
+}
 }
 \examples{
 s_02()
