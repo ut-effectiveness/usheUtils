@@ -80,13 +80,13 @@ DT::datatable(change_s_45_bia_flag_df, rownames=FALSE)
 format_s_45_bia_flag <- function(input_df, with_intermediates=FALSE) {
 
   output_df <- input_df %>%
-    mutate(s_45 = ifelse(is_bia == TRUE, "B", ""))
-    
+    mutate(s_bia = ifelse(is_bia == TRUE, "B", "")) %>% 
+    mutate(s_45 = paste0(s_bia))
     
     if (!with_intermediates) {
       output_df <- output_df %>%
       
-        select( -c(is_bia) )
+        select( -c(s_bia, is_bia) )
     }
 
   return(output_df)
@@ -98,11 +98,11 @@ format_s_45_bia_flag <- function(input_df, with_intermediates=FALSE) {
 
 s_45_bia_flag_test_df for the fake data set
 ```{r}
-DT::datatable(format_s_45_bia_flag(s_45_bia_flag_test_df), rownames=FALSE)
+DT::datatable(format_s_45_bia_flag(s_45_bia_flag_test_df, with_intermediates=TRUE), rownames=FALSE)
 ```
 
 s_45_bia_flag_real_df for the real data
 ```{r}
-DT::datatable(format_s_45_bia_flag(s_45_bia_flag_real_df,with_intermediates=TRUE), rownames=FALSE)
+DT::datatable(format_s_45_bia_flag(s_45_bia_flag_real_df), rownames=FALSE)
 ```
 
