@@ -2,18 +2,31 @@
 % Please edit documentation in R/students.R
 \name{s_01}
 \alias{s_01}
-\title{Append Column s_01 (Institution)}
+\title{Calculate USHE Element s_01 (Institution)}
 \usage{
-s_01(input_df = usheUtils::fake_student_df)
+s_01(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
 }
 \arguments{
-\item{input_df}{}
+\item{input_df}{A Data Frame. Must contain the following data fields: (no data fields required).}
+
+\item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
 \value{
-Original data frame, with USHE data Element s_01 appended.
+Original data frame, with USHE data element s_01 appended. Will also return appended intermediate calculated fields, if option is set.
 }
 \description{
-Append Column s_01 (Institution)
+Calculate USHE Element s_01 (Institution)
+}
+\details{
+\strong{USHE Documentation}
+\itemize{
+\item ELEMENT NAME: Institution
+\item FIELD NAME: C_INST, S_INST, G_INST, SC_INST, M_INST, F_INST, R_INST, B_INST, & PF_INST
+\item FIELD FORMAT: Varchar, 4 Characters
+\item DEFINITION: The identification number used by the U.S. Department of Education’s Office of Postsecondary Education (OPE) to identify schools that have Program Participation Agreements (PPA) so that its students are eligible to participate in Federal Student Financial Assistance programs under Title IV regulations.
+This is a 6-digit number followed by a 2-digit suffix used to identify branches,  additional locations, and other entities that are part of the eligible institution.
+USHE will use the last 4 digits of the 6-digit number for the field value as additional locations will be specified by C-09 Line Item.
+}
 }
 \examples{
 s_01()
