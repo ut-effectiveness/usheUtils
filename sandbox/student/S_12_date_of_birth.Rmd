@@ -65,11 +65,10 @@ DT::datatable(s_12_date_of_birth_test_df, rownames=FALSE)
 
 ```{r}
 ### We pull the data we want from the report database REPT 
-library(here)
-source(here::here("R", "data_io_util.R"))
 
-s_12_date_of_birth_real_df <- get_data_from_sql_file(file_name="s_12.sql",
-                             dsn="edify")
+s_12_date_of_birth_real_df <- utHelpR::get_data_from_sql_file(file_name="s_12.sql",
+                                               dsn="edify",
+                                               context="sandbox")
 # display data pulled in table
 DT::datatable(s_12_date_of_birth_real_df, rownames=FALSE)
 ```
@@ -84,7 +83,6 @@ The first thing I need to do is to figure out how to remove the dashes in the da
 change_s_12_date_of_birth_df <- s_12_date_of_birth_test_df
  
   change_s_12_date_of_birth_df$birth_date <- gsub("-", "", change_s_12_date_of_birth_df$birth_date)
-    
   
 
 
