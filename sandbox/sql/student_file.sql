@@ -29,7 +29,6 @@
           a.residency_code,
           a.primary_major_cip_code,
           a.student_type_code,
-          a.student_type_code,
           a.primary_level_class_id,
           a.primary_degree_id,
           a.institutional_cumulative_credits_earned,
