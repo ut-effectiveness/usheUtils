@@ -1,0 +1,129 @@
+---
+title: "S-24 Total Cum U-grad Transfer Hrs  Accepted "
+author: "Craig Demke"
+date: '2022-07-07'
+output: html_document
+---
+
+```{r set global chunks, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, message = FALSE
+)
+```
+
+```{r load libraries}
+library(tidyverse)
+library(datasets)
+library(plotly)
+library(gt)
+library(glue)
+library(stringr)
+library(DT)
+library(purrr)
+library(here)
+```
+### This is part of the Students Data Element: S-24
+* ELEMENT NAME: Cumulative Undergraduate Transfer Accepted 
+* FIELD NAME: S_TRANS_TOTAL 
+* FIELD FORMAT: Numeric (5,1) 
+* DEFINITION: Total number of credit hours accepted to date at your institution (e.g. transfer credit  from another institution). Applies to undergraduate and graduate hours. This includes credit from other  institutions, Challenge, Military, and other test credit except CLEP and AP (see S-32 and S-33). This  does not include credits earned at your institution (see S-20). Hours should all be converted to semester  hours. 
+
+
+This data is found in Edify from export.student_term_level, transfer_cumulative_credits_earned & total_cumulative_ap_credits_earned & total_cumulative_clep_credits_earned
+```{}
+--S-24
+SELECT DISTINCT (student_id),
+       COALESCE(a.transfer_cumulative_credits_earned, 0) AS transfer_cumulative_credits_earned,
+        COALESCE(a.total_cumulative_ap_credits_earned, 0) AS total_cumulative_ap_credits_earned,
+        COALESCE(a.total_cumulative_clep_credits_earned, 0) AS total_cumulative_clep_credits_earned
+
+FROM export.student_term_level_version a
+LIMIT 10;
+```
+
+
+### Create fake data that matches this 
+
+```{r}
+s_24_transfer_credits_test_df <- tibble(
+
+  total_cumulative_ap_credits_earned = sample(c(0:3), 10, replace = TRUE),
+  total_cumulative_clep_credits_earned = sample(c(0:5), 10, replace = TRUE),
+  transfer_cumulative_credits_earned = (total_cumulative_clep_credits_earned +
+        total_cumulative_ap_credits_earned) +
+        sample(c(0:3), 10, replace = TRUE)
+)
+   
+
+DT::datatable(s_24_transfer_credits_test_df, rownames=FALSE)
+```
+
+### Now let's see if we can pull in real data
+
+```{r}
+### We pull the data we want from the report database REPT 
+
+s_24_transfer_credits_real_df <- utHelpR::get_data_from_sql_file(file_name="s_24.sql",
+                                               dsn="edify",
+                                               context="sandbox")
+
+# display data pulled in table
+DT::datatable(s_24_transfer_credits_real_df, rownames=FALSE)
+```
+
+
+### Here is the R script
+
+The first thing I need to do is to figure out how to
+
+```{r}
+
+change_s_24_transfer_credits_df <- s_24_transfer_credits_test_df %>%
+  mutate(s_24 = case_when(
+    transfer_cumulative_credits_earned != 0 ~  as.double(transfer_cumulative_credits_earned) - (as.double(total_cumulative_clep_credits_earned) + as.double(total_cumulative_ap_credits_earned)),
+    TRUE ~ 0 ))
+  
+
+
+DT::datatable(change_s_24_transfer_credits_df, rownames=FALSE)
+
+
+```
+
+### Making a function
+
+```{r}
+  
+format_s_24_transfer_credits <- function(input_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate(s_trans_total = case_when(
+    transfer_cumulative_credits_earned != 0 ~  as.double(transfer_cumulative_credits_earned) - (as.double(total_cumulative_clep_credits_earned) + as.double(total_cumulative_ap_credits_earned)),
+    TRUE ~ 0 )) %>% 
+    # Append USHE data element s_xx
+    mutate(s_24 = s_trans_total)
+
+
+    if (!with_intermediates) {
+      output_df <- output_df %>%
+        # Remove fields used for intermediate calculations
+        select( -c(s_trans_total, ) )
+    }
+
+  return(output_df)
+
+  
+}
+```
+### Choose which data frame you want pass through the function 
+
+s_24_transfer_credits_test_df for the fake data set
+```{r}
+DT::datatable(format_s_24_transfer_credits(s_24_transfer_credits_test_df, with_intermediates=TRUE), rownames=FALSE)
+```
+
+s_24_transfer_credits_real_df for the real data
+```{r}
+DT::datatable(format_s_24_transfer_credits(s_24_transfer_credits_real_df), rownames=FALSE)
+```

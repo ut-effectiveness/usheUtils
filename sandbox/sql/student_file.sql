@@ -33,13 +33,13 @@
           a.primary_degree_id,
           a.institutional_cumulative_credits_earned,
           a.institutional_cumulative_gpa,
-          a.transfer_cumulative_credits_earned,
+          COALESCE(a.transfer_cumulative_credits_earned, 0) AS transfer_cumulative_credits_earned,
           a.full_time_part_time_code,
           b.first_admit_country_iso_code,
           a.house_bill_75_waiver,
           a.secondary_major_cip_code,
-          a.total_cumulative_ap_credits_earned,
-          a.total_cumulative_clep_credits_earned,
+          COALESCE(a.total_cumulative_ap_credits_earned, 0) AS total_cumulative_ap_credits_earned,
+          COALESCE(a.total_cumulative_clep_credits_earned, 0) AS total_cumulative_clep_credits_earned,
           b.act_composite_score,
           b.act_english_score,
           b.act_math_score,
@@ -68,3 +68,4 @@
       AND a.is_primary_level = TRUE
       AND a.is_enrolled = TRUE
  ORDER BY student_id;
+
