@@ -2,18 +2,29 @@
 % Please edit documentation in R/students.R
 \name{s_12}
 \alias{s_12}
-\title{Append Column s_12 (Birth Date)}
+\title{Calculate USHE Element s_12 (Birth Date)}
 \usage{
-s_12(input_df = usheUtils::fake_student_df)
+s_12(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
 }
 \arguments{
-\item{input_df}{}
+\item{input_df}{A Data Frame. Must contain the following data fields: (birth_date).}
+
+\item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
 \value{
-Original data frame, with USHE data Element s_12 appended.
+Original data frame, with USHE data element s_12 appended. Will also return appended intermediate calculated fields, if option is set.
 }
 \description{
-Append Column s_12 (Birth Date)
+Calculate USHE Element s_12 (Birth Date)
+}
+\details{
+\strong{USHE Documentation}
+\itemize{
+\item ELEMENT NAME: Date of Birth
+\item FIELD NAME: S_BIRTH_DT
+\item FIELD FORMAT: Varchar, 8 Characters (YYYYMMDD),
+\item DEFINITION: The calendar student date of birth, as designated by student.
+}
 }
 \examples{
 s_12()

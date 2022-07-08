@@ -7,10 +7,10 @@
 generate_student_submission_file(input_df = usheUtils::fake_student_df)
 }
 \arguments{
-\item{input_df}{}
+\item{input_df}{A Data Frame. Must contain the following data fields: (list, of, required, data, fields).}
 }
 \value{
-
+A Data Frame, with all of the USHE elements required for upload submission.
 }
 \description{
 Generate Student Submission File

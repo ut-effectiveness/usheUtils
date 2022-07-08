@@ -2,18 +2,29 @@
 % Please edit documentation in R/students.R
 \name{s_14}
 \alias{s_14}
-\title{Append Column S14 (Ethnic Origin)}
+\title{Calculate USHE Element s_14 (Ethnic Origin)}
 \usage{
 s_14(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
 }
 \arguments{
-\item{with_intermediates}{}
+\item{input_df}{A Data Frame. Must contain the following data fields: (is_hispanic_latino_ethnicity, is_asian, is_black, is_american_indian_alaskan, is_hawaiian_pacific_islander, is_white, is_international, is_other_race).}
+
+\item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
 \value{
-Original data frame, with USHE data Element s_14 appended.
+Original data frame, with USHE data element s_14 appended. Will also return appended intermediate calculated fields, if option is set.
 }
 \description{
-Append Column S14 (Ethnic Origin)
+Calculate USHE Element s_14 (Ethnic Origin)
+}
+\details{
+\strong{USHE Documentation}
+\itemize{
+\item ELEMENT NAME: Ethnic Origin
+\item FIELD NAME: S_ETHNIC
+\item FIELD FORMAT: Varchar, 8 Characters,
+\item DEFINITION: The racial and ethnic categories used to classify students.
+}
 }
 \examples{
 s_14()
