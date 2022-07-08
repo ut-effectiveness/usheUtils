@@ -86,17 +86,17 @@ format_s_10_utah_county_code <- function(input_df, with_intermediates=FALSE) {
   
   output_df <- input_df %>%  
    mutate(s_county_orgin = case_when(
-    first_admit_state_code == "UT" ~ paste("UT", first_admit_county_code, sep = ""),
+    first_admit_state_code == "UT" ~ paste0("UT", first_admit_county_code),
     first_admit_country_iso_code == "US" ~ "UT099",
     first_admit_country_iso_code != "US" ~ "UT097",
     TRUE ~ "")) %>% 
   
-    mutate( s_10 = paste0(s_county_orgin) )
+    mutate( s_10 = s_county_orgin )
   
   if (!with_intermediates) {
       output_df <- output_df %>%
         # Remove fields used for intermediate calculations
-        select( -c(first_admit_state_code, first_admit_country_iso_code, first_admit_county_code, s_county_orgin) )
+        select( -c(s_county_orgin) )
 
  
 }
