@@ -37,12 +37,44 @@ generate_student_validation_file <- function(input_df=usheUtils::fake_student_df
     s_21(with_intermediates = TRUE) %>%
     s_22(with_intermediates = TRUE) %>%
     s_23(with_intermediates = TRUE) %>%
+    s_24(with_intermediates = TRUE) %>%
+    s_25(with_intermediates = TRUE) %>%
+    s_26(with_intermediates = TRUE) %>%
+    s_27(with_intermediates = TRUE) %>%
+    s_28(with_intermediates = TRUE) %>%
+    s_29(with_intermediates = TRUE) %>%
+    s_30(with_intermediates = TRUE) %>%
+    s_31(with_intermediates = TRUE) %>%
+    s_32(with_intermediates = TRUE) %>%
+    s_33(with_intermediates = TRUE) %>%
+    s_34(with_intermediates = TRUE) %>%
+    s_35(with_intermediates = TRUE) %>%
+    s_36(with_intermediates = TRUE) %>%
+    s_37(with_intermediates = TRUE) %>%
+    s_38(with_intermediates = TRUE) %>%
+    s_39(with_intermediates = TRUE) %>%
+    s_40(with_intermediates = TRUE) %>%
+    s_41(with_intermediates = TRUE) %>%
+    s_42(with_intermediates = TRUE) %>%
+    s_43(with_intermediates = TRUE) %>%
+    s_44(with_intermediates = TRUE) %>%
+    s_45(with_intermediates = TRUE) %>%
+    s_46(with_intermediates = TRUE) %>%
+    s_47(with_intermediates = TRUE) %>%
+    s_48(with_intermediates = TRUE) %>%
+    s_49(with_intermediates = TRUE) %>%
     dplyr::select( -c("s_01", "s_02", "s_03", "s_04",
                       "s_05", "s_06", "s_07", "s_08",
                       "s_09", "s_10", "s_11", "s_12",
                       "s_13", "s_14", "s_15", "s_16",
                       "s_17", "s_18", "s_19", "s_20",
-                      "s_21", "s_22", "s_23") ) %>%
+                      "s_21", "s_22", "s_23", "s_24",
+                      "s_25", "s_26", "s_27", "s_28",
+                      "s_29", "s_30", "s_31", "s_32",
+                      "s_33", "s_34", "s_35", "s_36",
+                      "s_37", "s_38", "s_39", "s_40",
+                      "s_41", "s_42", "s_43", "s_44",
+                      "s_45", "s_46", "s_47", "s_48", "s_49") ) %>%
     dplyr::select( -c(original_column_names) )
 
   return(output_df)
@@ -85,12 +117,44 @@ generate_student_submission_file <- function(input_df=usheUtils::fake_student_df
     s_21() %>%
     s_22() %>%
     s_23() %>%
+    s_24() %>%
+    s_25() %>%
+    s_26() %>%
+    s_27() %>%
+    s_28() %>%
+    s_29() %>%
+    s_30() %>%
+    s_31() %>%
+    s_32() %>%
+    s_33() %>%
+    s_34() %>%
+    s_35() %>%
+    s_36() %>%
+    s_37() %>%
+    s_38() %>%
+    s_39() %>%
+    s_40() %>%
+    s_41() %>%
+    s_42() %>%
+    s_43() %>%
+    s_44() %>%
+    s_45() %>%
+    s_46() %>%
+    s_47() %>%
+    s_48() %>%
+    s_49() %>%
     dplyr::select( c("s_01", "s_02", "s_03", "s_04",
                      "s_05", "s_06", "s_07", "s_08",
                      "s_09", "s_10", "s_11", "s_12",
                      "s_13", "s_14", "s_15", "s_16",
                      "s_17", "s_18", "s_19", "s_20",
-                     "s_21", "s_22", "s_23") )
+                     "s_21", "s_22", "s_23", "s_24",
+                     "s_25", "s_26", "s_27", "s_28",
+                     "s_29", "s_30", "s_31", "s_32",
+                     "s_33", "s_34", "s_35", "s_36",
+                     "s_37", "s_38", "s_39", "s_40",
+                     "s_41", "s_42", "s_43", "s_44",
+                     "s_45", "s_46", "s_47", "s_48", "s_49") )
 
   return(output_df)
 }
@@ -1154,6 +1218,989 @@ s_23 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
     output_df <- output_df %>%
       # Remove fields used for intermediate calculations
       select( -c(s_cum_gpa_grad) )
+  }
+
+  return(output_df)
+}
+
+
+#' Calculate USHE Element s_24 (Total Cum U-grad Transfer Hrs Accepted)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#' - ELEMENT NAME: Cumulative Undergraduate Transfer Accepted
+#' - FIELD NAME: S_TRANS_TOTAL
+#' - FIELD FORMAT: Numeric (5,1)
+#' - DEFINITION: Total number of credit hours accepted to date at your institution (e.g. transfer credit from another institution).
+#'               Applies to undergraduate and graduate hours.
+#'               This includes credit from other institutions, Challenge, Military, and other test credit except CLEP and AP (see S-32 and S-33).
+#'               This does not include credits earned at your institution (see S-20).
+#'               Hours should all be converted to semester hours.
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (transfer_cumulative_credits_earned, total_cumulative_clep_credits_earned, total_cumulative_ap_credits_earned).
+#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
+#'
+#' @return Original data frame, with USHE data element s_24 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @export
+#'
+#' @examples
+#' s_24()
+#'
+s_24 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate(s_trans_total = max( ( as.double(transfer_cumulative_credits_earned) - (as.double(total_cumulative_clep_credits_earned) + as.double(total_cumulative_ap_credits_earned)) ),
+                                 0 ) ) %>%
+    # Append USHE data element s_24
+    mutate(s_24 = s_trans_total)
+
+
+  if (!with_intermediates) {
+    output_df <- output_df %>%
+      # Remove fields used for intermediate calculations
+      select( -c(s_trans_total) )
+  }
+  return(output_df)
+}
+
+
+#' Calculate USHE Element s_25 (Part-time/Full-time)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (full_time_part_time_code).
+#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
+#'
+#' @return Original data frame, with USHE data element s_25 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @export
+#'
+#' @examples
+#' s_25()
+#'
+s_25 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate( s_pt_ft = full_time_part_time_code) %>%
+    # Append USHE data element s_25
+    mutate( s_25 = s_pt_ft )
+
+  if (!with_intermediates) {
+    output_df <- output_df %>%
+      # Remove fields used for intermediate calculations
+      select( -c(s_pt_ft) )
+  }
+
+  return(output_df)
+}
+
+
+#' Calculate USHE Element s_26 (Age)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#' - ELEMENT NAME: Age at 3rd Week
+#' - FIELD NAME: S_AGE
+#' - FIELD FORMAT: Numeric (3,0)
+#' - DEFINITION: The age of the student at third week extract date.
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (version_date, birth_date).
+#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
+#'
+#' @return Original data frame, with USHE data element s_26 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @export
+#'
+#' @examples
+#' s_26()
+#'
+s_26 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate( s_age = floor( as.numeric( (as.Date(version_date) - as.Date(birth_date)) / 365.24 ) ) ) %>%
+    # Append USHE data element s_26
+    mutate( s_26 = s_age )
+
+  if (!with_intermediates) {
+    output_df <- output_df %>%
+      # Remove fields used for intermediate calculations
+      select( -c(s_age) )
+  }
+
+  return(output_df)
+}
+
+
+#' Calculate USHE Element s_27 (Country Origin Codes)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (first_admit_country_iso_code).
+#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
+#'
+#' @return Original data frame, with USHE data element s_xx appended. Will also return appended intermediate calculated fields, if option is set.
+#' @export
+#'
+#' @examples
+#' s_27()
+#'
+s_27 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate( s_country_origin = first_admit_country_iso_code) %>%
+    # Append USHE data element s_27
+    mutate( s_27 = s_country_origin )
+
+  if (!with_intermediates) {
+    output_df <- output_df %>%
+      # Remove fields used for intermediate calculations
+      select( -c(s_country_origin) )
+  }
+
+  return(output_df)
+}
+
+#' Calculate USHE Element s_28 (High School Codes)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (latest_high_school_code).
+#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
+#'
+#' @return Original data frame, with USHE data element s_28 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @export
+#'
+#' @examples
+#' s_28()
+#'
+s_28 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate( s_high_school = latest_high_school_code ) %>%
+    # Append USHE data element s_28
+    mutate( s_28 = s_high_school )
+
+  if (!with_intermediates) {
+    output_df <- output_df %>%
+      # Remove fields used for intermediate calculations
+      select( -c(s_high_school) )
+  }
+
+  return(output_df)
+}
+
+
+#' Calculate USHE Element s_29 (Non Resident Tuition Waiver)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (house_bill_75_waiver).
+#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
+#'
+#' @return Original data frame, with USHE data element s_29 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @export
+#'
+#' @examples
+#' s_29()
+#'
+s_29 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    # TODO: This needs to be implemented.
+    mutate( s_hb75_waiver = NA ) %>%
+    # Append USHE data element s_29
+    mutate( s_29 = s_hb75_waiver )
+
+  if (!with_intermediates) {
+    output_df <- output_df %>%
+      # Remove fields used for intermediate calculations
+      select( -c(s_hb75_waiver) )
+  }
+
+  return(output_df)
+}
+
+
+#' Calculate USHE Element s_30 (CIP Code for Second Major)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (secondary_major_cip_code).
+#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
+#'
+#' @return Original data frame, with USHE data element s_30 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @export
+#'
+#' @examples
+#' s_30()
+#'
+s_30 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate( s_curr_cip2 = secondary_major_cip_code ) %>%
+    # Append USHE data element s_30
+    mutate( s_30 = s_curr_cip2 )
+
+  if (!with_intermediates) {
+    output_df <- output_df %>%
+      # Remove fields used for intermediate calculations
+      select( -c(s_curr_cip2) )
+  }
+
+  return(output_df)
+}
+
+
+#' Calculate USHE Element s_31 (Cumulative Membership Hours)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (?).
+#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
+#'
+#' @return Original data frame, with USHE data element s_31 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @export
+#'
+#' @examples
+#' s_31()
+#'
+s_31 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    # TODO: This needs to be implemented.
+    mutate( s_cum_membership = NA ) %>%
+    # Append USHE data element s_31
+    mutate( s_31 = s_cum_membership )
+
+  if (!with_intermediates) {
+    output_df <- output_df %>%
+      # Remove fields used for intermediate calculations
+      select( -c(s_cum_membership) )
+  }
+
+  return(output_df)
+}
+
+
+#' Calculate USHE Element s_32 (Total Cum U-grad CLEP Cr Accepted)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (total_cumulative_clep_credits_earned).
+#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
+#'
+#' @return Original data frame, with USHE data element s_32 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @export
+#'
+#' @examples
+#' s_32()
+#'
+s_32 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate( s_total_clep = total_cumulative_clep_credits_earned) %>%
+    # Append USHE data element s_32
+    mutate( s_32 = s_total_clep )
+
+  if (!with_intermediates) {
+    output_df <- output_df %>%
+      # Remove fields used for intermediate calculations
+      select( -c(s_total_clep) )
+  }
+
+  return(output_df)
+}
+
+
+#' Calculate USHE Element s_33 (Total Cum U-grad AP Cr Accepted)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (total_cumulative_ap_credits_earned).
+#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
+#'
+#' @return Original data frame, with USHE data element s_33 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @export
+#'
+#' @examples
+#' s_33()
+#'
+s_33 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate( s_total_ap = total_cumulative_ap_credits_earned) %>%
+    # Append USHE data element s_33
+    mutate( s_33 = s_total_ap )
+
+  if (!with_intermediates) {
+    output_df <- output_df %>%
+      # Remove fields used for intermediate calculations
+      select( -c(s_total_ap) )
+  }
+
+  return(output_df)
+}
+
+
+#' Calculate USHE Element s_34 (SSID aka USOE Unique ID)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (student_ssid).
+#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
+#'
+#' @return Original data frame, with USHE data element s_34 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @export
+#'
+#' @examples
+#' s_34()
+#'
+s_34 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate( s_ssid = student_ssid) %>%
+    # Append USHE data element s_34
+    mutate( s_34 = s_ssid )
+
+  if (!with_intermediates) {
+    output_df <- output_df %>%
+      # Remove fields used for intermediate calculations
+      select( -c(s_ssid) )
+  }
+
+  return(output_df)
+}
+
+#' Calculate USHE Element s_35 (Institution Assigned ID)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (student_ssid).
+#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
+#'
+#' @return Original data frame, with USHE data element s_35 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @export
+#'
+#' @examples
+#' s_35()
+#'
+s_35 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate( s_banner_id = student_id) %>%
+    # Append USHE data element s_35
+    mutate( s_35 = s_banner_id )
+
+  if (!with_intermediates) {
+    output_df <- output_df %>%
+      # Remove fields used for intermediate calculations
+      select( -c(s_banner_id) )
+  }
+
+  return(output_df)
+}
+
+#' Calculate USHE Element s_36 (ACT Composite Score)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (act_composite_score).
+#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
+#'
+#' @return Original data frame, with USHE data element s_36 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @export
+#'
+#' @examples
+#' s_36()
+#'
+s_36 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate( s_act = act_composite_score) %>%
+    # Append USHE data element s_36
+    mutate( s_36 = s_act )
+
+  if (!with_intermediates) {
+    output_df <- output_df %>%
+      # Remove fields used for intermediate calculations
+      select( -c(s_act) )
+  }
+
+  return(output_df)
+}
+
+
+#' Calculate USHE Element s_37 (Student's Long-term Intended CIP)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (primary_major_cip_code).
+#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
+#'
+#' @return Original data frame, with USHE data element s_37 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @export
+#'
+#' @examples
+#' s_37()
+#'
+s_37 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate( s_intent_cip = primary_major_cip_code) %>%
+    # Append USHE data element s_37
+    mutate( s_37 = s_intent_cip )
+
+  if (!with_intermediates) {
+    output_df <- output_df %>%
+      # Remove fields used for intermediate calculations
+      select( -c(s_intent_cip) )
+  }
+
+  return(output_df)
+}
+
+
+#' Calculate USHE Element s_38 (ACT English Sub-score)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (act_english_score).
+#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
+#'
+#' @return Original data frame, with USHE data element s_38 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @export
+#'
+#' @examples
+#' s_38()
+#'
+s_38 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate( s_act_eng = act_english_score) %>%
+    # Append USHE data element s_38
+    mutate( s_38 = s_act_eng )
+
+  if (!with_intermediates) {
+    output_df <- output_df %>%
+      # Remove fields used for intermediate calculations
+      select( -c(s_act_eng) )
+  }
+
+  return(output_df)
+}
+
+#' Calculate USHE Element s_39 (ACT Math Sub-score)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (act_math_score).
+#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
+#'
+#' @return Original data frame, with USHE data element s_39 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @export
+#'
+#' @examples
+#' s_39()
+#'
+s_39 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate( s_act_math = act_math_score ) %>%
+    # Append USHE data element s_39
+    mutate( s_39 = s_act_math )
+
+  if (!with_intermediates) {
+    output_df <- output_df %>%
+      # Remove fields used for intermediate calculations
+      select( -c(s_act_math) )
+  }
+
+  return(output_df)
+}
+
+#' Calculate USHE Element s_40 (ACT Reading Sub-score)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (act_read_score).
+#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
+#'
+#' @return Original data frame, with USHE data element s_40 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @export
+#'
+#' @examples
+#' s_40()
+#'
+s_40 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate( s_act_read = act_read_score ) %>%
+    # Append USHE data element s_40
+    mutate( s_40 = s_act_read )
+
+  if (!with_intermediates) {
+    output_df <- output_df %>%
+      # Remove fields used for intermediate calculations
+      select( -c(s_act_read) )
+  }
+
+  return(output_df)
+}
+
+
+#' Calculate USHE Element s_41 (ACT Science Sub-score)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (act_science_score).
+#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
+#'
+#' @return Original data frame, with USHE data element s_41 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @export
+#'
+#' @examples
+#' s_41()
+#'
+s_41 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate( s_act_sci = act_science_score) %>%
+    # Append USHE data element s_41
+    mutate( s_41 = s_act_sci )
+
+  if (!with_intermediates) {
+    output_df <- output_df %>%
+      # Remove fields used for intermediate calculations
+      select( -c(s_act_sci) )
+  }
+
+  return(output_df)
+}
+
+
+#' Calculate USHE Element s_42 (High School Graduating Date)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (high_school_graduation_date).
+#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
+#'
+#' @return Original data frame, with USHE data element s_42 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @export
+#'
+#' @examples
+#' s_42()
+#'
+s_42 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate( s_hs_grad_date = high_school_graduation_date) %>%
+    # Append USHE data element s_42
+    mutate( s_42 = s_hs_grad_date )
+
+  if (!with_intermediates) {
+    output_df <- output_df %>%
+      # Remove fields used for intermediate calculations
+      select( -c(s_hs_grad_date) )
+  }
+
+  return(output_df)
+}
+
+#' Calculate USHE Element s_43 (Term GPA)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (institutional_gpa).
+#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
+#'
+#' @return Original data frame, with USHE data element s_43 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @export
+#'
+#' @examples
+#' s_43()
+#'
+s_43 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate( s_term_gpa = institutional_gpa ) %>%
+    # Append USHE data element s_43
+    mutate( s_43 = s_term_gpa )
+
+  if (!with_intermediates) {
+    output_df <- output_df %>%
+      # Remove fields used for intermediate calculations
+      select( -c(s_term_gpa) )
+  }
+
+  return(output_df)
+}
+
+
+#' Calculate USHE Element s_44 (Pell Indicator)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#' - ELEMENT NAME: Pell Indicator
+#' - FIELD NAME: S_PELL
+#' - FIELD FORMAT: Varchar, 1 Character,
+#' - DEFINITION: This flags the student as having received a Pell grant during the reporting semester.
+#'               This field is needed for end of term extracts only.
+#'               It will be accepted at 3rd week if it is convenient for the institution to provide it.
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#' @importFrom dplyr case_when
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (is_pell_eligible, is_pell_awarded).
+#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
+#'
+#' @return Original data frame, with USHE data element s_44 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @export
+#'
+#' @examples
+#' s_44()
+#'
+s_44 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate(s_pell = case_when( is_pell_eligible == TRUE ~ "E",
+                               is_pell_awarded == TRUE ~ "R" )) %>%
+    # Append USHE data element s_44
+    mutate( s_44 = s_pell )
+
+  if (!with_intermediates) {
+    output_df <- output_df %>%
+      # Remove fields used for intermediate calculations
+      select( -c(s_pell) )
+  }
+
+  return(output_df)
+}
+
+
+#' Calculate USHE Element s_45 (BIA Flag)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#' - ELEMENT NAME: BIA Flag
+#' - FIELD NAME: S_BIA
+#' - FIELD FORMAT: Varchar, 1 Character,
+#' - DEFINITION: This flags the student as having received assistance from the Bureau of Indian Affairs (BIA) during the reporting semester.
+#'               This field is needed for end of term extracts only.
+#'               It will be  accepted at 3rd week if it is convenient for the institution to provide it.
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#' @importFrom dplyr if_else
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (is_bia).
+#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
+#'
+#' @return Original data frame, with USHE data element s_45 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @export
+#'
+#' @examples
+#' s_45()
+#'
+s_45 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate(s_bia = if_else(is_bia, "B", "")) %>%
+    # Append USHE data element s_45
+    mutate( s_45 = s_bia )
+
+  if (!with_intermediates) {
+    output_df <- output_df %>%
+      # Remove fields used for intermediate calculations
+      select( -c(s_bia) )
+  }
+
+  return(output_df)
+}
+
+#' Calculate USHE Element s_46 (Major College)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (primary_major_college_id).
+#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
+#'
+#' @return Original data frame, with USHE data element s_46 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @export
+#'
+#' @examples
+#' s_46()
+#'
+s_46 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate( s_college = primary_major_college_id) %>%
+    # Append USHE data element s_46
+    mutate( s_46 = s_college )
+
+  if (!with_intermediates) {
+    output_df <- output_df %>%
+      # Remove fields used for intermediate calculations
+      select( -c(s_college) )
+  }
+
+  return(output_df)
+}
+
+#' Calculate USHE Element s_47 (Major Name)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (primary_major_desc).
+#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
+#'
+#' @return Original data frame, with USHE data element s_47 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @export
+#'
+#' @examples
+#' s_47()
+#'
+s_47 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate( s_major = primary_major_desc) %>%
+    mutate( intermediate_field_2 = "2") %>%
+    # Append USHE data element s_47
+    mutate( s_47 = s_major )
+
+  if (!with_intermediates) {
+    output_df <- output_df %>%
+      # Remove fields used for intermediate calculations
+      select( -c(s_major) )
+  }
+
+  return(output_df)
+}
+
+#' Calculate USHE Element s_48 (Major College for Second Major)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (secondary_major_college_id).
+#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
+#'
+#' @return Original data frame, with USHE data element s_48 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @export
+#'
+#' @examples
+#' s_48()
+#'
+s_48 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate( s_college2 = secondary_major_college_id ) %>%
+    # Append USHE data element s_48
+    mutate( s_48 = s_college2 )
+
+  if (!with_intermediates) {
+    output_df <- output_df %>%
+      # Remove fields used for intermediate calculations
+      select( -c(s_college2) )
+  }
+
+  return(output_df)
+}
+
+#' Calculate USHE Element s_49 (Major Name for Second Major)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (secondary_major_desc).
+#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
+#'
+#' @return Original data frame, with USHE data element s_49 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @export
+#'
+#' @examples
+#' s_49()
+#'
+s_49 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate( s_major2 = secondary_major_desc) %>%
+    # Append USHE data element s_49
+    mutate( s_49 = s_major2 )
+
+  if (!with_intermediates) {
+    output_df <- output_df %>%
+      # Remove fields used for intermediate calculations
+      select( -c(s_major2) )
   }
 
   return(output_df)

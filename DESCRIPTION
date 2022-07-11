@@ -16,7 +16,8 @@ Depends:
 Imports: 
     dplyr,
     utHelpR (>= 0.0.0.9000),
-    magrittr
+    magrittr,
+    lubridate
 Remotes: 
     dsu-effectiveness/utHelpR
 Encoding: UTF-8
