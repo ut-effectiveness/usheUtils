@@ -1,0 +1,112 @@
+---
+title: "C-08 Non-Credit Course Contact Hours"
+author: "Craig Demke"
+date: '2022-07-11'
+output: html_document
+---
+```{r set global chunks, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, message = FALSE
+)
+```
+
+```{r load libraries}
+library(tidyverse)
+library(datasets)
+library(plotly)
+library(gt)
+library(glue)
+library(stringr)
+library(DT)
+library(purrr)
+library(here)
+```
+### This is part of the Course Data Element: C-08 
+* ELEMENT NAME: Non-Credit Course Contact Hours 
+* FIELD NAME: C_CONTACT_HRS 
+* FIELD FORMAT: Numeric (5,0) 
+* DEFINITION: The maximum number of contact hours the course is scheduled to meet within the  academic term. Sometimes referred to as clock hours. This field is for non-credit courses only. 
+
+
+### This data is found in Edify from export.student_section_version, with course_level_id and contact_hours
+```{}
+SELECT DISTINCT (a.course_level_id),
+       a.contact_hours
+FROM student_section_version a;
+```
+
+
+### Create fake data that matches contact hours and course level id 
+
+```{r}
+c_08_nc_courses_contact_hours_test_df <- tibble(
+  contact_hours = sample(c(1:9.0), 10, replace = TRUE),
+  course_level_id = sample(c("CE", "UG", "GR", "NC"), 10, replace = TRUE)
+)
+   
+
+DT::datatable(c_08_nc_courses_contact_hours_test_df, rownames=FALSE)
+```
+
+### Now let's see if we can pull in real data
+
+```{r}
+### We pull the data we want from the report database REPT 
+
+c_08_nc_courses_contact_hours_real_df <- utHelpR::get_data_from_sql_file(file_name="c_08.sql",
+                                               dsn="edify",
+                                               context="sandbox")
+
+# display data pulled in table
+DT::datatable(c_08_nc_courses_contact_hours_real_df, rownames=FALSE)
+```
+
+
+### Here is the R script
+
+The first thing I need to do is to figure out how to only display contact hours from non degree seeking courses
+
+```{r}
+
+change_c_08_nc_courses_contact_hours_df <- c_08_nc_courses_contact_hours_test_df %>%
+    mutate( c_contact_hrs = ifelse(course_level_id == "CE" | course_level_id == "NC", contact_hours, "")) %>% 
+    mutate( c_08 = course_level_id )
+  
+DT::datatable(change_c_08_nc_courses_contact_hours_df, rownames=FALSE)
+
+
+
+```
+
+### Making a function
+
+```{r}
+  
+format_c_08_nc_courses_contact_hours <- function(input_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    mutate( c_contact_hrs = ifelse(course_level_id == "CE" | course_level_id == "NC", contact_hours, "")) %>% 
+    mutate( c_08 = c_contact_hrs )
+
+    if (!with_intermediates) {
+      output_df <- output_df %>%
+        select( -c(c_contact_hrs) )
+    }
+
+  return(output_df)
+
+  
+}
+```
+### Choose which data frame you want pass through the function 
+
+c_08_nc_courses_contact_hours_test_df for the fake data set
+```{r}
+DT::datatable(format_c_08_nc_courses_contact_hours(c_08_nc_courses_contact_hours_test_df), rownames=FALSE)
+```
+
+c_08_nc_courses_contact_hours_real_df for the real data
+```{r}
+DT::datatable(format_c_08_nc_courses_contact_hours(c_08_nc_courses_contact_hours_real_df), rownames=FALSE)
+```
+
