@@ -33,11 +33,13 @@ course_file <- utHelpR::get_data_from_sql_file(file_name="course_file.sql",
 
 Now we filter the term and version of the course sql
 ```{r}
-term <- '202230'
+term <- '202220'
 version <- 'Current'
 
 summer_course_file <- course_file %>% 
   filter(term_id == term & version_desc == version)
+
+
 
 #DT::datatable(student_file, rownames=FALSE)
 ```
