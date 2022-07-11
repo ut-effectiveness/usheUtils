@@ -1,0 +1,152 @@
+---
+title: "C-48 Course Destination Site"
+author: "Craig Demke"
+date: '2022-07-11'
+output: html_document
+---
+
+```{r set global chunks, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, message = FALSE
+)
+```
+
+```{r load libraries}
+library(tidyverse)
+library(datasets)
+library(plotly)
+library(gt)
+library(glue)
+library(stringr)
+library(DT)
+library(purrr)
+library(here)
+```
+### This is part of the Course Data Element: C-48
+* ELEMENT NAME: Course Destination Site 
+* FIELD NAME: C_DEST_SITE 
+* FIELD FORMAT: Varchar, 6 Characters 
+* DEFINITION: Designed for concurrent enrollment courses. The High School or Special  Secondary School code which uniquely identifies the destination site of a concurrent enrollment  course. This code will only be used where the site may be clearly identified and left blank when  not. The codes for any secondary institution located within the United States can be found by  accessing the URL (http://www.act.org/aap/regist/lookuphs.html ). Sample codes are listed  below. 
+
+
+### This data is found in Edify from export.student_section_version with section_number, budget_code, instruction_method_code, and campus_id
+```{}
+SELECT DISTINCT (a.section_number),
+                a.budget_code,
+                instruction_method_code,
+                campus_id
+FROM student_section a
+WHERE instruction_method_code = 'R';
+```
+
+
+### Create fake data that matches the section_number, budget_code, instruction_method_code, and campus_id found in Edify
+
+```{r}
+c_48_course_destination_site_test_df <- tibble(
+  budget_code = sample(c("SF", "BC"), 100, replace = TRUE),
+  instruction_method_code = sample(c("R"), 100, replace = TRUE),
+  campus_id = sample(c("A01", "C01", "C02", "C03", "C04", "C05", "C06", "C07", "C08", "C01", "C10", "C11", "C12", "C13", "A01", "B80"), 100, replace = TRUE),
+  section_number = sample(c("09K", "13K", "50K", "51K", "52K", "53K", "123456"), 100, replace = TRUE)
+
+)
+   
+
+DT::datatable(c_48_course_destination_site_test_df, rownames=FALSE)
+```
+
+### Now let's see if we can pull in real data
+
+```{r}
+### We pull the data we want from the report database REPT 
+
+c_48_course_destination_site_real_df <- utHelpR::get_data_from_sql_file(file_name="c_48.sql",
+                                               dsn="edify",
+                                               context="sandbox")
+
+# display data pulled in table
+DT::datatable(c_48_course_destination_site_real_df, rownames=FALSE)
+```
+
+
+### Here is the R script
+
+The first thing I need to do is to figure out how to
+
+```{r}
+
+change_c_48_course_destination_site_df <- c_48_course_destination_site_test_df %>%
+       mutate(c_dest_site = if_else(budget_code == "SF" & campus_id == "C01", "450350",
+                         if_else(budget_code == "SF" & campus_id == "C02", "450354",
+                         if_else(budget_code == "SF" & campus_id == "C03", "450353",
+                         if_else(budget_code == "SF" & campus_id == "C03", "450353",
+                         if_else(budget_code == "SF" & campus_id == "C04", "450135",
+                         if_else(budget_code == "SF" & campus_id == "C05", "450444",
+                         if_else(budget_code == "SF" & campus_id == "C06", "450075",
+                         if_else(budget_code == "SF" & campus_id == "C07", "450045",
+                         if_else(budget_code == "SF" & campus_id == "C08", "450150",     
+                         if_else(budget_code == "SF" & campus_id == "C09", "450060",
+                         if_else(budget_code == "SF" & campus_id == "C10", "450275",
+                         if_else(budget_code == "SF" & campus_id == "C11", "450010",
+                         if_else(budget_code == "SF" & campus_id == "C12", "450150",
+                         if_else(budget_code == "SF" & campus_id == "C13", "450359",
+                         if_else(budget_code == "BC" & (campus_id == "A01" | campus_id == "B80") &
+                                  instruction_method_code == "R" &
+                                 grepl("K", section_number) == TRUE, "450150", "")))))))))))))))
+)
+                                    
+DT::datatable(change_c_48_course_destination_site_df, rownames=FALSE)
+
+```
+
+### Making a function
+
+```{r}
+  
+format_c_48_course_destination_site <- function(input_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    mutate(c_dest_site = if_else(budget_code == "SF" & campus_id == "C01", "450350",
+                         if_else(budget_code == "SF" & campus_id == "C02", "450354",
+                         if_else(budget_code == "SF" & campus_id == "C03", "450353",
+                         if_else(budget_code == "SF" & campus_id == "C03", "450353",
+                         if_else(budget_code == "SF" & campus_id == "C04", "450135",
+                         if_else(budget_code == "SF" & campus_id == "C05", "450444",
+                         if_else(budget_code == "SF" & campus_id == "C06", "450075",
+                         if_else(budget_code == "SF" & campus_id == "C07", "450045",
+                         if_else(budget_code == "SF" & campus_id == "C08", "450150",     
+                         if_else(budget_code == "SF" & campus_id == "C09", "450060",
+                         if_else(budget_code == "SF" & campus_id == "C10", "450275",
+                         if_else(budget_code == "SF" & campus_id == "C11", "450010",
+                         if_else(budget_code == "SF" & campus_id == "C12", "450150",
+                         if_else(budget_code == "SF" & campus_id == "C13", "450359",
+                         if_else(budget_code == "BC" & (campus_id == "A01" | campus_id == "B80") &
+                                  instruction_method_code == "R" &
+                                 grepl("K", section_number) == TRUE, "450150", "")))))))))))))))
+) %>% 
+    
+    mutate( c_48 = c_dest_site )
+
+    if (!with_intermediates) {
+      output_df <- output_df %>%
+        # Remove fields used for intermediate calculations
+        select( -c(c_dest_site) )
+    }
+
+  return(output_df)
+
+  
+}
+```
+### Choose which data frame you want pass through the function 
+
+c_48_course_destination_site_test_df for the fake data set
+```{r}
+DT::datatable(format_c_48_course_destination_site(c_48_course_destination_site_test_df), rownames=FALSE)
+```
+
+c_48_course_destination_site_real_df for the real data
+```{r}
+DT::datatable(format_c_48_course_destination_site(c_48_course_destination_site_real_df), rownames=FALSE)
+```
+
