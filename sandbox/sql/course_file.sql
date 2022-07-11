@@ -28,7 +28,7 @@ SELECT DISTINCT
      --c-47 gen ed uses attribute_code, subject_code, course_number
      g.last_name || ', ' || g.first_name AS instructor_name,
      a.section_format_type_code,
-     -- class_level,
+     --class_level,
      -- c_line_item,
      COALESCE(f.course_max_credits, f.course_min_credits) AS course_max_credits,
      f.course_min_credits,
