@@ -14,7 +14,7 @@
           a.final_grade,
           b.high_school_code,
           -- membership hours
-          -- student type
+          b.latest_student_type_code,
           a.budget_code,
           a.course_reference_number,
           a.course_level_id
@@ -26,3 +26,4 @@ LEFT JOIN export.term c ON c.term_id = a.term_id
       AND a.term_id >= (SELECT term_id FROM export.term WHERE is_previous_term)
  ORDER BY a.student_id,
           a.course_reference_number;
+
