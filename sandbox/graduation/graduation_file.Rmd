@@ -1,0 +1,44 @@
+---
+title: "Graduation file"
+author: "Craig Demke"
+date: '2022-07-12'
+output: html_document
+---
+
+```{r set global chunks, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, message = FALSE
+)
+```
+
+```{r load libraries}
+library(tidyverse)
+library(datasets)
+library(plotly)
+library(gt)
+library(glue)
+library(stringr)
+library(DT)
+library(purrr)
+library(here)
+library(lubridate)
+```
+
+###  Here we pull the info from edify with the utHelp function
+```{r}
+graduation_file <- utHelpR::get_data_from_sql_file(file_name="graduation_file.sql",
+                                               dsn="edify",
+                                               context="sandbox")
+```
+
+Now we filter the term and version of the course sql
+```{r}
+term <- '202220'
+
+scratch_graduation_file <- graduation_file %>% 
+  filter(graduated_term_id == term)
+
+
+
+#DT::datatable(student_file, rownames=FALSE)
+```
