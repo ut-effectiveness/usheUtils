@@ -6,6 +6,8 @@
                 c.middle_name,
                 c.name_suffix,
                 c.first_admit_county_code,
+                c.first_admit_state_code,
+                c.first_admit_country_code,
                 c.birth_date,
                 c.gender_code,
                 c.ipeds_race_ethnicity,
