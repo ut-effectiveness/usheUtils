@@ -90,7 +90,7 @@ change_c_48_course_destination_site_df <- c_48_course_destination_site_test_df %
                          if_else(budget_code == "SF" & campus_id == "C11", "450010",
                          if_else(budget_code == "SF" & campus_id == "C12", "450150",
                          if_else(budget_code == "SF" & campus_id == "C13", "450359",
-                         if_else(budget_code == "BC" & (campus_id == "A01" | campus_id == "B80") &
+                         if_else(budget_code == "BC" & (campus_id == "A01" | campus_id == "B8C") &
                                   instruction_method_code == "R" &
                                  grepl("K", section_number) == TRUE, "450150", "")))))))))))))))
 )
