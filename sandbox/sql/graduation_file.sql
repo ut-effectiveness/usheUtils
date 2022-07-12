@@ -28,6 +28,7 @@
                 b.transfer_cumulative_credits_earned,
                 b.total_cumulative_ap_credits_earned,
                 b.total_cumulative_clep_credits_earned,
+                --b.transfer_cumulative_credits_attempted_other_sources,
                 b.overall_cumulative_credits_earned,
                 a.total_remedial_hours,
                 a.total_cumulative_credits_attempted_other_sources,
