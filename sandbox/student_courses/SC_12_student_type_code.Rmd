@@ -36,9 +36,14 @@ library(here)
 
 ```{r}
 placeholder_test_df <- tibble(
-  
-) %>% 
-   
+  latest_student_type = sample(c("H"), 10, replace = TRUE),
+  #section_number = sample(c("12345"), 10, replace = TRUE),
+  #subject_code = sample(c("PSY"), 10, replace = TRUE),
+  #course_id = sample(c("PSY-1010"), 10, replace = TRUE),
+  season = sample(c("spring"), 10, replace = TRUE),
+  budget_code = sample(c("SF", "BA", "BC"), 10, replace = TRUE)
+  field = sample(c("conc", ""), 10, replace = TRUE)
+)
 
 DT::datatable(placeholder_test_df, rownames=FALSE)
 ```
@@ -64,16 +69,21 @@ The first thing I need to do is to figure out how to
 ```{r}
 
 change_placeholder_df <- placeholder_test_df %>%
-mutate(c_dest_site = if_else(budget_code == "SF" & campus_id == "C01", "450350",
-                         if_else(budget_code == "SF" & campus_id == "C02", "450354",
-
-                         if_else((budget_code == "BC" | budget_code == "SF") & grepl("V", section_number) == TRUE, "CC",
-                         if_else((budget_code == "BC" | budget_code == "SF") &
-                                 grepl("Q", section_number) == TRUE, "DC", "")))))
+mutate(c_dest_site = if_else(high_school_code == '459500' |
+                               high_school_code =='459600'|
+                               high_school_code =='459998'|
+                               high_school_code =='969999'|
+                               high_school_code =='459150'|
+                               high_school_code =='459300'|
+                               high_school_code =='459200'), "EC",
+                         if_else((budget_code == "BC" | budget_code == "SF") & field == conc, "CC",
+                         if_else((budget_code == "BC" | budget_code == "SF") & field != conc, "DC"))
 )
     # Append USHE data element s_xx
     mutate( s_xx = paste0(intermediate_field_1, intermediate_field_2) )
-  
+  # budget_code != "BC | "SF"
+    
+    
 
 
 DT::datatable(change_placeholder_df, rownames=FALSE)
