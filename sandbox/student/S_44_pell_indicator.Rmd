@@ -67,9 +67,9 @@ The first thing I need to do is to figure out how to
 
 change_s_44_pell_indicator_df <- s_44_pell_indicator_test_df %>%
    mutate(pell_indicator = case_when(
-    is_pell_eligible == TRUE ~ "E",
-    is_pell_awarded == TRUE ~ "R",
-    TRUE ~ " "))
+        is_pell_awarded == TRUE ~ "R",
+        is_pell_eligible == TRUE ~ "E",
+    TRUE ~ ""))
 
   
 DT::datatable(change_s_44_pell_indicator_df, rownames=FALSE)
