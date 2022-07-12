@@ -1,0 +1,26 @@
+---
+title: "Student Courses"
+author: "Craig Demke"
+date: '2022-07-11'
+output: html_document
+---
+
+###  Here we pull the info from edify with the utHelp function
+```{r}
+student_courses_file <- utHelpR::get_data_from_sql_file(file_name="student_courses_file.sql",
+                                               dsn="edify",
+                                               context="sandbox")
+```
+
+Now we filter the term and version of the course sql
+```{r}
+term <- '202220'
+version <- 'Current'
+
+scratch_student_course_file <- student_courses_file %>% 
+  filter(term_id == term & version_desc == version)
+
+
+
+#DT::datatable(student_file, rownames=FALSE)
+```
