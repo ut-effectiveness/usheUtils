@@ -75,18 +75,18 @@ Here is the R script
 
 change_s_17_registration_status_df <- s_17_registration_status_test_df %>%
    mutate(s_reg_status = case_when(
-      student_type_code == "0" ~ '?', # Undeclared
+      #student_type_code == "0" ~ '?', # Undeclared
       student_type_code == "1" ~ 'NG', # New Graduate
       student_type_code == "2" ~ 'TG', # Transfer Graduate
       student_type_code == "3" ~ 'RG', # Readmit Graduate
       student_type_code == "5" ~ 'CG', # Continuing Graduate
       student_type_code == "C" ~ 'CS', # Continuing Registration
-      student_type_code == "F" ~ 'FF', # Freshman
+      student_type_code == "F" ~ 'FF', # TODO  make a if_else statement Freshman > than 1 year of hs grad
+      student_type_code == "F" ~ 'FH', # TODO New Freshman from HS -- based on grad date within 1 year of hs grad
       student_type_code == "H" ~ 'HS', # High School
-      student_type_code == "N" ~ 'FH', # New Freshman from HS
       student_type_code == "P" ~ 'CE', # Personal Interest, Non-Degree
       student_type_code == "R" ~ 'RS', # Readmit
-      student_type_code == "S" ~ 'NC?', # Special
+      #student_type_code == "S" ~ 'NC?', # Special
       student_type_code == "T" ~ 'TU', # Transfer
      TRUE ~ "error"))
   
