@@ -2,9 +2,12 @@
 % Please edit documentation in R/students.R
 \name{s_xx}
 \alias{s_xx}
+\alias{s_alias}
 \title{Calculate USHE Element s_xx (Name of Element)}
 \usage{
 s_xx(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
+
+s_alias(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (list, of, required, data, fields).}
@@ -23,4 +26,5 @@ Calculate USHE Element s_xx (Name of Element)
 \examples{
 s_xx()
 
+s_alias()
 }
