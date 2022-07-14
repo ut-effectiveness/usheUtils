@@ -46,25 +46,3 @@ scratch_graduation_file <- graduation_file %>%
 #DT::datatable(student_file, rownames=FALSE)
 ```
 
-
-Trying to see if I could pull in my notes from an excel file
-```{r}
-
-ushe_report <- 'graduation'
-
-notes_on_functions <- read_excel("C:/R folder for github projects/usheUtils/sandbox/excel/rstudio_ushe_project.xlsx",
-                       col_types = c("text", "text", "text", "text", "text",
-                                     "text", "text", "text", "text", "text",
-                                     "text", "text", "text", "text", "text",
-                                     "text")) %>% 
-  clean_names()
-
-notes_on_functions <- notes_on_functions %>% 
-  select(ushe_element, ushe_field, sandbox_function, report) %>% 
-  filter(report == ushe_report)
-
-
-DT::datatable(notes_on_functions, rownames=FALSE)
-
-```
-
