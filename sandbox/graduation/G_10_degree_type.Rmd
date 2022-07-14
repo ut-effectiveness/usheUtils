@@ -58,11 +58,9 @@ DT::datatable(g_10_degree_type_test_df, rownames=FALSE)
 
 ```{r}
 ### We pull the data we want from the report database REPT 
-library(here)
-source(here::here("R", "data_io_util.R"))
-
-g_10_degree_type_real_df <- get_data_from_sql_file(file_name="g_10.sql",
-                             dsn="edify")
+g_10_degree_type_real_df <- utHelpR::get_data_from_sql_file(file_name="g_10.sql",
+                                               dsn="edify",
+                                               context="sandbox")
 # display data pulled in table
 DT::datatable(g_10_degree_type_real_df, rownames=FALSE)
 ```
@@ -91,21 +89,28 @@ DT::datatable(change_g_10_degree_type_df, rownames=FALSE)
 
 ```{r}
 
-format_g_10_degree_type <- function(input_df) {
+format_g_10_degree_type <- function(input_df, with_intermediates=FALSE) {
   
   output_df <- input_df %>%  
-  mutate(degree_type = case_when(
-  degree_status_code == "AW" ~ degree_id,
-  TRUE ~ "not awarded"))
+    mutate(degree_id = ifelse(degree_id == "MMFT", "MMF", degree_id )) %>% 
+    mutate(degree_type = case_when(
+      degree_status_code == "AW" ~ degree_id,
+      TRUE ~ "")) %>% 
+    mutate(g_10 = (degree_type))
   
-  output_df <- output_df %>% 
-  select(degree_type) %>% 
-    filter(degree_type != "not awarded")
-  
+
+    if (!with_intermediates) {
+      output_df <- output_df %>%
+        select(-c(degree_type))
+    }
+
   return(output_df)
   
 }
+
 ```
+
+
 ### Choose which data frame you want pass through the function 
 
 g_10_degree_type_test_df for the fake data set
