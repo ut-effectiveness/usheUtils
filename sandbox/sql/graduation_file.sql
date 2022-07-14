@@ -31,6 +31,7 @@
                 --b.transfer_cumulative_credits_attempted_other_sources,
                 b.overall_cumulative_credits_earned,
                 a.total_remedial_hours,
+                a.level_id,
                 a.total_cumulative_credits_attempted_other_sources,
                 a.previous_degree_type,
                 d.ipeds_award_level_code,
