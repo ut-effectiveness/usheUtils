@@ -54,6 +54,7 @@
           b.high_school_code AS latest_high_school_code,
           b.high_school_desc,
           b.high_school_graduation_date,
+          c.term_start_date,
           a.is_pell_eligible,
           a.is_pell_awarded,
           a.is_bia,
