@@ -41,17 +41,19 @@ FROM student_term_level;
 
 ```{r}
 s_17_registration_status_test_df <- tibble(
-  student_type_code = sample(c("3", "S", "2", "R", "5", "N", "C", "0", "P", "H", "1", "F", "T"), 13, replace = FALSE),
-  graduation_date_year = sample(1978:2010, 13, replace = TRUE),
-  graduation_date_month = sample(01:12, 13, replace = TRUE),
-  graduation_date_day = sample(01:29, 13, replace = TRUE)) %>% 
+  student_type_code = sample(c("3", "S", "2", "R", "5", "N", "C", "0", "P", "H", "1", "F", "T"), 10, replace = FALSE),
+  graduation_date_year = sample(2015:2022, 10, replace = TRUE),
+  graduation_date_month = sample(01:12, 10, replace = TRUE),
+  graduation_date_day = sample(01:29, 10, replace = TRUE),
+  term_start_date = sample("2022-01-10", 10, replace = TRUE)) %>% 
   mutate(graduation_date_month = str_pad(graduation_date_month, 2, pad = '0')) %>% 
   mutate(graduation_date_day = str_pad(graduation_date_day, 2, pad = '0')) %>% 
-  mutate(graduation_date = paste0(graduation_date_year, graduation_date_month, graduation_date_day))
- 
+  mutate(high_school_graduation_date = paste0(graduation_date_year, graduation_date_month, graduation_date_day)) 
+  
  s_17_registration_status_test_df <- s_17_registration_status_test_df %>% 
-  mutate(graduation_date = as_date(graduation_date)) %>% 
-   select(student_type_code , graduation_date)
+  mutate(high_school_graduation_date = as_date(high_school_graduation_date)) %>%
+  mutate(term_start_date = as_date(term_start_date)) %>%
+   select(student_type_code , high_school_graduation_date, term_start_date)
   
 
 DT::datatable(s_17_registration_status_test_df, rownames=FALSE)
@@ -61,11 +63,10 @@ DT::datatable(s_17_registration_status_test_df, rownames=FALSE)
 
 ```{r}
 ### We pull the data we want from the report database REPT 
-library(here)
-source(here::here("R", "data_io_util.R"))
 
-s_17_registration_status_real_df <- get_data_from_sql_file(file_name="s_17.sql",
-                             dsn="edify")
+s_17_registration_status_real_df <- utHelpR::get_data_from_sql_file(file_name="s_17.sql",
+                                               dsn="edify",
+                                               context="sandbox")
 # display data pulled in table
 DT::datatable(s_17_registration_status_real_df, rownames=FALSE)
 ```
@@ -85,21 +86,26 @@ Here is the R script
 ```{r}
 
 change_s_17_registration_status_df <- s_17_registration_status_test_df %>%
-   mutate(s_reg_status = case_when(
-      #student_type_code == "0" ~ '?', # Undeclared
-      student_type_code == "1" ~ 'NG', # New Graduate
-      student_type_code == "2" ~ 'TG', # Transfer Graduate
-      student_type_code == "3" ~ 'RG', # Readmit Graduate
-      student_type_code == "5" ~ 'CG', # Continuing Graduate
-      student_type_code == "C" ~ 'CS', # Continuing Registration
-      student_type_code == "F" ~ 'FF', # TODO  New Freshmen -- Freshman start date > than 1 year since high school grad date
-      student_type_code == "F" ~ 'FH', # TODO New Freshman from HS -- based on grad date within 1 year of high school grad date
-      student_type_code == "H" ~ 'HS', # High School
-      student_type_code == "P" ~ 'CE', # Personal Interest, Non-Degree
-      student_type_code == "R" ~ 'RS', # Readmit
-      #student_type_code == "S" ~ 'NC?', # Special
-      student_type_code == "T" ~ 'TU', # Transfer
-     TRUE ~ "error"))
+      mutate(high_school_graduation_date = gsub("-", "", high_school_graduation_date)) %>% 
+      mutate(term_start_date = gsub("-", "", term_start_date)) %>%
+      mutate(high_school_graduation_date = as.numeric(high_school_graduation_date)) %>%
+      mutate(term_start_date = as.numeric(term_start_date)) %>% 
+      mutate(student_type_code2 = if_else(student_type_code == "F" & is.na(high_school_graduation_date) == TRUE, "FF",
+                                          if_else(student_type_code == "F" & high_school_graduation_date + 10000 >= term_start_date, "FH",
+                                                  if_else(student_type_code == "F" & 
+                                                    high_school_graduation_date + 10000 <= term_start_date,"FF",
+                                                          student_type_code)))) %>%  
+      mutate(s_reg_status = case_when(
+        student_type_code == "1" ~ 'NG', # New Graduate
+        student_type_code == "2" ~ 'TG', # Transfer Graduate
+        student_type_code == "3" ~ 'RG', # Readmit Graduate
+        student_type_code == "5" ~ 'CG', # Continuing Graduate
+        student_type_code == "C" ~ 'CS', # Continuing Registration
+        student_type_code == "H" ~ 'HS', # High School
+        student_type_code == "P" ~ 'CE', # Personal Interest, Non-Degree
+        student_type_code == "R" ~ 'RS', # Readmit
+        student_type_code == "T" ~ 'TU', # Transfer
+        TRUE ~ student_type_code2))
   
 DT::datatable(change_s_17_registration_status_df, rownames=FALSE)
 
@@ -111,28 +117,35 @@ DT::datatable(change_s_17_registration_status_df, rownames=FALSE)
 
 ```{r}
 
-format_s_17_registration_status <- function(input_df) {
+format_s_17_registration_status <- function(input_df, with_intermediates=FALSE) {
   
   output_df <- input_df %>%  
-    mutate(s_reg_status = case_when(
-      student_type_code == "0" ~ '?', # Undeclared
-      student_type_code == "1" ~ 'NG', # New Graduate
-      student_type_code == "2" ~ 'TG', # Transfer Graduate
-      student_type_code == "3" ~ 'RG', # Readmit Graduate
-      student_type_code == "5" ~ 'CG', # Continuing Graduate
-      student_type_code == "C" ~ 'CS', # Continuing Registration
-      student_type_code == "F" ~ 'FF', # Freshman
-      student_type_code == "H" ~ 'HS', # High School
-      student_type_code == "N" ~ 'FH', # New Freshman from HS
-      student_type_code == "P" ~ 'CE', # Personal Interest, Non-Degree
-      student_type_code == "R" ~ 'RS', # Readmit
-      student_type_code == "S" ~ 'NC?', # Special
-      student_type_code == "T" ~ 'TU', # Transfer
-     TRUE ~ "error"))
-  
-  #output_df <- output_df %>% 
-  #select(s_reg_status)
-  
+      mutate(high_school_graduation_date = gsub("-", "", high_school_graduation_date)) %>% 
+      mutate(term_start_date = gsub("-", "", term_start_date)) %>%
+      mutate(high_school_graduation_date = as.numeric(high_school_graduation_date)) %>%
+      mutate(term_start_date = as.numeric(term_start_date)) %>% 
+      mutate(student_type_code2 = if_else(student_type_code == "F" & is.na(high_school_graduation_date) == TRUE, "FF",
+                                          if_else(student_type_code == "F" & high_school_graduation_date + 10000 >= term_start_date, "FH",
+                                                  if_else(student_type_code == "F" & 
+                                                    high_school_graduation_date + 10000 <= term_start_date,"FF",
+                                                          student_type_code)))) %>%  
+      mutate(s_reg_status = case_when(
+        student_type_code == "1" ~ 'NG', # New Graduate
+        student_type_code == "2" ~ 'TG', # Transfer Graduate
+        student_type_code == "3" ~ 'RG', # Readmit Graduate
+        student_type_code == "5" ~ 'CG', # Continuing Graduate
+        student_type_code == "C" ~ 'CS', # Continuing Registration
+        student_type_code == "H" ~ 'HS', # High School
+        student_type_code == "P" ~ 'CE', # Personal Interest, Non-Degree
+        student_type_code == "R" ~ 'RS', # Readmit
+        student_type_code == "T" ~ 'TU', # Transfer
+        TRUE ~ student_type_code2)) %>% 
+    mutate(s_17 = (s_reg_status))
+   
+    if (!with_intermediates) {
+      output_df <- output_df %>%
+        select( -c(s_reg_status))
+    }
   return(output_df)
   
 }
