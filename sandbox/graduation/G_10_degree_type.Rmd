@@ -75,7 +75,8 @@ The first thing I need to do is to figure out how to filter out any degrees whic
 ```{r}
 
 change_g_10_degree_type_df <- g_10_degree_type_test_df %>%
-   mutate(degree_type = case_when(
+  mutate(degree_id = ifelse(degree_id == "MMFT", "MMF", degree_id )) %>% 
+  mutate(degree_type = case_when(
    degree_status_code == "AW" ~ degree_id,
    TRUE ~ ""))
 

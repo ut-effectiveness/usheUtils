@@ -24,6 +24,7 @@
                 a.graduation_date,
                 a.primary_major_cip_code,
                 a.degree_id,
+                a.degree_status_code,
                 a.cumulative_graduation_gpa,
                 b.transfer_cumulative_credits_earned,
                 b.total_cumulative_ap_credits_earned,
