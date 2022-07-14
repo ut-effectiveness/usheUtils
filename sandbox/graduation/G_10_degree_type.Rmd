@@ -41,7 +41,7 @@ FROM degrees_awarded;
 
 ```{r}
 g_10_degree_type_test_df <- tibble(
-  subject_code = sample(c("AS", "BME", "MAT", "TR", "AB", "BAS", "BFA",
+  degree_id = sample(c("AS", "BME", "MAT", "TR", "AB", "BAS", "BFA",
                               "CER1", "APE", "AC", "MA", "CER0", "AAS",
                               "BIS", "BSN", "MACC", "BA", "ND", "BM", "AA",
                               "MMFT", "BS"), 23, replace = TRUE),
@@ -77,7 +77,7 @@ The first thing I need to do is to figure out how to filter out any degrees whic
 change_g_10_degree_type_df <- g_10_degree_type_test_df %>%
    mutate(degree_type = case_when(
    degree_status_code == "AW" ~ degree_id,
-   TRUE ~ "not awarded"))
+   TRUE ~ ""))
 
 
 DT::datatable(change_g_10_degree_type_df, rownames=FALSE)
