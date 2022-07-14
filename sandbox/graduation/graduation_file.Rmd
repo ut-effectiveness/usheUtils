@@ -60,7 +60,7 @@ notes_on_functions <- read_excel("C:/R folder for github projects/usheUtils/sand
   clean_names()
 
 notes_on_functions <- notes_on_functions %>% 
-  select(ushe_element, ushe_field, sandbox_function, ushe_formatting_notes, report) %>% 
+  select(ushe_element, ushe_field, sandbox_function, report) %>% 
   filter(report == ushe_report)
 
 
