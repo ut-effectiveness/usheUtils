@@ -1,7 +1,7 @@
 ---
-title: "Courses File"
+title: "Graduation file"
 author: "Craig Demke"
-date: '2022-07-06'
+date: '2022-07-12'
 output: html_document
 ---
 
@@ -22,11 +22,14 @@ library(DT)
 library(purrr)
 library(here)
 library(lubridate)
+library(readxl)
+library(janitor)
+
 ```
 
 ###  Here we pull the info from edify with the utHelp function
 ```{r}
-course_file <- utHelpR::get_data_from_sql_file(file_name="course_file.sql",
+graduation_file <- utHelpR::get_data_from_sql_file(file_name="graduation_file.sql",
                                                dsn="edify",
                                                context="sandbox")
 ```
@@ -34,12 +37,12 @@ course_file <- utHelpR::get_data_from_sql_file(file_name="course_file.sql",
 Now we filter the term and version of the course sql
 ```{r}
 term <- '202220'
-version <- 'Current'
 
-summer_course_file <- course_file %>% 
-  filter(term_id == term & version_desc == version)
+scratch_graduation_file <- graduation_file %>% 
+  filter(graduated_term_id == term)
 
 
 
 #DT::datatable(student_file, rownames=FALSE)
 ```
+

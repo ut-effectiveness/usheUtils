@@ -75,23 +75,23 @@ change_s_19_degree_intent_df <- s_19_degree_intent_test_df %>%
      primary_degree_id == "AS" ~ '3',
      primary_degree_id == "BME" ~ '5',
      primary_degree_id == "MAT" ~ '7',
-     primary_degree_id == "TR" ~ '0', #?
+     #primary_degree_id == "TR" ~ '0', #?
      primary_degree_id == "AB" ~ '3',
      primary_degree_id == "MAT" ~ '7',
      primary_degree_id == "BAS" ~ '5',
      primary_degree_id == "BFA" ~ '5',
-     primary_degree_id == "CER1" ~ '?', #?
+     #primary_degree_id == "CER1" ~ '?', #?
      primary_degree_id == "APE" ~ '3',
      primary_degree_id == "AC" ~ '3',
      primary_degree_id == "MA" ~ '7',
-     primary_degree_id == "CER0" ~ '?', #?
+     #primary_degree_id == "CER0" ~ '?', #?
      primary_degree_id == "AAS" ~ '3',
      primary_degree_id == "BIS" ~ '5',
-     primary_degree_id == "" ~ '0', #?
+     #primary_degree_id == "" ~ '0', #?
      primary_degree_id == "BSN" ~ '5',
      primary_degree_id == "MACC" ~ '7',
      primary_degree_id == "BA" ~ '5',
-     primary_degree_id == "ND" ~ '0', #?
+     primary_degree_id == "ND" ~ '0',
      primary_degree_id == "BM" ~ '5',
      primary_degree_id == "AA" ~ '3',
      primary_degree_id == "MMFT" ~ '7',

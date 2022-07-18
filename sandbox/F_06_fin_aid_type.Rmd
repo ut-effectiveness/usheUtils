@@ -1,0 +1,181 @@
+---
+title: "F-06 Finacial Aid Type"
+author: "Craig Demke"
+date: '2022-07-12'
+output: html_document
+---
+
+```{r set global chunks, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, message = FALSE
+)
+```
+
+```{r load libraries}
+library(tidyverse)
+library(datasets)
+library(plotly)
+library(gt)
+library(glue)
+library(stringr)
+library(DT)
+library(purrr)
+library(here)
+```
+### This is part of the 
+* 
+
+### This data is found in Edify from 
+```{}
+
+```
+
+
+### Create fake data that matches this.
+
+```{r}
+f_06_fin_aid_type_test_df <- tibble(
+financial_aid_fund_id = c("UADLRN","89331", "89330", "89330", "89698", "89699", "86181", "UCWSO", "83002", "UHESSS", "89800", "81002", "81041", "84004", "86084", "86017", "86028", "86086", "86142", "86173", "86099", "84005", "86006", "84011", "86111", "86118", "85103", "84009", "86188", "86091", "87320", "86112", "86068", "86050", "86058", "86003", "86076", "85055", "86135", "86114", "86150", "86153", "86140", "85026", "89602", "89600", "89551", "FPERK", "ALTER", "ALTERP", "89601", "83007", "89604", "81058", "80108", "83009", "FPELL", "GPLUS", "DPLUS","TBPROM", "81080", "89603", "FSEOGS", "FSEOG", "DIRECT", "TDSLFP", "81083", "89607", "DUSUB", "83019", "FCWS", "FCWSA" ))
+
+DT::datatable(f_06_fin_aid_type_test_df, rownames=FALSE)
+```
+
+### Now let's see if we can pull in real data
+
+```{r}
+### We pull the data we want from the report database REPT 
+
+f_06_fin_aid_type_real_df <- utHelpR::get_data_from_sql_file(file_name="f_06_fin_aid_type.sql",
+                                               dsn="edify",
+                                               context="sandbox")
+
+# display data pulled in table
+DT::datatable(f_06_fin_aid_type_real_df, rownames=FALSE)
+```
+
+
+### Here is the R script
+
+The first thing I need to do is to figure out how to
+
+```{r}
+
+change_f_06_fin_aid_type_df <- f_06_fin_aid_type_test_df %>%
+    mutate( f_type_code = case_when(
+      financial_aid_fund_id == "UADLRN" ~ "ALEARN",
+      financial_aid_fund_id == "89331" ~ "BIA",
+      financial_aid_fund_id ==  "89330" ~ "BIA",
+      financial_aid_fund_id ==  "89330" ~ "BIA",
+      financial_aid_fund_id ==  "89698" ~ "BIA",
+      financial_aid_fund_id ==  "89699" ~ "BIA",
+      financial_aid_fund_id ==  "86181" ~ "BIA",
+      financial_aid_fund_id == "UCWSO" ~ "DWS",
+      financial_aid_fund_id == "83002" ~ "EDDIS",
+      financial_aid_fund_id == "UHESSS" ~ "HESSP",
+      financial_aid_fund_id == "89800" ~ "IANB",
+      financial_aid_fund_id == "81002" ~ "IANB",
+      financial_aid_fund_id == "81041" ~ "IANB",
+      financial_aid_fund_id == "84004" ~ "IANB",
+      financial_aid_fund_id == "86084" ~ "IANB",
+      financial_aid_fund_id == "86017" ~ "IANB",
+      financial_aid_fund_id == "86028" ~ "IANB",
+      financial_aid_fund_id == "86086" ~ "IANB",
+      financial_aid_fund_id == "86142" ~ "IANB",
+      financial_aid_fund_id == "86173" ~ "IANB",
+      financial_aid_fund_id == "86099" ~ "IANB",
+      financial_aid_fund_id == "84005" ~ "IANB",
+      financial_aid_fund_id == "86006" ~ "IANB",
+      financial_aid_fund_id == "84011" ~ "IANB",
+      financial_aid_fund_id == "86111" ~ "IANB",
+      financial_aid_fund_id == "86118" ~ "IANB",
+      financial_aid_fund_id == "85103" ~ "IANB",
+      financial_aid_fund_id == "84009" ~ "IANB",
+      financial_aid_fund_id == "86188" ~ "IANB",
+      financial_aid_fund_id == "86091" ~ "IANB",
+      financial_aid_fund_id == "87320" ~ "IANB",
+      financial_aid_fund_id == "86112" ~ "IANB",
+      financial_aid_fund_id == "86068" ~ "IANB",
+      financial_aid_fund_id == "86050" ~ "IANB",
+      financial_aid_fund_id == "86058" ~ "IANB",
+      financial_aid_fund_id == "86003" ~ "IANB",
+      financial_aid_fund_id == "86076" ~ "IANB",
+      financial_aid_fund_id == "85055" ~ "IANB",
+      financial_aid_fund_id == "86135" ~ "IANB",
+      financial_aid_fund_id == "86114" ~ "IANB",
+      financial_aid_fund_id == "86150" ~ "IANB",
+      financial_aid_fund_id == "86153" ~ "IANB",
+      financial_aid_fund_id == "86140" ~ "IANB",
+      financial_aid_fund_id == "85026" ~ "IANB",
+      financial_aid_fund_id == "89602" ~ "NEWCEN",
+      financial_aid_fund_id == "89600" ~ "OAID",
+      financial_aid_fund_id == "89551" ~ "OFAID",
+      financial_aid_fund_id == "FPERK" ~ "OFLOAN",
+      financial_aid_fund_id == "ALTER" ~ "OLOAN",
+      financial_aid_fund_id == "ALTERP" ~ "OLOAN",
+      financial_aid_fund_id == "89601" ~ "OSAID",
+      financial_aid_fund_id == "83007" ~ "OSAID",
+      financial_aid_fund_id == "89604" ~ "OSAID",
+      financial_aid_fund_id == "81058" ~ "OSAID",
+      financial_aid_fund_id == "80108" ~ "OSAID",
+      financial_aid_fund_id == "83009" ~ "OSAID",
+      financial_aid_fund_id == "FPELL" ~ "PELL",
+      financial_aid_fund_id == "GPLUS" ~ "PLUS",
+      financial_aid_fund_id == "DPLUS" ~ "PLUS",
+      financial_aid_fund_id == "TBPROM" ~ "PROM",
+      financial_aid_fund_id == "81080" ~ "PSOCAR",
+      financial_aid_fund_id == "89603" ~ "REG",
+      financial_aid_fund_id == "FSEOGS" ~ "SEOG",
+      financial_aid_fund_id == "FSEOG" ~ "SEOG",
+      financial_aid_fund_id == "DIRECT" ~ "SUB",
+      financial_aid_fund_id == "TDSLFP" ~ "TALENT",
+      financial_aid_fund_id == "81083" ~ "TEACHED",
+      financial_aid_fund_id == "89607" ~ "THBELL",
+      financial_aid_fund_id == "DUSUB" ~ "UNSUB",
+      financial_aid_fund_id == "83019" ~ "VTGAP",
+      financial_aid_fund_id == "FCWS"~ "WORK",
+      financial_aid_fund_id == "FCWSA" ~ "WORK",
+     TRUE ~ "IANNB"))
+    
+
+DT::datatable(change_f_06_fin_aid_type_df, rownames=FALSE)
+
+
+
+```
+
+### Making a function
+
+```{r}
+  
+format_f_06_fin_aid_type <- function(input_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate( intermediate_field_1 = "1") %>%
+    mutate( intermediate_field_2 = "2") %>%
+    # Append USHE data element s_xx
+    mutate( s_xx = paste0(intermediate_field_1, intermediate_field_2) )
+
+    if (!with_intermediates) {
+      output_df <- output_df %>%
+        # Remove fields used for intermediate calculations
+        select( -c(intermediate_field_1, intermediate_field_2) )
+    }
+
+  return(output_df)
+
+  
+}
+```
+### Choose which data frame you want pass through the function 
+
+f_06_fin_aid_type_test_df for the fake data set
+```{r}
+DT::datatable(format_f_06_fin_aid_type(f_06_fin_aid_type_test_df), rownames=FALSE)
+```
+
+f_06_fin_aid_type_real_df for the real data
+```{r}
+DT::datatable(format_f_06_fin_aid_type(f_06_fin_aid_type_real_df), rownames=FALSE)
+```
+
