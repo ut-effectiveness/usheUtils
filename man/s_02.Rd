@@ -2,9 +2,12 @@
 % Please edit documentation in R/students.R
 \name{s_02}
 \alias{s_02}
+\alias{c_02}
 \title{Calculate USHE Element s_02 (Year, Term, & Extract)}
 \usage{
 s_02(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
+
+c_02(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (season, academic_year, version_id).}
@@ -32,4 +35,5 @@ Format YYYYTE is made up of academic year YYYY, academic term T, and extract E (
 \examples{
 s_02()
 
+c_02()
 }

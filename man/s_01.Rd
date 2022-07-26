@@ -2,9 +2,12 @@
 % Please edit documentation in R/students.R
 \name{s_01}
 \alias{s_01}
+\alias{c_01}
 \title{Calculate USHE Element s_01 (Institution)}
 \usage{
 s_01(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
+
+c_01(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (no data fields required).}
@@ -31,4 +34,5 @@ USHE will use the last 4 digits of the 6-digit number for the field value as add
 \examples{
 s_01()
 
+c_01()
 }
