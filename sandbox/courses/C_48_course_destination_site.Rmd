@@ -137,6 +137,41 @@ format_c_48_course_destination_site <- function(input_df, with_intermediates=FAL
 
   
 }
+
+format_c_48_course_destination_site <- function(input_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    mutate(c_dest_site = case_when( (budget_code == "SF" & campus_id == "C01") ~ "450350",
+                                    (budget_code == "SF" & campus_id == "C02") ~ "450354",
+                                    (budget_code == "SF" & campus_id == "C03") ~ "450353",
+                                    (budget_code == "SF" & campus_id == "C03") ~ "450353",
+                                    (budget_code == "SF" & campus_id == "C04") ~ "450135",
+                                    (budget_code == "SF" & campus_id == "C05") ~ "450444",
+                                    (budget_code == "SF" & campus_id == "C06") ~ "450075",
+                                    (budget_code == "SF" & campus_id == "C07") ~  "450045",
+                                    (budget_code == "SF" & campus_id == "C08") ~  "450150",     
+                                    (budget_code == "SF" & campus_id == "C09") ~  "450060",
+                                    (budget_code == "SF" & campus_id == "C10") ~  "450275",
+                                    (budget_code == "SF" & campus_id == "C11") ~  "450010",
+                                    (budget_code == "SF" & campus_id == "C12") ~  "450150",
+                                    (budget_code == "SF" & campus_id == "C13") ~  "450359",
+                                    (budget_code == "BC" 
+                                     & (campus_id == "A01" | campus_id == "B80") 
+                                     & instruction_method_code == "R" 
+                                     & grepl("K", section_number) == TRUE) ~ "450150" ) ) %>% 
+    
+    mutate( c_48 = c_dest_site )
+
+    if (!with_intermediates) {
+      output_df <- output_df %>%
+        # Remove fields used for intermediate calculations
+        select( -c(c_dest_site) )
+    }
+
+  return(output_df)
+
+  
+}
 ```
 ### Choose which data frame you want pass through the function 
 

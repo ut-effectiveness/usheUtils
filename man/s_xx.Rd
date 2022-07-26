@@ -3,11 +3,14 @@
 \name{s_xx}
 \alias{s_xx}
 \alias{s_alias}
+\alias{c_xx}
 \title{Calculate USHE Element s_xx (Name of Element)}
 \usage{
 s_xx(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
 
 s_alias(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
+
+c_xx(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (list, of, required, data, fields).}
@@ -27,4 +30,5 @@ Calculate USHE Element s_xx (Name of Element)
 s_xx()
 
 s_alias()
+c_xx()
 }
