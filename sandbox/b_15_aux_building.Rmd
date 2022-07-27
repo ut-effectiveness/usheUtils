@@ -1,0 +1,110 @@
+---
+title: "B-15 Auxiliary Building"
+author: "Craig Demke"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r set global chunks, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, message = FALSE
+)
+```
+
+```{r load libraries}
+library(tidyverse)
+library(datasets)
+library(plotly)
+library(gt)
+library(glue)
+library(stringr)
+library(DT)
+library(purrr)
+library(here)
+```
+### This is part of the 
+* 
+
+### This data is found in Edify from 
+```{}
+
+```
+
+
+### Create fake data that matches this.
+
+```{r}
+b_15_aux_building_test_df <- tibble(
+  building_auxiliary = sample(c("Y", "N"), 10, replace = TRUE)
+) 
+   
+
+DT::datatable(b_15_aux_building_test_df, rownames=FALSE)
+```
+
+### Now let's see if we can pull in real data
+
+```{r}
+### We pull the data we want from the report database REPT 
+
+b_15_aux_building_real_df <- utHelpR::get_data_from_sql_file(file_name="b_15.sql",
+                                               dsn="edify",
+                                               context="sandbox")
+
+# display data pulled in table
+DT::datatable(b_15_aux_building_real_df, rownames=FALSE)
+```
+
+
+### Here is the R script
+
+The first thing I need to do is to figure out how to convert Y to A and code the rest N
+
+```{r}
+
+change_b_15_aux_building_df <- b_15_aux_building_test_df %>%
+       mutate(b_aux = case_when(
+     building_auxiliary == "Y" ~ "A",
+     TRUE ~ "N"))
+
+DT::datatable(change_b_15_aux_building_df, rownames=FALSE)
+
+```
+
+### Making a function
+
+```{r}
+  
+format_b_15_aux_building <- function(input_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+   mutate(b_aux = case_when(
+     building_auxiliary == "Y" ~ "A",
+     TRUE ~ "N")) %>%
+    mutate(b_15 = b_aux)
+
+    if (!with_intermediates) {
+      output_df <- output_df %>%
+        select( -c(b_aux))
+    }
+
+  return(output_df)
+
+  
+}
+```
+### Choose which data frame you want pass through the function 
+
+b_15_aux_building_test_df for the fake data set
+```{r}
+DT::datatable(format_b_15_aux_building(b_15_aux_building_test_df), rownames=FALSE)
+```
+
+b_15_aux_building_real_df for the real data
+```{r}
+DT::datatable(format_b_15_aux_building(b_15_aux_building_real_df), rownames=FALSE)
+
+  #dt_test <- format_b_15_aux_building(b_15_aux_building_real_df)
+#view(dt_test)
+```
+

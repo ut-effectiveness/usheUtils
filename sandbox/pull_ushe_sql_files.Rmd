@@ -1,0 +1,114 @@
+---
+title: "Student Courses"
+author: "Craig Demke"
+date: '2022-07-11'
+output: html_document
+---
+
+
+```{r load libraries, message=FALSE}
+library(tidyverse)
+library(datasets)
+library(plotly)
+library(gt)
+library(glue)
+library(stringr)
+library(DT)
+library(purrr)
+library(here)
+library(utHelpR)
+library(usheUtils)
+```
+
+###list of sql files that need term and version:
+*   student_file.sql
+*   student_courses_file.sql
+*   graduation_file.sql
+*   financial_aid_file.sql
+*   course_file.sql
+
+###list of sql files that do not need term and version:
+*   space_inventory_rooms_file.sql
+*   space_inventory_rooms_file.sql
+
+make a function to pull all ushe sql
+```{r}
+ushe_sql_pull <- function(sql_file, with_term_version=FALSE, with_grad_term=FALSE) {
+ 
+  sql_output <- utHelpR::get_data_from_sql_file(file_name= sql_file,
+                                               dsn="edify",
+                                               context="sandbox")  
+  
+  
+  if(with_term_version) {
+    
+      output_df <- sql_output %>% 
+        filter(term == term_id & version == version_desc)
+        
+  }
+  
+  if(with_grad_term) {
+   output_df <- sql_output %>% 
+        filter(term == term_id)
+  }
+  
+  else {
+    output_df <- sql_output 
+  }
+ 
+return(output_df)
+         
+}
+
+```
+
+pick the term and version:
+```{r}
+term <- '202220'
+version <- 'Current'
+
+```
+
+```{r}
+student_file <- ushe_sql_pull('student_file.sql', with_term_version=TRUE)
+
+view(student_file)
+```
+
+```{r}
+student_courses_file <- ushe_sql_pull('student_courses_file.sql', with_term_version=TRUE)
+
+view(student_courses_file)
+```
+
+```{r}
+graduation_file <- ushe_sql_pull('graduation_file.sql', with_grad_term=TRUE)
+
+view(graduation_file)
+```
+
+```{r}
+financial_aid_file <- ushe_sql_pull('financial_aid_file.sql', with_term_version=TRUE)
+
+view(financial_aid_file)
+```
+
+```{r}
+course_file <- ushe_sql_pull('course_file.sql', with_term_version=TRUE)
+
+view(course_file)
+```
+
+```{r}
+space_inventory_rooms_file <- ushe_sql_pull('space_inventory_rooms_file.sql')
+
+view(space_inventory_rooms_file)
+```
+
+```{r}
+space_inventory_building_file <- ushe_sql_pull('space_inventory_buildings_file.sql')
+
+view(space_inventory_building_file)
+```
+
+

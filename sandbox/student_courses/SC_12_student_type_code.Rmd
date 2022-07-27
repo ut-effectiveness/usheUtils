@@ -39,14 +39,14 @@ library(here)
 
 ```{r}
 sc_12_student_type_code_test_df <- tibble(
-  latest_student_type = sample(c("H"), 10, replace = TRUE),
+  latest_student_type_code = sample(c("H"), 10, replace = TRUE),
   #section_number = sample(c("12345"), 10, replace = TRUE),
   #subject_code = sample(c("PSY"), 10, replace = TRUE),
   #course_id = sample(c("PSY-1010"), 10, replace = TRUE),
   high_school_code = sample(c("123456", "234567", "459500", "459600", "459998", "969999", "459150", "459300", "459200"), 10, replace = TRUE),
   season = sample(c("spring"), 10, replace = TRUE),
   budget_code = sample(c("SF", "BC", "BA"), 10, replace = TRUE),
-  edify_field = sample(c("conc", ""), 10, replace = TRUE)
+  is_concurrent_course = sample(c(TRUE, FALSE), 10, replace = TRUE)
 )
 
 DT::datatable(sc_12_student_type_code_test_df, rownames=FALSE)
@@ -57,7 +57,7 @@ DT::datatable(sc_12_student_type_code_test_df, rownames=FALSE)
 ```{r}
 ### We pull the data we want from the report database REPT 
 
-sc_12_student_type_code_real_df <- utHelpR::get_data_from_sql_file(file_name="sc_12_student_type_code.sql",
+sc_12_student_type_code_real_df <- utHelpR::get_data_from_sql_file(file_name="sc_12.sql",
                                                dsn="edify",
                                                context="sandbox")
 
@@ -73,21 +73,21 @@ The first thing I need to do is to figure out how to
 ```{r}
 
 option1 <- sc_12_student_type_code_test_df %>%
-mutate( student_type_code = if_else(latest_student_type == "H" & (high_school_code == "459500" |
+mutate( student_type_code = if_else(latest_student_type_code == "H" & (high_school_code == "459500" |
                                high_school_code == "459600"|
                                high_school_code == "459998"|
                                high_school_code == "969999"|
                                high_school_code == "459150"|
                                high_school_code == "459300"|
                                high_school_code == "459200"), "EC",
-                         if_else(latest_student_type == "H" & (budget_code == "BC" | budget_code == "SF") & edify_field == "conc", "CC",
-                         if_else(latest_student_type == "H" & (budget_code == "BC" | budget_code == "SF") & edify_field != "conc", "DC", "")))
+                         if_else(latest_student_type_code == "H" & (budget_code == "BC" | budget_code == "SF") & is_concurrent_course == TRUE, "CC",
+                         if_else(latest_student_type_code == "H" & (budget_code == "BC" | budget_code == "SF") & is_concurrent_course == FALSE, "DC", "")))
 )
 
 option2 <- sc_12_student_type_code_test_df %>%
-mutate( student_type_code = if_else(latest_student_type == "H" & (budget_code != "BC" & budget_code != "SF" ), "EC",
-                         if_else(latest_student_type == "H" & (budget_code == "BC" | budget_code == "SF") & edify_field == "conc", "CC",
-                         if_else(latest_student_type == "H" & (budget_code == "BC" | budget_code == "SF") & edify_field != "conc", "DC", "")))
+mutate( student_type_code = if_else(latest_student_type_code == "H" & (budget_code != "BC" & budget_code != "SF" ), "EC",
+                         if_else(latest_student_type_code == "H" & (budget_code == "BC" | budget_code == "SF") & is_concurrent_course == TRUE, "CC",
+                         if_else(latest_student_type_code == "H" & (budget_code == "BC" | budget_code == "SF") & is_concurrent_course == FALSE, "DC", "")))
 )
     
     #grep("M", high_school_code) = TRUE ~ "7"
@@ -107,9 +107,15 @@ DT::datatable(option2, rownames=FALSE)
 format_sc_12_student_type_code <- function(input_df, with_intermediates=FALSE) {
 
   output_df <- input_df %>%
-  mutate( student_type_code = if_else(latest_student_type == "H" & (budget_code != "BC" & budget_code != "SF" ), "EC",
-                         if_else(latest_student_type == "H" & (budget_code == "BC" | budget_code == "SF") & edify_field == "conc", "CC",
-                         if_else(latest_student_type == "H" & (budget_code == "BC" | budget_code == "SF") & edify_field != "conc", "DC", "")))
+  mutate( student_type_code = if_else(latest_student_type_code == "H" &
+                                        (budget_code != "BC" &
+                                           budget_code != "SF" ), "EC",
+                         if_else(latest_student_type_code == "H" &
+                                   (budget_code == "BC" | budget_code == "SF") &
+                                   is_concurrent_course == TRUE, "CC",
+                         if_else(latest_student_type_code == "H" &
+                                   (budget_code == "BC" | budget_code == "SF") &
+                                   is_concurrent_course == FALSE, "DC", "")))
 ) %>% 
     mutate(sc_12 = student_type_code)
 

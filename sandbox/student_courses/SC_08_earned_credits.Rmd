@@ -1,0 +1,119 @@
+---
+title: "S-08 Earned Credit hours"
+author: "Craig Demke"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r set global chunks, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, message = FALSE
+)
+```
+
+```{r load libraries}
+library(tidyverse)
+library(datasets)
+library(plotly)
+library(gt)
+library(glue)
+library(stringr)
+library(DT)
+library(purrr)
+library(here)
+```
+### This is part of the Student Course Data  Element: SC-08
+*   ELEMENT NAME: Credit Hours Earned 
+*   FIELD NAME: SC_EARNED_CR 
+*   FIELD FORMAT: Numeric (3,1) 
+*   DEFINITION: Credit hours earned by the student for the course. This field is for credit courses  only.  
+COMMENTS: ***This field needs to be populated for end of term extract file.***
+
+### This data is found in Edify from export.student_section_version.earned_credits and student_section_version.version_desc
+```{}
+--S-08
+SELECT DISTINCT(student_id),
+       earned_credits,
+       version_desc
+FROM export.student_section_version
+WHERE term_id = '202140'
+--AND earned_credits > '0'
+ORDER BY student_id
+LIMIT 10;
+```
+
+
+### Create fake data that matches the version description and earned credits found in Edify
+
+```{r}
+sc_08_earned_credits_test_df <- tibble(
+  version_desc = sample(c("Census", "Current", "End of Term"), 10, replace = TRUE),
+  earned_credits = sample(1:120, 10, replace = TRUE)
+  
+)
+   
+
+DT::datatable(sc_08_earned_credits_test_df, rownames=FALSE)
+```
+
+### Now let's see if we can pull in real data
+
+```{r}
+### We pull the data we want from the report database REPT 
+
+sc_08_earned_credits_real_df <- utHelpR::get_data_from_sql_file(file_name="sc_08.sql",
+                                               dsn="edify",
+                                               context="sandbox")
+
+# display data pulled in table
+DT::datatable(sc_08_earned_credits_real_df, rownames=FALSE)
+```
+
+
+### Here is the R script
+
+The first thing I need to do is to figure out how to
+
+```{r}
+
+change_sc_08_earned_credits_df <- sc_08_earned_credits_test_df %>%
+    mutate(sc_earned_cr = ifelse(version_desc == "End of Term", earned_credits, "" )) %>%
+    mutate(s_08 = sc_earned_cr)
+  
+DT::datatable(change_sc_08_earned_credits_df, rownames=FALSE)
+
+```
+
+### Making a function
+
+```{r}
+  
+format_sc_08_earned_credits <- function(input_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    mutate(sc_earned_cr = ifelse(version_desc == "End of Term", earned_credits, "" )) %>%
+    mutate(s_08 = sc_earned_cr)
+
+    if (!with_intermediates) {
+      output_df <- output_df %>%
+
+        select(-c(sc_earned_cr))
+    }
+
+  return(output_df)
+
+  
+}
+```
+### Choose which data frame you want pass through the function 
+
+sc_08_earned_credits_test_df for the fake data set
+```{r}
+DT::datatable(format_sc_08_earned_credits(sc_08_earned_credits_test_df), rownames=FALSE)
+```
+
+sc_08_earned_credits_real_df for the real data
+```{r}
+DT::datatable(format_sc_08_earned_credits(sc_08_earned_credits_real_df), rownames=FALSE)
+```
+
