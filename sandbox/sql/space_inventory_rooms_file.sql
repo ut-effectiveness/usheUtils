@@ -11,6 +11,11 @@ SELECT a.building_id,
        a.room_prorated,
        a.room_prorated_area,
        a.room_acitivity_date
-FROM export.rooms a;
+FROM export.rooms a
+LEFT JOIN export.buildings b
+ON a.building_id = b.buildings_id
+WHERE is_state_reported
+ AND (building_to_term_id IS NULL OR building_to_term_id > (SELECT DISTINCT term_id FROM quad.term WHERE is_current_term))
+ AND building_from_term_id <= (SELECT DISTINCT term_id FROM quad.term WHERE is_current_term);
 
 
