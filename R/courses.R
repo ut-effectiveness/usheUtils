@@ -113,6 +113,9 @@ generate_course_validation_file <- function(input_df=usheUtils::fake_course_df) 
     c_47(with_intermediates = TRUE) %>%
     c_48(with_intermediates = TRUE) %>%
     c_49(with_intermediates = TRUE) %>%
+    c_50(with_intermediates = TRUE) %>%
+    c_51(with_intermediates = TRUE) %>%
+    c_52(with_intermediates = TRUE) %>%
     dplyr::select( -c("c_01", "c_02", "c_03", "c_04",
                       "c_05", "c_06", "c_07", "c_08",
                       "c_09", "c_10", "c_11", "c_12",
@@ -124,7 +127,8 @@ generate_course_validation_file <- function(input_df=usheUtils::fake_course_df) 
                       "c_33", "c_34", "c_35", "c_36",
                       "c_37", "c_38", "c_39", "c_40",
                       "c_41", "c_42", "c_43", "c_44",
-                      "c_45", "c_46", "c_47", "c_48", "c_49") ) %>%
+                      "c_45", "c_46", "c_47", "c_48",
+                      "c_49", "c_50", "c_51", "c_52") ) %>%
     dplyr::select( -c(original_column_names) )
 
   return(output_df)
@@ -242,6 +246,9 @@ generate_course_submission_file <- function(input_df=usheUtils::fake_course_df) 
     c_47() %>%
     c_48() %>%
     c_49() %>%
+    c_50() %>%
+    c_51() %>%
+    c_52() %>%
     dplyr::select( c("c_01", "c_02", "c_03", "c_04",
                      "c_05", "c_06", "c_07", "c_08",
                      "c_09", "c_10", "c_11", "c_12",
@@ -253,7 +260,8 @@ generate_course_submission_file <- function(input_df=usheUtils::fake_course_df) 
                      "c_33", "c_34", "c_35", "c_36",
                      "c_37", "c_38", "c_39", "c_40",
                      "c_41", "c_42", "c_43", "c_44",
-                     "c_45", "c_46", "c_47", "c_48", "c_49") )
+                     "c_45", "c_46", "c_47", "c_48",
+                     "c_49", "c_50", "c_51", "c_52" ) )
 
   return(output_df)
 }
@@ -459,7 +467,7 @@ c_07 <- function(input_df=usheUtils::fake_course_df, with_intermediates=FALSE) {
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
-#' @importFrom dplyr if_else
+#' @importFrom dplyr case_when
 #'
 #' @param input_df A Data Frame. Must contain the following data fields: (course_level_id, contact_hours).
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
@@ -474,7 +482,7 @@ c_08 <- function(input_df=usheUtils::fake_course_df, with_intermediates=FALSE) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( c_contact_hrs = if_else(course_level_id == "CE" | course_level_id == "NC", contact_hours, "")) %>%
+    mutate( c_contact_hrs = case_when( (course_level_id == "CE" | course_level_id == "NC") ~ contact_hours ) ) %>%
     # Append USHE data element c_08
     mutate( c_08 = c_contact_hrs )
 

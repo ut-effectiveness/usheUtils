@@ -240,12 +240,6 @@ s_xx <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @export
 s_alias <- s_xx
 
-#' @rdname s_xx
-#' @examples c_xx()
-#' @export
-c_xx <- s_xx
-
-
 
 #' Calculate USHE Element s_01 (Institution)
 #'
@@ -280,7 +274,8 @@ s_01 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
     mutate( s_inst = "3671") %>%
     # Append USHE data element s_01
     mutate( s_01 = s_inst,
-            c_01 = s_inst )
+            c_01 = s_inst,
+            sc_01 = s_inst )
 
   if (!with_intermediates) {
     output_df <- output_df %>%
@@ -295,6 +290,11 @@ s_01 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @examples c_01()
 #' @export
 c_01 <- s_01
+
+#' @rdname s_01
+#' @examples sc_01()
+#' @export
+sc_01 <- s_01
 
 
 #' Calculate USHE Element s_02 (Year, Term, & Extract)
@@ -348,7 +348,8 @@ s_02 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
       TRUE ~ " ")) %>%
     # Append USHE data element s_02
     mutate(s_02 = paste0(s_year, s_term, s_extract) ) %>%
-    mutate(c_02 = s_02)
+    mutate(c_02 = s_02,
+           sc_02 = s_02)
 
   if (!with_intermediates) {
     output_df <- output_df %>%
@@ -363,6 +364,11 @@ s_02 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @examples c_02()
 #' @export
 c_02 <- s_02
+
+#' @rdname s_02
+#' @examples sc_02()
+#' @export
+sc_02 <- s_02
 
 
 #' Calculate USHE Element s_03 (Student ID)
@@ -397,7 +403,8 @@ s_03 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
                            paste0('D', student_id),
                            gsub('-', '', student_ssn) ) ) %>%
     # Append USHE data element s_03
-    mutate( s_03 = s_id  )
+    mutate( s_03 = s_id,
+            sc_03 = s_id)
 
   if (!with_intermediates) {
     output_df <- output_df %>%
@@ -407,6 +414,11 @@ s_03 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 
   return(output_df)
 }
+
+#' @rdname s_03
+#' @examples sc_03()
+#' @export
+sc_03 <- s_03
 
 
 #' Calculate USHE Element s_04 (Student ID Flag)

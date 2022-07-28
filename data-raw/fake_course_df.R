@@ -48,8 +48,8 @@ fake_course_df <- data.frame(
   program_type = sample(c("", NA), sample_size, replace = TRUE),
   instruction_method_code = sample(c("", NA), sample_size, replace = TRUE),
   contact_hours = sample(c("", NA), sample_size, replace = TRUE),
-  course_max_credits = sample(c("", NA), sample_size, replace = TRUE),
-  course_min_credits = sample(c("", NA), sample_size, replace = TRUE),
+  course_max_credits = sample(c(0:8, NA), sample_size, replace = TRUE),
+  course_min_credits = sample(c(0:8, NA), sample_size, replace = TRUE),
   season = sample(c("", NA), sample_size, replace = TRUE),
   academic_year = sample(c("", NA), sample_size, replace = TRUE),
   version_id = sample(c("", NA), sample_size, replace = TRUE)

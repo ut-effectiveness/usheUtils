@@ -2,9 +2,12 @@
 % Please edit documentation in R/students.R
 \name{s_03}
 \alias{s_03}
+\alias{sc_03}
 \title{Calculate USHE Element s_03 (Student ID)}
 \usage{
 s_03(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
+
+sc_03(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (student_id, student_ssn).}
@@ -30,4 +33,5 @@ G_Banner_ID must begin with an Alpha character representing the institution.
 \examples{
 s_03()
 
+sc_03()
 }
