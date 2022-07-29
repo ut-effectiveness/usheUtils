@@ -508,6 +508,7 @@ s_05 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
+#' @importFrom dplyr coalesce
 #'
 #' @param input_df A Data Frame. Must contain the following data fields: (last_name, first_name, middle_name, name_suffix).
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
@@ -522,10 +523,10 @@ s_06 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( s_last = last_name,
-            s_first = first_name,
-            s_middle = middle_name,
-            s_suffix = name_suffix ) %>%
+    mutate( s_last = coalesce(last_name, ''),
+            s_first = coalesce(first_name, ''),
+            s_middle = coalesce(middle_name, ''),
+            s_suffix = coalesce(name_suffix, '') ) %>%
     # Append USHE data element s_06
     mutate( s_06 = paste(s_last, s_first, s_middle, s_suffix, sep=' | ') )
 
@@ -548,6 +549,7 @@ s_06 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
+#' @importFrom dplyr coalesce
 #'
 #' @param input_df A Data Frame. Must contain the following data fields: (previous_last_name, previous_first_name, previous_middle_name, previous_name_suffix).
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
@@ -562,10 +564,10 @@ s_07 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( s_prev_last = previous_last_name,
-            s_prev_first = previous_first_name,
-            s_prev_middle = previous_middle_name,
-            s_prev_suffix = previous_name_suffix ) %>%
+    mutate( s_prev_last = coalesce(previous_last_name, ''),
+            s_prev_first = coalesce(previous_first_name, ''),
+            s_prev_middle = coalesce(previous_middle_name, ''),
+            s_prev_suffix = coalesce(previous_name_suffix, '') ) %>%
     # Append USHE data element s_07
     mutate( s_07 = paste(s_prev_last, s_prev_first, s_prev_middle, s_prev_suffix, sep=' | ') )
 
@@ -971,8 +973,9 @@ s_16 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
+#' @importFrom dplyr case_when
 #'
-#' @param input_df A Data Frame. Must contain the following data fields: (student_type_code).
+#' @param input_df A Data Frame. Must contain the following data fields: (student_type_code, high_school_graduation_date, term_start_date).
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
 #'
 #' @return Original data frame, with USHE data element s_17 appended. Will also return appended intermediate calculated fields, if option is set.
@@ -985,20 +988,22 @@ s_17 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate(s_reg_status = case_when( student_type_code == "0" ~ '?', # Undeclared
-                                     student_type_code == "1" ~ 'NG', # New Graduate
+    mutate(student_type_code_2 = case_when( ( student_type_code == "F" & is.na(high_school_graduation_date) == TRUE ) ~ "FF",
+                                            # + 365 indicates ~1 year after high school graduation date
+                                            ( student_type_code == "F" & as.Date(high_school_graduation_date) + 365 >= as.Date(term_start_date) ) ~ "FH",
+                                            # + 365 indicates ~1 year after high school graduation date
+                                            ( student_type_code == "F" & as.Date(high_school_graduation_date) + 365 <= as.Date(term_start_date) ) ~ "FF",
+                                            TRUE ~ student_type_code ) ) %>%
+    mutate(s_reg_status = case_when( student_type_code == "1" ~ 'NG', # New Graduate
                                      student_type_code == "2" ~ 'TG', # Transfer Graduate
                                      student_type_code == "3" ~ 'RG', # Readmit Graduate
                                      student_type_code == "5" ~ 'CG', # Continuing Graduate
                                      student_type_code == "C" ~ 'CS', # Continuing Registration
-                                     student_type_code == "F" ~ 'FF', # Freshman
                                      student_type_code == "H" ~ 'HS', # High School
-                                     student_type_code == "N" ~ 'FH', # New Freshman from HS
                                      student_type_code == "P" ~ 'CE', # Personal Interest, Non-Degree
                                      student_type_code == "R" ~ 'RS', # Readmit
-                                     student_type_code == "S" ~ 'NC?', # Special
                                      student_type_code == "T" ~ 'TU', # Transfer
-                                     ) ) %>%
+                                     TRUE ~ student_type_code_2) ) %>%
     # Append USHE data element s_17
     mutate( s_17 = s_reg_status )
 
@@ -2077,8 +2082,8 @@ s_44 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate(s_pell = case_when( is_pell_eligible == TRUE ~ "E",
-                               is_pell_awarded == TRUE ~ "R" )) %>%
+    mutate( s_pell = case_when( as.logical(is_pell_awarded) ~ "R",
+                                as.logical(is_pell_eligible) ~ "E" ) ) %>%
     # Append USHE data element s_44
     mutate( s_44 = s_pell )
 
