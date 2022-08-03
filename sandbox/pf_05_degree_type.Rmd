@@ -1,0 +1,118 @@
+---
+title: "PF-05 Degree TYPE"
+author: "Craig Demke"
+date: "`r Sys.Date()`"
+output: html_document
+---
+```{r set global chunks, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, message = FALSE
+)
+```
+
+```{r load libraries}
+library(tidyverse)
+library(datasets)
+library(plotly)
+library(gt)
+library(glue)
+library(stringr)
+library(DT)
+library(purrr)
+library(here)
+```
+
+
+### This is part of the Programs File Element: P-05 
+*   ELEMENT NAME: Degree Type
+	
+*   FIELD NAME: PF_DEG_TYPE
+
+*   FIELD FORMAT: Varchar, 13 Characters
+
+* DEFINITION: 
+The acronym which refers to the type of degree being award. For all certificates, master’s and doctor’s degrees, institutions may submit the acronyms currently in use by their institution. 
+For associate’s and bachelor’s degrees, institutions must choose the value from the table below that best represents institution awards at the same IPEDS degree level and CIP code. 
+
+
+
+### This data is found in Edify from export.academic_programs degree_id 
+```{}
+SELECT degree_id
+FROM export.academic_programs
+WHERE degree_id = 'MMFT
+LIMIT 10;
+```
+
+
+### Create fake data that matches the degree type in Edify
+
+```{r}
+pf_05_degree_type_test_df <- tibble(
+  degree_id = sample(c("AS","MMFT", "BS"), 23, replace = TRUE)
+ 
+)
+   
+
+DT::datatable(pf_05_degree_type_test_df, rownames=FALSE)
+```
+
+### Now let's see if we can pull in real data
+
+```{r}
+### We pull the data we want from the report database REPT 
+pf_05_degree_type_real_df <- utHelpR::get_data_from_sql_file(file_name="pf_05.sql",
+                                               dsn="edify",
+                                               context="sandbox")
+# display data pulled in table
+DT::datatable(pf_05_degree_type_real_df, rownames=FALSE)
+```
+
+
+### Here is the R script
+
+The first thing I need to do is to figure out how to filter out any degrees which have not been awarded
+
+```{r}
+
+change_pf_05_degree_type_df <- pf_05_degree_type_test_df %>%
+  mutate(degree_type = ifelse(degree_id == "MMFT", "MMF", degree_id ))
+
+DT::datatable(change_pf_05_degree_type_df, rownames=FALSE)
+
+```
+
+### Making a function
+
+```{r}
+
+format_pf_05_degree_type <- function(input_df, with_intermediates=FALSE) {
+  
+  output_df <- input_df %>%  
+    mutate(pf_degree_type = ifelse(degree_id == "MMFT", "MMF", degree_id )) %>% 
+    mutate(pf_05 = (pf_degree_type)) 
+  
+    if (!with_intermediates) {
+      output_df <- output_df %>%
+        select(-c(pf_degree_type))
+    }
+
+  return(output_df)
+  
+}
+
+```
+
+
+### Choose which data frame you want pass through the function 
+
+pf_05_degree_type_test_df for the fake data set
+```{r}
+DT::datatable(format_pf_05_degree_type(pf_05_degree_type_test_df), rownames=FALSE)
+```
+
+pf_05_degree_type_real_df for the real data
+```{r}
+DT::datatable(format_pf_05_degree_type(pf_05_degree_type_real_df), rownames=FALSE)
+```
+
