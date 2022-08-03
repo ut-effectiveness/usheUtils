@@ -275,7 +275,8 @@ s_01 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
     # Append USHE data element s_01
     mutate( s_01 = s_inst,
             c_01 = s_inst,
-            sc_01 = s_inst )
+            sc_01 = s_inst,
+            pf_01 = s_inst)
 
   if (!with_intermediates) {
     output_df <- output_df %>%
@@ -295,6 +296,11 @@ c_01 <- s_01
 #' @examples sc_01()
 #' @export
 sc_01 <- s_01
+
+#' @rdname s_01
+#' @examples pf_01()
+#' @export
+pf_01 <- s_01
 
 
 #' Calculate USHE Element s_02 (Year, Term, & Extract)
