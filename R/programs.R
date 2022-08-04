@@ -232,6 +232,7 @@ pf_05 <- function(input_df=usheUtils::fake_program_df, with_intermediates=FALSE)
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
+#' @importFrom dplyr if_else
 #'
 #' @param input_df A Data Frame. Must contain the following data fields: (is_perkins).
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
@@ -246,7 +247,7 @@ pf_06 <- function(input_df=usheUtils::fake_program_df, with_intermediates=FALSE)
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( pf_perkins = is_perkins) %>%
+    mutate( pf_perkins = if_else(is_perkins, "Y", "N") ) %>%
     # Append USHE data element pf_06
     mutate( pf_06 = pf_perkins )
 
