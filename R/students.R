@@ -601,6 +601,7 @@ s_07 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
 #' @importFrom dplyr coalesce
+#'  @importFrom dplyr if_else
 #'
 #' @param input_df A Data Frame. Must contain the following data fields: (local_address_zip_code, mailing_address_zip_code).
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
@@ -615,7 +616,11 @@ s_08 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate(s_curr_zip = coalesce( local_address_zip_code, mailing_address_zip_code ) ) %>%
+    mutate(s_curr_zip_intermediate = coalesce( local_address_zip_code, mailing_address_zip_code ) ) %>%
+    #TODO we need country code for both local and mailing address for this logic to work
+    mutate( s_curr_zip = if_else(FALSE,
+                                 "",
+                                 s_curr_zip_intermediate )) %>%
     # Append USHE data element s_08
     mutate( s_08 = s_curr_zip )
 
@@ -727,8 +732,9 @@ s_10 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
+#' @importFrom dplyr if_else
 #'
-#' @param input_df A Data Frame. Must contain the following data fields: (first_admit_state_code).
+#' @param input_df A Data Frame. Must contain the following data fields: (first_admit_state_code, first_admit_country_iso_code).
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
 #'
 #' @return Original data frame, with USHE data element s_11 appended. Will also return appended intermediate calculated fields, if option is set.
@@ -741,7 +747,9 @@ s_11 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( s_state_origin = first_admit_state_code ) %>%
+    mutate( s_state_origin = if_else(first_admit_country_iso_code != "US",
+                                     "XX",
+                                     first_admit_state_code )) %>%
     # Append USHE data element s_11
     mutate( s_11 = s_state_origin )
 
@@ -869,13 +877,14 @@ s_14 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
            s_ethnic_w = if_else(is_white, "W", " "),
            s_ethnic_n = if_else(is_international, "N", " "),
            s_ethnic_u = if_else(is_other_race, "U", " ") ) %>%
+    mutate( s_14_intermediate = paste0(s_ethnic_h, s_ethnic_a, s_ethnic_b, s_ethnic_i, s_ethnic_p, s_ethnic_w, s_ethnic_n, s_ethnic_u)) %>%
     # Append USHE data element s_14
-    mutate(s_14 = paste0(s_ethnic_h, s_ethnic_a, s_ethnic_b, s_ethnic_i, s_ethnic_p, s_ethnic_w, s_ethnic_n, s_ethnic_u) )
+    mutate( s_14 = if_else(is_international, "N", s_14_intermediate) )
 
   if (!with_intermediates) {
     output_df <- output_df %>%
       # remove fields used for intermediate calculations
-      select( -c(s_ethnic_h, s_ethnic_a, s_ethnic_b, s_ethnic_i, s_ethnic_p, s_ethnic_w, s_ethnic_n, s_ethnic_u) )
+      select( -c(s_ethnic_h, s_ethnic_a, s_ethnic_b, s_ethnic_i, s_ethnic_p, s_ethnic_w, s_ethnic_n, s_ethnic_u, s_14_intermediate) )
   }
 
   return(output_df)
@@ -1075,7 +1084,7 @@ s_18 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
 #'
-#' @param input_df A Data Frame. Must contain the following data fields: (primary_degree_id).
+#' @param input_df A Data Frame. Must contain the following data fields: (ipeds_award_level_code).
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
 #'
 #' @return Original data frame, with USHE data element s_19 appended. Will also return appended intermediate calculated fields, if option is set.
@@ -1088,30 +1097,7 @@ s_19 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate(s_deg_intent = case_when( primary_degree_id == "AS" ~ '3',
-                                     primary_degree_id == "BME" ~ '5',
-                                     primary_degree_id == "MAT" ~ '7',
-                                     primary_degree_id == "TR" ~ '0', #?
-                                     primary_degree_id == "AB" ~ '3',
-                                     primary_degree_id == "MAT" ~ '7',
-                                     primary_degree_id == "BAS" ~ '5',
-                                     primary_degree_id == "BFA" ~ '5',
-                                     primary_degree_id == "CER1" ~ '?', #?
-                                     primary_degree_id == "APE" ~ '3',
-                                     primary_degree_id == "AC" ~ '3',
-                                     primary_degree_id == "MA" ~ '7',
-                                     primary_degree_id == "CER0" ~ '?', #?
-                                     primary_degree_id == "AAS" ~ '3',
-                                     primary_degree_id == "BIS" ~ '5',
-                                     primary_degree_id == "" ~ '0', #?
-                                     primary_degree_id == "BSN" ~ '5',
-                                     primary_degree_id == "MACC" ~ '7',
-                                     primary_degree_id == "BA" ~ '5',
-                                     primary_degree_id == "ND" ~ '0', #?
-                                     primary_degree_id == "BM" ~ '5',
-                                     primary_degree_id == "AA" ~ '3',
-                                     primary_degree_id == "MMFT" ~ '7',
-                                     primary_degree_id == "BS" ~ '5') ) %>%
+    mutate(s_deg_intent = ipeds_award_level_code) %>%
     # Append USHE data element s_19
     mutate( s_19 = s_deg_intent )
 
@@ -1156,7 +1142,7 @@ s_20 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
     # Calculate intermediate fields
     mutate(s_cum_hrs_ugrad = if_else(level_id == "GR",
                                      0,
-                                     round(institutional_cumulative_credits_earned, 3))) %>%
+                                     round(institutional_cumulative_credits_earned, 1))) %>%
     # Append USHE data element s_20
     mutate( s_20 = s_cum_hrs_ugrad )
 
@@ -1248,7 +1234,7 @@ s_22 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
   output_df <- input_df %>%
     # Calculate intermediate fields
     mutate(s_cum_hrs_grad = if_else(level_id == "GR",
-                                    round(institutional_cumulative_credits_earned, 3),
+                                    round(institutional_cumulative_credits_earned, 1),
                                     0) ) %>%
     # Append USHE data element s_22
     mutate( s_22 = s_cum_hrs_grad )
@@ -1650,7 +1636,7 @@ s_32 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( s_total_clep = round(total_cumulative_clep_credits_earned, 3) ) %>%
+    mutate( s_total_clep = round(total_cumulative_clep_credits_earned, 1) ) %>%
     # Append USHE data element s_32
     mutate( s_32 = s_total_clep )
 
@@ -1687,7 +1673,7 @@ s_33 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( s_total_ap = round(total_cumulative_ap_credits_earned, 3) ) %>%
+    mutate( s_total_ap = round(total_cumulative_ap_credits_earned, 1) ) %>%
     # Append USHE data element s_33
     mutate( s_33 = s_total_ap )
 
