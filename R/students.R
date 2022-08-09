@@ -601,7 +601,7 @@ s_07 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
 #' @importFrom dplyr coalesce
-#'  @importFrom dplyr if_else
+#' @importFrom dplyr if_else
 #'
 #' @param input_df A Data Frame. Must contain the following data fields: (local_address_zip_code, mailing_address_zip_code).
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
@@ -616,11 +616,10 @@ s_08 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate(s_curr_zip_intermediate = coalesce( local_address_zip_code, mailing_address_zip_code ) ) %>%
     #TODO we need country code for both local and mailing address for this logic to work
-    mutate( s_curr_zip = if_else(FALSE,
-                                 "",
-                                 s_curr_zip_intermediate )) %>%
+    #mutate(s_curr_zip_intermediate = coalesce( local_address_zip_code, mailing_address_zip_code ) ) %>%
+    #mutate( s_curr_zip = if_else(FALSE, "", s_curr_zip_intermediate )) %>%
+    mutate(s_curr_zip = coalesce( local_address_zip_code, mailing_address_zip_code ) ) %>%
     # Append USHE data element s_08
     mutate( s_08 = s_curr_zip )
 
