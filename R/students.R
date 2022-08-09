@@ -1156,7 +1156,7 @@ s_20 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
     # Calculate intermediate fields
     mutate(s_cum_hrs_ugrad = if_else(level_id == "GR",
                                      0,
-                                     round(institutional_cumulative_credits_earned, 1))) %>%
+                                     round(institutional_cumulative_credits_earned, 3))) %>%
     # Append USHE data element s_20
     mutate( s_20 = s_cum_hrs_ugrad )
 
@@ -1205,7 +1205,7 @@ s_21 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
     # Calculate intermediate fields
     mutate(s_cum_gpa_ugrad = if_else(level_id == "GR",
                                     0,
-                                    round(institutional_cumulative_gpa, 2))) %>%
+                                    round(institutional_cumulative_gpa, 3))) %>%
     # Append USHE data element s_21
     mutate( s_21 = s_cum_gpa_ugrad )
 
@@ -1248,7 +1248,7 @@ s_22 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
   output_df <- input_df %>%
     # Calculate intermediate fields
     mutate(s_cum_hrs_grad = if_else(level_id == "GR",
-                                    round(institutional_cumulative_credits_earned, 1),
+                                    round(institutional_cumulative_credits_earned, 3),
                                     0) ) %>%
     # Append USHE data element s_22
     mutate( s_22 = s_cum_hrs_grad )
@@ -1294,7 +1294,7 @@ s_23 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
   output_df <- input_df %>%
     # Calculate intermediate fields
     mutate(s_cum_gpa_grad = if_else(level_id == "GR",
-                                    round(institutional_cumulative_gpa, 2),
+                                    round(institutional_cumulative_gpa, 3),
                                     0) ) %>%
     # Append USHE data element s_20
     mutate( s_23 = s_cum_gpa_grad )
@@ -1478,6 +1478,7 @@ s_27 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
+#' @importFrom dplyr case_when
 #'
 #' @param input_df A Data Frame. Must contain the following data fields: (latest_high_school_code).
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
@@ -1492,7 +1493,15 @@ s_28 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( s_high_school = latest_high_school_code ) %>%
+    mutate( s_high_school = case_when(
+      latest_high_school_code ==  "CHSPE" ~ "459700",
+      latest_high_school_code ==  "459992" ~ "459600",
+      latest_high_school_code ==  "459993" ~ "459050",
+      latest_high_school_code ==  "459994" ~ "459200",
+      latest_high_school_code ==  "459996" ~ "459200",
+      latest_high_school_code ==  "459995" ~ "459300",
+      latest_high_school_code ==  "459998" ~ "459500",
+      TRUE ~ latest_high_school_code)) %>%
     # Append USHE data element s_28
     mutate( s_28 = s_high_school )
 
@@ -1530,7 +1539,7 @@ s_29 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
   output_df <- input_df %>%
     # Calculate intermediate fields
     # TODO: This needs to be implemented.
-    mutate( s_hb75_waiver = NA ) %>%
+    mutate( s_hb75_waiver = house_bill_75_waiver ) %>%
     # Append USHE data element s_29
     mutate( s_29 = s_hb75_waiver )
 
@@ -1642,7 +1651,7 @@ s_32 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( s_total_clep = total_cumulative_clep_credits_earned) %>%
+    mutate( s_total_clep = round(total_cumulative_clep_credits_earned, 3) ) %>%
     # Append USHE data element s_32
     mutate( s_32 = s_total_clep )
 
@@ -1679,7 +1688,7 @@ s_33 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( s_total_ap = total_cumulative_ap_credits_earned) %>%
+    mutate( s_total_ap = round(total_cumulative_ap_credits_earned, 3) ) %>%
     # Append USHE data element s_33
     mutate( s_33 = s_total_ap )
 
@@ -1752,7 +1761,7 @@ s_35 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( s_banner_id = student_id) %>%
+    mutate( s_banner_id = paste0('D', student_id )) %>%
     # Append USHE data element s_35
     mutate( s_35 = s_banner_id )
 
