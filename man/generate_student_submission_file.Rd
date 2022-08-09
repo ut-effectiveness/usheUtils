@@ -26,7 +26,8 @@ house_bill_75_waiver, secondary_major_cip_code, act_composite_score,
 primary_major_cip_code, act_english_score, act_math_score, act_read_score,
 act_science_score, high_school_graduation_date, institutional_gpa,
 is_pell_eligible, is_pell_awarded, is_bia, primary_major_college_id,
-primary_major_desc, secondary_major_college_id, secondary_major_desc).}
+primary_major_desc, secondary_major_college_id, secondary_major_desc,
+mailing_address_country_code).}
 }
 \value{
 A Data Frame, with all of the USHE elements required for upload submission.

@@ -20,7 +20,8 @@
 #'                                                                        primary_major_cip_code, act_english_score, act_math_score, act_read_score,
 #'                                                                        act_science_score, high_school_graduation_date, institutional_gpa,
 #'                                                                        is_pell_eligible, is_pell_awarded, is_bia, primary_major_college_id,
-#'                                                                        primary_major_desc, secondary_major_college_id, secondary_major_desc).
+#'                                                                        primary_major_desc, secondary_major_college_id, secondary_major_desc,
+#'                                                                        mailing_address_country_code).
 #'
 #' @return A Data Frame, with all of the intermediate values used to create the USHE elements required for upload submission.
 #' @export
@@ -121,7 +122,8 @@ generate_student_validation_file <- function(input_df=usheUtils::fake_student_df
 #'                                                                        primary_major_cip_code, act_english_score, act_math_score, act_read_score,
 #'                                                                        act_science_score, high_school_graduation_date, institutional_gpa,
 #'                                                                        is_pell_eligible, is_pell_awarded, is_bia, primary_major_college_id,
-#'                                                                        primary_major_desc, secondary_major_college_id, secondary_major_desc).
+#'                                                                        primary_major_desc, secondary_major_college_id, secondary_major_desc,
+#'                                                                        mailing_address_country_code).
 #'
 #' @return A Data Frame, with all of the USHE elements required for upload submission.
 #' @export
@@ -603,7 +605,7 @@ s_07 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @importFrom dplyr coalesce
 #' @importFrom dplyr if_else
 #'
-#' @param input_df A Data Frame. Must contain the following data fields: (local_address_zip_code, mailing_address_zip_code).
+#' @param input_df A Data Frame. Must contain the following data fields: (local_address_zip_code, mailing_address_zip_code, mailing_address_country_code).
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
 #'
 #' @return Original data frame, with USHE data element s_08 appended. Will also return appended intermediate calculated fields, if option is set.
@@ -615,11 +617,11 @@ s_07 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 s_08 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
 
   output_df <- input_df %>%
-    # Calculate intermediate fields
-    #TODO we need country code for both local and mailing address for this logic to work
-    #mutate(s_curr_zip_intermediate = coalesce( local_address_zip_code, mailing_address_zip_code ) ) %>%
-    #mutate( s_curr_zip = if_else(FALSE, "", s_curr_zip_intermediate )) %>%
-    mutate(s_curr_zip = coalesce( local_address_zip_code, mailing_address_zip_code ) ) %>%
+      # Calculate intermediate fields
+      mutate(s_curr_zip_intermediate = coalesce( local_address_zip_code, mailing_address_zip_code ) ) %>%
+      mutate( s_curr_zip = if_else(mailing_address_country_code != "USA",
+                                   "",
+                                   s_curr_zip_intermediate )) %>%
     # Append USHE data element s_08
     mutate( s_08 = s_curr_zip )
 
