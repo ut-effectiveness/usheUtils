@@ -1538,7 +1538,6 @@ s_29 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    # TODO: This needs to be implemented.
     mutate( s_hb75_waiver = house_bill_75_waiver ) %>%
     # Append USHE data element s_29
     mutate( s_29 = s_hb75_waiver )
