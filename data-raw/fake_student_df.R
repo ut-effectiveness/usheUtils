@@ -5,8 +5,8 @@ sample_size <- 10000
 fake_student_df <- data.frame(
   student_id = stringr::str_pad( sample(1:999999, sample_size) , 8, pad = '0'),
   previous_student_id = as.character( sample(1:999999, sample_size) ),
-  student_ssn = sample(c("123-45-6789", NA), sample_size, replace = TRUE),
-  student_ssid = as.character( sample(1000000:3000000, sample_size) ),
+  ssn = sample(c("123-45-6789", NA), sample_size, replace = TRUE),
+  ssid = as.character( sample(1000000:3000000, sample_size) ),
   gender_code = sample(c("M", "F", NA), sample_size, replace = TRUE),
   last_name = sample(c("Doe", "Smith", "Johnson", "Williams", NA), sample_size, replace = TRUE),
   first_name = sample(c("Jane", "Joe", "Robert", "Mary", NA), sample_size, replace = TRUE),
@@ -60,12 +60,14 @@ fake_student_df <- data.frame(
   is_pell_eligible = sample(c(TRUE, FALSE), sample_size, replace = TRUE),
   is_pell_awarded = sample(c(TRUE, FALSE), sample_size, replace = TRUE),
   is_bia = sample(c(TRUE, FALSE), sample_size, replace = TRUE),
-  primary_major_college_id = sample(c("College of Awesome", "College of Greatness", NA), sample_size, replace = TRUE),
+  college_desc = sample(c("College of Awesome", "College of Greatness", NA), sample_size, replace = TRUE),
   secondary_major_college_id = sample(c("College of Awesome", "College of Greatness", NA), sample_size, replace = TRUE),
   primary_major_desc = sample(c("Great Major", "Awesome Major", NA), sample_size, replace = TRUE),
   secondary_major_desc = sample(c("Great Major", "Awesome Major", NA), sample_size, replace = TRUE),
   ipeds_award_level_code = sample(as.character(c(1:7, NA)), sample_size, replace = TRUE),
   house_bill_75_waiver = sample(as.numeric(c(-100:100, NA)), sample_size, replace = TRUE),
-  mailing_address_country_code = sample(c("Canada", "Japan", "USA", NA), sample_size, replace = TRUE))
+  mailing_address_country_code = sample(c("Canada", "Japan", "USA", NA), sample_size, replace = TRUE),
+  local_address_country= sample(c("Canada", "Japan", "USA", NA), sample_size, replace = TRUE),
+  institutional_term_gpa = sample(0:400, sample_size, replace = TRUE) / 100)
 
 usethis::use_data(fake_student_df, overwrite = TRUE)

@@ -8,7 +8,7 @@ generate_student_validation_file(input_df = usheUtils::fake_student_df)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (season, academic_year, version_id, student_id,
-student_ssn, student_ssid, previous_student_id,
+ssn, ssid, previous_student_id,
 last_name, first_name, middle_name, name_suffix,
 previous_last_name, previous_first_name, previous_middle_name,
 previous_name_suffix, local_address_zip_code, mailing_address_zip_code,
@@ -27,7 +27,8 @@ primary_major_cip_code, act_english_score, act_math_score, act_read_score,
 act_science_score, high_school_graduation_date, institutional_gpa,
 is_pell_eligible, is_pell_awarded, is_bia, primary_major_college_id,
 primary_major_desc, secondary_major_college_id, secondary_major_desc,
-mailing_address_country_code).}
+mailing_address_country_code, institutional_term_gpa, college_desc,
+local_address_country).}
 }
 \value{
 A Data Frame, with all of the intermediate values used to create the USHE elements required for upload submission.

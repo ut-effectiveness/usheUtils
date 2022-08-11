@@ -12,7 +12,7 @@
 #'                                                                        budget_code,
 #'                                                                        is_concurrent_course,
 #'                                                                        student_id,
-#'                                                                        student_ssn,
+#'                                                                        ssn,
 #'                                                                        course_reference_number).
 #' @return A Data Frame, with all of the intermediate values used to create the USHE elements required for upload submission.
 #' @export
@@ -63,7 +63,7 @@ generate_student_course_validation_file <- function(input_df=usheUtils::fake_stu
 #'                                                                        budget_code,
 #'                                                                        is_concurrent_course,
 #'                                                                        student_id,
-#'                                                                        student_ssn,
+#'                                                                        ssn,
 #'                                                                        course_reference_number).
 #'
 #' @return A Data Frame, with all of the USHE elements required for upload submission.
