@@ -1,7 +1,7 @@
 
 #' Generate Student Validation File
 #'
-#' @param input_df A Data Frame. Must contain the following data fields: (season, academic_year, version_id, student_id,
+#' @param input_df A Data Frame. Must contain the following data fields: (season, academic_year_code, version_id, student_id,
 #'                                                                        ssn, ssid, previous_student_id,
 #'                                                                        last_name, first_name, middle_name, name_suffix,
 #'                                                                        previous_last_name, previous_first_name, previous_middle_name,
@@ -15,9 +15,9 @@
 #'                                                                        institutional_cumulative_credits_earned, institutional_cumulative_gpa,
 #'                                                                        transfer_cumulative_credits_earned, total_cumulative_clep_credits_earned,
 #'                                                                        total_cumulative_ap_credits_earned, full_time_part_time_code, version_date,
-#'                                                                        birth_date, first_admit_country_iso_code, latest_high_school_code,
+#'                                                                        birth_date, first_admit_country_iso_code, high_school_code,
 #'                                                                        house_bill_75_waiver, secondary_major_cip_code, act_composite_score,
-#'                                                                        primary_major_cip_code, act_english_score, act_math_score, act_read_score,
+#'                                                                        primary_major_cip_code, act_english_score, act_math_score, act_reading_score,
 #'                                                                        act_science_score, high_school_graduation_date, institutional_gpa,
 #'                                                                        is_pell_eligible, is_pell_awarded, is_bia, primary_major_college_id,
 #'                                                                        primary_major_desc, secondary_major_college_id, secondary_major_desc,
@@ -104,7 +104,7 @@ generate_student_validation_file <- function(input_df=usheUtils::fake_student_df
 
 #' Generate Student Submission File
 #'
-#' @param input_df A Data Frame. Must contain the following data fields: (season, academic_year, version_id, student_id,
+#' @param input_df A Data Frame. Must contain the following data fields: (season, academic_year_code, version_id, student_id,
 #'                                                                        ssn, ssid, previous_student_id,
 #'                                                                        last_name, first_name, middle_name, name_suffix,
 #'                                                                        previous_last_name, previous_first_name, previous_middle_name,
@@ -118,9 +118,9 @@ generate_student_validation_file <- function(input_df=usheUtils::fake_student_df
 #'                                                                        institutional_cumulative_credits_earned, institutional_cumulative_gpa,
 #'                                                                        transfer_cumulative_credits_earned, total_cumulative_clep_credits_earned,
 #'                                                                        total_cumulative_ap_credits_earned, full_time_part_time_code, version_date,
-#'                                                                        birth_date, first_admit_country_iso_code, latest_high_school_code,
+#'                                                                        birth_date, first_admit_country_iso_code, high_school_code,
 #'                                                                        house_bill_75_waiver, secondary_major_cip_code, act_composite_score,
-#'                                                                        primary_major_cip_code, act_english_score, act_math_score, act_read_score,
+#'                                                                        primary_major_cip_code, act_english_score, act_math_score, act_reading_score,
 #'                                                                        act_science_score, high_school_graduation_date, institutional_gpa,
 #'                                                                        is_pell_eligible, is_pell_awarded, is_bia, primary_major_college_id,
 #'                                                                        primary_major_desc, secondary_major_college_id, secondary_major_desc,
@@ -325,7 +325,7 @@ pf_01 <- s_01
 #' @importFrom dplyr case_when
 #' @importFrom dplyr select
 #'
-#' @param input_df A Data Frame. Must contain the following data fields: (season, academic_year, version_id).
+#' @param input_df A Data Frame. Must contain the following data fields: (season, academic_year_code, version_id).
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
 #'
 #' @return Original data frame, with USHE data element s_02 appended. Will also return appended intermediate calculated fields, if option is set.
@@ -339,9 +339,9 @@ s_02 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
   output_df <- input_df %>%
     # Calculate intermediate fields
     mutate(s_year = case_when(
-      season == "Summer" ~ as.character( (as.numeric(academic_year) + 1) ),
-      season == "Fall" ~ as.character( (as.numeric(academic_year) + 1) ),
-      season == "Spring" ~ as.character( academic_year ),
+      season == "Summer" ~ as.character( (as.numeric(academic_year_code) + 1) ),
+      season == "Fall" ~ as.character( (as.numeric(academic_year_code) + 1) ),
+      season == "Spring" ~ as.character( academic_year_code ),
       TRUE ~ " ")) %>%
     mutate(s_term = case_when(
       season == "Summer" ~ '1',
@@ -1467,7 +1467,7 @@ s_27 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @importFrom dplyr select
 #' @importFrom dplyr case_when
 #'
-#' @param input_df A Data Frame. Must contain the following data fields: (latest_high_school_code).
+#' @param input_df A Data Frame. Must contain the following data fields: (high_school_code).
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
 #'
 #' @return Original data frame, with USHE data element s_28 appended. Will also return appended intermediate calculated fields, if option is set.
@@ -1481,14 +1481,14 @@ s_28 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
   output_df <- input_df %>%
     # Calculate intermediate fields
     mutate( s_high_school = case_when(
-      latest_high_school_code ==  "CHSPE" ~ "459700",
-      latest_high_school_code ==  "459992" ~ "459600",
-      latest_high_school_code ==  "459993" ~ "459050",
-      latest_high_school_code ==  "459994" ~ "459200",
-      latest_high_school_code ==  "459996" ~ "459200",
-      latest_high_school_code ==  "459995" ~ "459300",
-      latest_high_school_code ==  "459998" ~ "459500",
-      TRUE ~ latest_high_school_code)) %>%
+      high_school_code ==  "CHSPE" ~ "459700",
+      high_school_code ==  "459992" ~ "459600",
+      high_school_code ==  "459993" ~ "459050",
+      high_school_code ==  "459994" ~ "459200",
+      high_school_code ==  "459996" ~ "459200",
+      high_school_code ==  "459995" ~ "459300",
+      high_school_code ==  "459998" ~ "459500",
+      TRUE ~ high_school_code)) %>%
     # Append USHE data element s_28
     mutate( s_28 = s_high_school )
 
@@ -1916,7 +1916,7 @@ s_39 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
 #'
-#' @param input_df A Data Frame. Must contain the following data fields: (act_read_score).
+#' @param input_df A Data Frame. Must contain the following data fields: (act_reading_score).
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
 #'
 #' @return Original data frame, with USHE data element s_40 appended. Will also return appended intermediate calculated fields, if option is set.
@@ -1929,7 +1929,7 @@ s_40 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( s_act_read = act_read_score ) %>%
+    mutate( s_act_read = act_reading_score ) %>%
     # Append USHE data element s_40
     mutate( s_40 = s_act_read )
 

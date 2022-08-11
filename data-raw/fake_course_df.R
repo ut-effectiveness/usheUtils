@@ -51,7 +51,7 @@ fake_course_df <- data.frame(
   course_max_credits = sample(c(0:8, NA), sample_size, replace = TRUE),
   course_min_credits = sample(c(0:8, NA), sample_size, replace = TRUE),
   season = sample(c("", NA), sample_size, replace = TRUE),
-  academic_year = sample(c("", NA), sample_size, replace = TRUE),
+  academic_year_code = sample(c("", NA), sample_size, replace = TRUE),
   version_id = sample(c("", NA), sample_size, replace = TRUE)
 )
 

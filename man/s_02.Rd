@@ -13,7 +13,7 @@ c_02(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
 sc_02(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
 }
 \arguments{
-\item{input_df}{A Data Frame. Must contain the following data fields: (season, academic_year, version_id).}
+\item{input_df}{A Data Frame. Must contain the following data fields: (season, academic_year_code, version_id).}
 
 \item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
