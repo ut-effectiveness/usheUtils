@@ -49,7 +49,7 @@
 #'                                                                        course_max_credits,
 #'                                                                        course_min_credits,
 #'                                                                        season,
-#'                                                                        academic_year,
+#'                                                                        academic_year_code_code,
 #'                                                                        version_id).
 #'
 #'
@@ -185,7 +185,7 @@ generate_course_validation_file <- function(input_df=usheUtils::fake_course_df) 
 #'                                                                        course_max_credits,
 #'                                                                        course_min_credits,
 #'                                                                        season,
-#'                                                                        academic_year,
+#'                                                                        academic_year_code,
 #'                                                                        version_id).
 #'
 #' @return A Data Frame, with all of the USHE elements required for upload submission.

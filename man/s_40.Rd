@@ -7,7 +7,7 @@
 s_40(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
 }
 \arguments{
-\item{input_df}{A Data Frame. Must contain the following data fields: (act_read_score).}
+\item{input_df}{A Data Frame. Must contain the following data fields: (act_reading_score).}
 
 \item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }

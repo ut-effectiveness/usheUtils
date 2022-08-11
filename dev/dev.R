@@ -2,6 +2,10 @@
 # This file should be used to keep track of your development throughout the project.
 
 
+# package dependencies ####
+usethis::use_package("stringr")
+
+
 # Add Fake Data Sets ####
 # Adding fake data sets to the package (in the form it would come as from a data warehouse)
 

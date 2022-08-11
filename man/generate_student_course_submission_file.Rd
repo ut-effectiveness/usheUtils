@@ -20,7 +20,7 @@ latest_student_type_code,
 budget_code,
 is_concurrent_course,
 student_id,
-student_ssn,
+ssn,
 course_reference_number).}
 }
 \value{

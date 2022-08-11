@@ -7,8 +7,8 @@
 generate_student_submission_file(input_df = usheUtils::fake_student_df)
 }
 \arguments{
-\item{input_df}{A Data Frame. Must contain the following data fields: (season, academic_year, version_id, student_id,
-student_ssn, student_ssid, previous_student_id,
+\item{input_df}{A Data Frame. Must contain the following data fields: (season, academic_year_code, version_id, student_id,
+ssn, ssid, previous_student_id,
 last_name, first_name, middle_name, name_suffix,
 previous_last_name, previous_first_name, previous_middle_name,
 previous_name_suffix, local_address_zip_code, mailing_address_zip_code,
@@ -21,12 +21,14 @@ primary_level_class_id, primary_degree_id, level_id,
 institutional_cumulative_credits_earned, institutional_cumulative_gpa,
 transfer_cumulative_credits_earned, total_cumulative_clep_credits_earned,
 total_cumulative_ap_credits_earned, full_time_part_time_code, version_date,
-birth_date, first_admit_country_iso_code, latest_high_school_code,
+birth_date, first_admit_country_iso_code, high_school_code,
 house_bill_75_waiver, secondary_major_cip_code, act_composite_score,
-primary_major_cip_code, act_english_score, act_math_score, act_read_score,
+primary_major_cip_code, act_english_score, act_math_score, act_reading_score,
 act_science_score, high_school_graduation_date, institutional_gpa,
 is_pell_eligible, is_pell_awarded, is_bia, primary_major_college_id,
-primary_major_desc, secondary_major_college_id, secondary_major_desc).}
+primary_major_desc, secondary_major_college_id, secondary_major_desc,
+mailing_address_country_code, institutional_term_gpa, college_desc,
+local_address_country, secondary_ipeds_award_level_code).}
 }
 \value{
 A Data Frame, with all of the USHE elements required for upload submission.

@@ -7,7 +7,7 @@
 s_04(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
 }
 \arguments{
-\item{input_df}{A Data Frame. Must contain the following data fields: (student_id, student_ssn).}
+\item{input_df}{A Data Frame. Must contain the following data fields: (student_id, ssn).}
 
 \item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }

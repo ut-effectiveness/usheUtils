@@ -55,7 +55,7 @@ contact_hours,
 course_max_credits,
 course_min_credits,
 season,
-academic_year,
+academic_year_code,
 version_id).}
 }
 \value{
