@@ -659,7 +659,8 @@ s_11 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
   output_df <- input_df %>%
     # Calculate intermediate fields
     mutate( s_state_origin = case_when( is.na(first_admit_state_code) ~ "UN",
-                                        first_admit_country_iso_code != "US" ~ "XX",
+                                        ( first_admit_country_iso_code != "US"
+                                          & !is.na(first_admit_country_iso_code) ) ~ "XX",
                                         TRUE ~ first_admit_state_code ) ) %>%
     # Append USHE data element s_11
     mutate( s_11 = s_state_origin )
