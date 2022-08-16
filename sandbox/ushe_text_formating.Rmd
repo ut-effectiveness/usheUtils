@@ -1,0 +1,73 @@
+---
+title: "USHE text function"
+author: "Craig Demke"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r set global chunks, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, message = FALSE
+)
+```
+
+```{r load libraries}
+library(tidyverse)
+library(datasets)
+library(gt)
+library(glue)
+library(stringr)
+library(DT)
+library(purrr)
+library(here)
+```
+
+
+```{r set global chunks, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, message = FALSE
+)
+```
+
+Function for package
+```{}
+#' USHE Text Formating for Submission
+#' 
+#' Converts dataframes to the txt | pipe that USHE reports requires
+#' 
+#' @param input_df the data frame made from the usheUtills functions
+#' @param text_name the desired name your text file
+#' @import tidyverse
+#' @export
+#' @example ushe_text_format(program_file_complete, "ut-pf-24.txt")
+
+
+
+```
+
+
+
+
+using the write table funtion with an example
+```{r load libraries}
+
+write.table(program_file_complete, sep = "|", file = here::here("sensitive", "ut-pf-23.txt"), na = "", row.names = FALSE, col.names = FALSE, quote = FALSE)
+
+```
+
+maek a function to take any df and name it to a text file
+```{r}
+
+ushe_text_format <- function(input_df, text_name) {
+
+output_df <- input_df %>%  
+  write.table(input_df, sep = "|", file = here::here("sensitive", text_name),
+              na = "", row.names = FALSE, col.names = FALSE, quote = FALSE)
+
+  return(output_df)
+
+}
+
+```
+
+
