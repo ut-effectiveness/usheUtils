@@ -7,7 +7,7 @@
 s_24(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
 }
 \arguments{
-\item{input_df}{A Data Frame. Must contain the following data fields: (transfer_cumulative_credits_earned, total_cumulative_clep_credits_earned, total_cumulative_ap_credits_earned).}
+\item{input_df}{A Data Frame. Must contain the following data fields: (transfer_cumulative_credits_earned).}
 
 \item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
