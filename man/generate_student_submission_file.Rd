@@ -4,7 +4,10 @@
 \alias{generate_student_submission_file}
 \title{Generate Student Submission File}
 \usage{
-generate_student_submission_file(input_df = usheUtils::fake_student_df)
+generate_student_submission_file(
+  input_df = usheUtils::fake_student_df,
+  with_intermediates = FALSE
+)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (season, academic_year_code, version_id, student_id,
@@ -29,9 +32,12 @@ is_pell_eligible, is_pell_awarded, is_bia, primary_major_college_id,
 primary_major_desc, secondary_major_college_id, secondary_major_desc,
 institutional_term_gpa, college_desc,
 secondary_ipeds_award_level_code).}
+
+\item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
 \value{
 A Data Frame, with all of the USHE elements required for upload submission.
+This will also include intermediate values, used to calculate USHE data elements, if option is set.
 }
 \description{
 Generate Student Submission File
