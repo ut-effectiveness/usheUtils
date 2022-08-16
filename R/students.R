@@ -1,108 +1,4 @@
 
-#' Generate Student Validation File
-#'
-#' @param input_df A Data Frame. Must contain the following data fields: (season, academic_year_code, version_id, student_id,
-#'                                                                        ssn, ssid, previous_student_id,
-#'                                                                        last_name, first_name, middle_name, name_suffix,
-#'                                                                        previous_last_name, previous_first_name, previous_middle_name,
-#'                                                                        previous_name_suffix, local_address_zip_code, mailing_address_zip_code,
-#'                                                                        us_citizenship_code, first_admit_county_code, first_admit_state_code,
-#'                                                                        first_admit_country_iso_code, first_admit_state_code, birth_date, gender_code,
-#'                                                                        is_hispanic_latino_ethnicity, is_asian, is_black, is_american_indian_alaskan,
-#'                                                                        is_hawaiian_pacific_islander, is_white, is_international, is_other_race,
-#'                                                                        residency_code, primary_major_cip_code, student_type_code,
-#'                                                                        primary_level_class_id, primary_degree_id, level_id,
-#'                                                                        institutional_cumulative_credits_earned, institutional_cumulative_gpa,
-#'                                                                        transfer_cumulative_credits_earned, total_cumulative_clep_credits_earned,
-#'                                                                        total_cumulative_ap_credits_earned, full_time_part_time_code, version_date,
-#'                                                                        birth_date, first_admit_country_iso_code, high_school_code,
-#'                                                                        house_bill_75_waiver, secondary_major_cip_code, act_composite_score,
-#'                                                                        primary_major_cip_code, act_english_score, act_math_score, act_reading_score,
-#'                                                                        act_science_score, high_school_graduation_date, institutional_gpa,
-#'                                                                        is_pell_eligible, is_pell_awarded, is_bia, primary_major_college_id,
-#'                                                                        primary_major_desc, secondary_major_college_id, secondary_major_desc,
-#'                                                                        mailing_address_country_code, institutional_term_gpa, college_desc,
-#'                                                                        local_address_country, secondary_ipeds_award_level_code).
-#'
-#' @return A Data Frame, with all of the intermediate values used to create the USHE elements required for upload submission.
-#' @export
-#'
-#' @examples
-#' generate_student_validation_file()
-#'
-generate_student_validation_file <- function(input_df=usheUtils::fake_student_df) {
-
-  original_column_names <- colnames(input_df)
-
-  output_df <- input_df %>%
-    s_01(with_intermediates = TRUE) %>%
-    s_02(with_intermediates = TRUE) %>%
-    s_03(with_intermediates = TRUE) %>%
-    s_04(with_intermediates = TRUE) %>%
-    s_05(with_intermediates = TRUE) %>%
-    s_06(with_intermediates = TRUE) %>%
-    s_07(with_intermediates = TRUE) %>%
-    s_08(with_intermediates = TRUE) %>%
-    s_09(with_intermediates = TRUE) %>%
-    s_10(with_intermediates = TRUE) %>%
-    s_11(with_intermediates = TRUE) %>%
-    s_12(with_intermediates = TRUE) %>%
-    s_13(with_intermediates = TRUE) %>%
-    s_14(with_intermediates = TRUE) %>%
-    s_15(with_intermediates = TRUE) %>%
-    s_16(with_intermediates = TRUE) %>%
-    s_17(with_intermediates = TRUE) %>%
-    s_18(with_intermediates = TRUE) %>%
-    s_19(with_intermediates = TRUE) %>%
-    s_20(with_intermediates = TRUE) %>%
-    s_21(with_intermediates = TRUE) %>%
-    s_22(with_intermediates = TRUE) %>%
-    s_23(with_intermediates = TRUE) %>%
-    s_24(with_intermediates = TRUE) %>%
-    s_25(with_intermediates = TRUE) %>%
-    s_26(with_intermediates = TRUE) %>%
-    s_27(with_intermediates = TRUE) %>%
-    s_28(with_intermediates = TRUE) %>%
-    s_29(with_intermediates = TRUE) %>%
-    s_30(with_intermediates = TRUE) %>%
-    s_31(with_intermediates = TRUE) %>%
-    s_32(with_intermediates = TRUE) %>%
-    s_33(with_intermediates = TRUE) %>%
-    s_34(with_intermediates = TRUE) %>%
-    s_35(with_intermediates = TRUE) %>%
-    s_36(with_intermediates = TRUE) %>%
-    s_37(with_intermediates = TRUE) %>%
-    s_38(with_intermediates = TRUE) %>%
-    s_39(with_intermediates = TRUE) %>%
-    s_40(with_intermediates = TRUE) %>%
-    s_41(with_intermediates = TRUE) %>%
-    s_42(with_intermediates = TRUE) %>%
-    s_43(with_intermediates = TRUE) %>%
-    s_44(with_intermediates = TRUE) %>%
-    s_45(with_intermediates = TRUE) %>%
-    s_46(with_intermediates = TRUE) %>%
-    s_47(with_intermediates = TRUE) %>%
-    s_48(with_intermediates = TRUE) %>%
-    s_49(with_intermediates = TRUE) %>%
-    s_50(with_intermediates = TRUE) %>%
-    dplyr::select( -c("s_01", "s_02", "s_03", "s_04",
-                      "s_05", "s_06", "s_07", "s_08",
-                      "s_09", "s_10", "s_11", "s_12",
-                      "s_13", "s_14", "s_15", "s_16",
-                      "s_17", "s_18", "s_19", "s_20",
-                      "s_21", "s_22", "s_23", "s_24",
-                      "s_25", "s_26", "s_27", "s_28",
-                      "s_29", "s_30", "s_31", "s_32",
-                      "s_33", "s_34", "s_35", "s_36",
-                      "s_37", "s_38", "s_39", "s_40",
-                      "s_41", "s_42", "s_43", "s_44",
-                      "s_45", "s_46", "s_47", "s_48", "s_49", "s_50") ) %>%
-    dplyr::select( -c(original_column_names) )
-
-  return(output_df)
-}
-
-
 #' Generate Student Submission File
 #'
 #' @param input_df A Data Frame. Must contain the following data fields: (season, academic_year_code, version_id, student_id,
@@ -128,77 +24,89 @@ generate_student_validation_file <- function(input_df=usheUtils::fake_student_df
 #'                                                                        mailing_address_country_code, institutional_term_gpa, college_desc,
 #'                                                                        local_address_country, secondary_ipeds_award_level_code).
 #'
-#' @return A Data Frame, with all of the USHE elements required for upload submission.
-#' @export
+#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
+#'
+#' @return
+#' A Data Frame, with all of the USHE elements required for upload submission.
+#' This will also include intermediate values, used to calculate USHE data elements, if option is set.
 #'
 #' @examples
 #' generate_student_submission_file()
 #'
-generate_student_submission_file <- function(input_df=usheUtils::fake_student_df) {
+#' @export
+#'
+generate_student_submission_file <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+
+  ushe_data_elements <- c("s_01", "s_02", "s_03", "s_04",
+                          "s_05", "s_06", "s_07", "s_08",
+                          "s_09", "s_10", "s_11", "s_12",
+                          "s_13", "s_14", "s_15", "s_16",
+                          "s_17", "s_18", "s_19", "s_20",
+                          "s_21", "s_22", "s_23", "s_24",
+                          "s_25", "s_26", "s_27", "s_28",
+                          "s_29", "s_30", "s_31", "s_32",
+                          "s_33", "s_34", "s_35", "s_36",
+                          "s_37", "s_38", "s_39", "s_40",
+                          "s_41", "s_42", "s_43", "s_44",
+                          "s_45", "s_46", "s_47", "s_48",
+                          "s_49", "s_50")
 
   output_df <- input_df %>%
-    s_01() %>%
-    s_02() %>%
-    s_03() %>%
-    s_04() %>%
-    s_05() %>%
-    s_06() %>%
-    s_07() %>%
-    s_08() %>%
-    s_09() %>%
-    s_10() %>%
-    s_11() %>%
-    s_12() %>%
-    s_13() %>%
-    s_14() %>%
-    s_15() %>%
-    s_16() %>%
-    s_17() %>%
-    s_18() %>%
-    s_19() %>%
-    s_20() %>%
-    s_21() %>%
-    s_22() %>%
-    s_23() %>%
-    s_24() %>%
-    s_25() %>%
-    s_26() %>%
-    s_27() %>%
-    s_28() %>%
-    s_29() %>%
-    s_30() %>%
-    s_31() %>%
-    s_32() %>%
-    s_33() %>%
-    s_34() %>%
-    s_35() %>%
-    s_36() %>%
-    s_37() %>%
-    s_38() %>%
-    s_39() %>%
-    s_40() %>%
-    s_41() %>%
-    s_42() %>%
-    s_43() %>%
-    s_44() %>%
-    s_45() %>%
-    s_46() %>%
-    s_47() %>%
-    s_48() %>%
-    s_49() %>%
-    s_50() %>%
-    dplyr::select( c("s_01", "s_02", "s_03", "s_04",
-                     "s_05", "s_06", "s_07", "s_08",
-                     "s_09", "s_10", "s_11", "s_12",
-                     "s_13", "s_14", "s_15", "s_16",
-                     "s_17", "s_18", "s_19", "s_20",
-                     "s_21", "s_22", "s_23", "s_24",
-                     "s_25", "s_26", "s_27", "s_28",
-                     "s_29", "s_30", "s_31", "s_32",
-                     "s_33", "s_34", "s_35", "s_36",
-                     "s_37", "s_38", "s_39", "s_40",
-                     "s_41", "s_42", "s_43", "s_44",
-                     "s_45", "s_46", "s_47", "s_48", "s_49", "s_50") )
+    s_01(with_intermediates) %>%
+    s_02(with_intermediates) %>%
+    s_03(with_intermediates) %>%
+    s_04(with_intermediates) %>%
+    s_05(with_intermediates) %>%
+    s_06(with_intermediates) %>%
+    s_07(with_intermediates) %>%
+    s_08(with_intermediates) %>%
+    s_09(with_intermediates) %>%
+    s_10(with_intermediates) %>%
+    s_11(with_intermediates) %>%
+    s_12(with_intermediates) %>%
+    s_13(with_intermediates) %>%
+    s_14(with_intermediates) %>%
+    s_15(with_intermediates) %>%
+    s_16(with_intermediates) %>%
+    s_17(with_intermediates) %>%
+    s_18(with_intermediates) %>%
+    s_19(with_intermediates) %>%
+    s_20(with_intermediates) %>%
+    s_21(with_intermediates) %>%
+    s_22(with_intermediates) %>%
+    s_23(with_intermediates) %>%
+    s_24(with_intermediates) %>%
+    s_25(with_intermediates) %>%
+    s_26(with_intermediates) %>%
+    s_27(with_intermediates) %>%
+    s_28(with_intermediates) %>%
+    s_29(with_intermediates) %>%
+    s_30(with_intermediates) %>%
+    s_31(with_intermediates) %>%
+    s_32(with_intermediates) %>%
+    s_33(with_intermediates) %>%
+    s_34(with_intermediates) %>%
+    s_35(with_intermediates) %>%
+    s_36(with_intermediates) %>%
+    s_37(with_intermediates) %>%
+    s_38(with_intermediates) %>%
+    s_39(with_intermediates) %>%
+    s_40(with_intermediates) %>%
+    s_41(with_intermediates) %>%
+    s_42(with_intermediates) %>%
+    s_43(with_intermediates) %>%
+    s_44(with_intermediates) %>%
+    s_45(with_intermediates) %>%
+    s_46(with_intermediates) %>%
+    s_47(with_intermediates) %>%
+    s_48(with_intermediates) %>%
+    s_49(with_intermediates) %>%
+    s_50(with_intermediates)
+
+    if (!with_intermediates) {
+      output_df <- output_df %>%
+        dplyr::select( ushe_data_elements )
+    }
 
   return(output_df)
 }
@@ -735,7 +643,7 @@ s_10 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
-#' @importFrom dplyr if_else
+#' @importFrom dplyr case_when
 #'
 #' @param input_df A Data Frame. Must contain the following data fields: (first_admit_state_code, first_admit_country_iso_code).
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
@@ -750,9 +658,9 @@ s_11 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( s_state_origin = if_else(first_admit_country_iso_code != "US",
-                                     "XX",
-                                     first_admit_state_code )) %>%
+    mutate( s_state_origin = case_when( is.na(first_admit_state_code) ~ "UN",
+                                        first_admit_country_iso_code != "US" ~ "XX",
+                                        TRUE ~ first_admit_state_code ) ) %>%
     # Append USHE data element s_11
     mutate( s_11 = s_state_origin )
 
