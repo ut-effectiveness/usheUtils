@@ -1,6 +1,6 @@
 ## code to prepare `fake_student_course_df` dataset goes here
 
-sample_size <- 10000
+sample_size <- 3000
 
 fake_student_course_df <- data.frame(
   subject_code = sample(c("", NA), sample_size, replace = TRUE),
@@ -14,7 +14,7 @@ fake_student_course_df <- data.frame(
   budget_code = sample(c("", NA), sample_size, replace = TRUE),
   is_concurrent_course = sample(c(TRUE, FALSE), sample_size, replace = TRUE),
   student_id = sample(c("", NA), sample_size, replace = TRUE),
-  ssn = sample(c("", NA), sample_size, replace = TRUE),
+  ssn = sample(c("123-45-6789", NA), sample_size, replace = TRUE),
   course_reference_number = sample(c("", NA), sample_size, replace = TRUE),
   season = sample(c("", NA), sample_size, replace = TRUE),
   academic_year_code = sample(c("", NA), sample_size, replace = TRUE),

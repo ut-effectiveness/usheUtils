@@ -1,6 +1,6 @@
 ## code to prepare `fake_student_df` dataset goes here
 
-sample_size <- 10000
+sample_size <- 3000
 
 fake_student_df <- data.frame(
   student_id = stringr::str_pad( sample(1:999999, sample_size) , 8, pad = '0'),
@@ -30,8 +30,8 @@ fake_student_df <- data.frame(
   is_white = sample(c(TRUE, FALSE), sample_size, replace = TRUE),
   is_international = sample(c(TRUE, FALSE), sample_size, replace = TRUE),
   is_other_race = sample(c(TRUE, FALSE), sample_size, replace = TRUE),
-  local_address_zip_code = sample(c("123456-7890", NA), sample_size, replace = TRUE),
-  mailing_address_zip_code = sample(c("987654-3210", NA), sample_size, replace = TRUE),
+  local_address_zip_code = sample(c("12345-7890", "12345", NA_character_), sample_size, replace = TRUE),
+  mailing_address_zip_code = sample(c("98765-4321", "92345", NA_character_), sample_size, replace = TRUE),
   us_citizenship_code = sample(c("1", "2", "3", "4", "5", "6", "9", NA), sample_size, replace = TRUE),
   first_admit_county_code = sample(c("015", "01", "039", NA), sample_size, replace = TRUE),
   first_admit_country_iso_code = sample(c("US", "XX", NA), sample_size, replace = TRUE),

@@ -7,7 +7,7 @@
 s_08(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
 }
 \arguments{
-\item{input_df}{A Data Frame. Must contain the following data fields: (local_address_zip_code, mailing_address_zip_code, mailing_address_country_code, local_address_country).}
+\item{input_df}{A Data Frame. Must contain the following data fields: (local_address_zip_code, mailing_address_zip_code).}
 
 \item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
@@ -25,6 +25,9 @@ Calculate USHE Element s_08 (Zip Code)
 \item FIELD FORMAT: Varchar, 10 Characters
 \item DEFINITION: The postal code of the student's current local address while attending classes.
 }
+
+Using Regex to check that zip code is in a valid US zip code format.
+More information can be found: https://regexlib.com/Search.aspx?k=us+zip+code
 }
 \examples{
 s_08()

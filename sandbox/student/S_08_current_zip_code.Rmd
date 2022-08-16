@@ -80,21 +80,26 @@ DT::datatable(change_s_08_current_zip_code_df, rownames=FALSE)
 ### Making a function
 
 ```{r}
-format_s_08_current_zip_code <- function(input_df) {
+format_s_08_current_zip_code <- function(input_df, with_intermediates=FALSE ) {
   
-  output_df <- input_df %>%  
-   mutate(current_zip_code = case_when(
-    local_address_zip_code != "" ~ local_address_zip_code,
-    local_address_zip_code == "" ~ mailing_address_zip_code,
-    mailing_address_zip_code != "" ~ mailing_address_zip_code, 
-    TRUE ~ "000000"))
-                                    
-  
-  #output_df <- output_df %>% 
-  #select(current_zip_code)
-  
-  return(output_df)
-  
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate(s_curr_zip = coalesce( case_when(local_address_country == "USA" ~ local_address_zip_code),
+                                  case_when(mailing_address_country_code == "USA" ~ mailing_address_zip_code),
+                                  case_when(is.na(local_address_country) &
+                                            first_admit_country_iso_code == "US" &
+                                            is.na(local_address_zip_code) == FALSE ~ local_address_zip_code),
+                                  case_when(is.na(mailing_address_country_code) &
+                                            first_admit_country_iso_code == "US" &
+                                            is.na(local_address_zip_code) ~ mailing_address_zip_code)) ) %>%
+    # Append USHE data element s_08
+    mutate( s_08 = s_curr_zip )
+
+  if (!with_intermediates) {
+    output_df <- output_df %>%
+      # Remove fields used for intermediate calculations
+      select( -c(s_curr_zip) )
+  }
 }
 ```
 ### Choose which data frame you want pass through the function 
@@ -106,5 +111,5 @@ DT::datatable(format_s_08_current_zip_code(s_08_current_zip_code_test_df), rowna
 
 s_08_current_zip_code_real_df for the real data
 ```{r}
-DT::datatable(format_s_08_current_zip_code(s_08_current_zip_code_real_df), rownames=FALSE)
+view(format_s_08_current_zip_code(s_08_current_zip_code_real_df))
 ```

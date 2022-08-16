@@ -116,19 +116,22 @@ generate_course_validation_file <- function(input_df=usheUtils::fake_course_df) 
     c_50(with_intermediates = TRUE) %>%
     c_51(with_intermediates = TRUE) %>%
     c_52(with_intermediates = TRUE) %>%
+    c_53(with_intermediates = TRUE) %>%
+    c_54(with_intermediates = TRUE) %>%
     dplyr::select( -c("c_01", "c_02", "c_03", "c_04",
-                      "c_05", "c_06", "c_07", "c_08",
-                      "c_09", "c_10", "c_11", "c_12",
-                      "c_13", "c_14", "c_15", "c_16",
-                      "c_17", "c_18", "c_19", "c_20",
-                      "c_21", "c_22", "c_23", "c_24",
-                      "c_25", "c_26", "c_27", "c_28",
-                      "c_29", "c_30", "c_31", "c_32",
-                      "c_33", "c_34", "c_35", "c_36",
-                      "c_37", "c_38", "c_39", "c_40",
-                      "c_41", "c_42", "c_43", "c_44",
-                      "c_45", "c_46", "c_47", "c_48",
-                      "c_49", "c_50", "c_51", "c_52") ) %>%
+                     "c_05", "c_06", "c_07", "c_08",
+                     "c_09", "c_10", "c_11", "c_12",
+                     "c_13", "c_14", "c_15", "c_16",
+                     "c_17", "c_18", "c_19", "c_20",
+                     "c_21", "c_22", "c_23", "c_24",
+                     "c_25", "c_26", "c_27", "c_28",
+                     "c_29", "c_30", "c_31", "c_32",
+                     "c_33", "c_34", "c_35", "c_36",
+                     "c_37", "c_38", "c_39", "c_40",
+                     "c_41", "c_42", "c_43", "c_44",
+                     "c_45", "c_46", "c_47", "c_48",
+                     "c_49", "c_50", "c_51", "c_52",
+                     "c_53", "c_54") ) %>%
     dplyr::select( -c(original_column_names) )
 
   return(output_df)
@@ -249,6 +252,8 @@ generate_course_submission_file <- function(input_df=usheUtils::fake_course_df) 
     c_50() %>%
     c_51() %>%
     c_52() %>%
+    c_53() %>%
+    c_54() %>%
     dplyr::select( c("c_01", "c_02", "c_03", "c_04",
                      "c_05", "c_06", "c_07", "c_08",
                      "c_09", "c_10", "c_11", "c_12",
@@ -261,7 +266,8 @@ generate_course_submission_file <- function(input_df=usheUtils::fake_course_df) 
                      "c_37", "c_38", "c_39", "c_40",
                      "c_41", "c_42", "c_43", "c_44",
                      "c_45", "c_46", "c_47", "c_48",
-                     "c_49", "c_50", "c_51", "c_52" ) )
+                     "c_49", "c_50", "c_51", "c_52",
+                     "c_53", "c_54") )
 
   return(output_df)
 }
@@ -546,6 +552,7 @@ c_09 <- function(input_df=usheUtils::fake_course_df, with_intermediates=FALSE) {
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
 #' @importFrom dplyr case_when
+#' @importFrom stringr str_starts
 #'
 #' @param input_df A Data Frame. Must contain the following data fields: (campus_id).
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
@@ -563,6 +570,9 @@ c_10 <- function(input_df=usheUtils::fake_course_df, with_intermediates=FALSE) {
     mutate(c_site_type = case_when( campus_id %in% c("AC1", "AU1", "ACE", "OU1", "V01") ~ 'A01',
                                     campus_id == "B8C" ~ 'B80',
                                     campus_id == "UOS" ~ 'C',
+                                    str_starts(campus_id, "C") ~ "C",
+                                    campus_id == "O03" ~ "O",
+                                    campus_id == "O01" ~ "V",
                                     TRUE ~ campus_id) ) %>%
     # Append USHE data element c_10
     mutate( c_10 = c_site_type )
@@ -622,6 +632,7 @@ c_11 <- function(input_df=usheUtils::fake_course_df, with_intermediates=FALSE) {
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
+#' @importFrom dplyr if_else
 #'
 #' @param input_df A Data Frame. Must contain the following data fields: (instruction_method_code).
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
@@ -636,7 +647,7 @@ c_12 <- function(input_df=usheUtils::fake_course_df, with_intermediates=FALSE) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( c_delivery_method = instruction_method_code ) %>%
+    mutate( c_delivery_method = if_else(instruction_method_code == "E", "H", instruction_method_code )) %>%
     # Append USHE data element c_12
     mutate( c_12 = c_delivery_method )
 
@@ -2216,6 +2227,84 @@ c_52 <- function(input_df=usheUtils::fake_course_df, with_intermediates=FALSE) {
     output_df <- output_df %>%
       # Remove fields used for intermediate calculations
       select( -c(c_crn) )
+  }
+
+  return(output_df)
+}
+
+#' Calculate USHE Element c_53 (Course Site Type 2)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (meet_building_id_2, campus_id).
+#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
+#'
+#' @return Original data frame, with USHE data element c_53 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @export
+#'
+#' @examples
+#' c_53()
+#'
+c_53 <- function(input_df=usheUtils::fake_course_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate( c_site_type2 = case_when(
+      !is.na(meet_building_id_2) &  (campus_id == "O01" | campus_id == "V01") ~ "V",
+      meet_building_id_2 == "HURCTR" ~ "B80",
+      TRUE ~ "AO1")) %>%
+    # Append USHE data element c_53
+    mutate( c_53 = c_site_type2 )
+
+  if (!with_intermediates) {
+    output_df <- output_df %>%
+      # Remove fields used for intermediate calculations
+      select( -c(c_site_type2) )
+  }
+
+  return(output_df)
+}
+
+#' Calculate USHE Element c_54 (Course Site Type 3)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (meet_building_id_3, campus_id).
+#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
+#'
+#' @return Original data frame, with USHE data element c_54 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @export
+#'
+#' @examples
+#' c_54()
+#'
+c_54 <- function(input_df=usheUtils::fake_course_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate( c_site_type3 = case_when(
+      !is.na(meet_building_id_3) &  (campus_id == "O01" | campus_id == "V01") ~ "V",
+      meet_building_id_3 == "HURCTR" ~ "B80",
+      TRUE ~ "AO1")) %>%
+    # Append USHE data element c_54
+    mutate( c_54 = c_site_type3 )
+
+  if (!with_intermediates) {
+    output_df <- output_df %>%
+      # Remove fields used for intermediate calculations
+      select( -c(c_site_type3) )
   }
 
   return(output_df)

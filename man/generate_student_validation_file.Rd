@@ -27,8 +27,8 @@ primary_major_cip_code, act_english_score, act_math_score, act_reading_score,
 act_science_score, high_school_graduation_date, institutional_gpa,
 is_pell_eligible, is_pell_awarded, is_bia, primary_major_college_id,
 primary_major_desc, secondary_major_college_id, secondary_major_desc,
-mailing_address_country_code, institutional_term_gpa, college_desc,
-local_address_country, secondary_ipeds_award_level_code).}
+institutional_term_gpa, college_desc,
+secondary_ipeds_award_level_code).}
 }
 \value{
 A Data Frame, with all of the intermediate values used to create the USHE elements required for upload submission.
