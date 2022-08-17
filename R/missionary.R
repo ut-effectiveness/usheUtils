@@ -80,7 +80,7 @@ m_02 <- function(input_df=usheUtils::fake_mission_df, with_intermediates=FALSE) 
   return(output_df)
 }
 
-#' Calculate USHE Element m_04 ()
+#' Calculate USHE Element m_04 (Start Search Date)
 #'
 #' @details
 #'
@@ -119,7 +119,7 @@ m_04 <- function(input_df=usheUtils::fake_mission_df, with_intermediates=FALSE) 
 
   return(output_df)
 }
-#' Calculate USHE Element m_05 ()
+#' Calculate USHE Element m_05 (End Search Date)
 #'
 #' @details
 #'

@@ -181,6 +181,7 @@ s_alias <- s_xx
 #' s_01()
 #'
 s_01 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+  s_inst <- NULL
 
   output_df <- input_df %>%
     # Calculate intermediate fields
