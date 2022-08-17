@@ -5,6 +5,7 @@
 \alias{c_01}
 \alias{sc_01}
 \alias{pf_01}
+\alias{m_01}
 \title{Calculate USHE Element s_01 (Institution)}
 \usage{
 s_01(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
@@ -14,6 +15,8 @@ c_01(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
 sc_01(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
 
 pf_01(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
+
+m_01(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (no data fields required).}
@@ -43,4 +46,5 @@ s_01()
 c_01()
 sc_01()
 pf_01()
+m_01()
 }
