@@ -7,7 +7,7 @@
 m_05(input_df = usheUtils::fake_mission_df, with_intermediates = FALSE)
 }
 \arguments{
-\item{input_df}{A Data Frame. Must contain the following data fields: (start_date).}
+\item{input_df}{A Data Frame. Must contain the following data fields: (term_end_date).}
 
 \item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }

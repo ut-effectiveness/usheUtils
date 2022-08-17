@@ -20,6 +20,7 @@ college_id,
 section_format_type_code,
 instructor_first_name,
 instructor_last_name,
+instructor_middle_name
 instructor_employee_id,
 course_title,
 meet_end_date,

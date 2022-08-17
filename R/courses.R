@@ -14,6 +14,7 @@
 #'                                                                        section_format_type_code,
 #'                                                                        instructor_first_name,
 #'                                                                        instructor_last_name,
+#'                                                                        instructor_middle_name
 #'                                                                        instructor_employee_id,
 #'                                                                        course_title,
 #'                                                                        meet_end_date,
@@ -1636,6 +1637,7 @@ c_38 <- function(input_df=usheUtils::fake_course_df, with_intermediates=FALSE) {
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
+#' @importFrom stringr str_remove_all
 #'
 #' @param input_df A Data Frame. Must contain the following data fields: (meet_start_date).
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
@@ -1650,7 +1652,7 @@ c_39 <- function(input_df=usheUtils::fake_course_df, with_intermediates=FALSE) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( c_start_date = meet_start_date ) %>%
+    mutate( c_start_date = str_remove_all(meet_start_date, "-") ) %>%
     # Append USHE data element c_39
     mutate( c_39 = c_start_date )
 
@@ -1672,6 +1674,7 @@ c_39 <- function(input_df=usheUtils::fake_course_df, with_intermediates=FALSE) {
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
+#' @importFrom stringr str_remove_all
 #'
 #' @param input_df A Data Frame. Must contain the following data fields: (meet_end_date).
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
@@ -1686,7 +1689,7 @@ c_40 <- function(input_df=usheUtils::fake_course_df, with_intermediates=FALSE) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( c_end_date = meet_end_date ) %>%
+    mutate( c_end_date =  str_remove_all(meet_end_date, "-") ) %>%
     # Append USHE data element c_40
     mutate( c_40 = c_end_date )
 
@@ -1783,7 +1786,7 @@ c_42 <- function(input_df=usheUtils::fake_course_df, with_intermediates=FALSE) {
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
 #'
-#' @param input_df A Data Frame. Must contain the following data fields: (instructor_first_name, instructor_last_name).
+#' @param input_df A Data Frame. Must contain the following data fields: (instructor_first_name, instructor_last_name, instructor_middle_name).
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
 #'
 #' @return Original data frame, with USHE data element c_43 appended. Will also return appended intermediate calculated fields, if option is set.
@@ -1796,7 +1799,7 @@ c_43 <- function(input_df=usheUtils::fake_course_df, with_intermediates=FALSE) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( c_instruct_name = paste0(instructor_first_name, ', ', instructor_last_name) ) %>%
+    mutate( c_instruct_name = paste0(instructor_last_name, ', ', instructor_first_name, ' ', instructor_middle_name) ) %>%
     # Append USHE data element c_43
     mutate( c_43 = c_instruct_name )
 
@@ -2034,24 +2037,44 @@ c_48 <- function(input_df=usheUtils::fake_course_df, with_intermediates=FALSE) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate(c_dest_site = case_when( (budget_code == "SF" & campus_id == "C01") ~ "450350",
-                                    (budget_code == "SF" & campus_id == "C02") ~ "450354",
-                                    (budget_code == "SF" & campus_id == "C03") ~ "450353",
-                                    (budget_code == "SF" & campus_id == "C03") ~ "450353",
-                                    (budget_code == "SF" & campus_id == "C04") ~ "450135",
-                                    (budget_code == "SF" & campus_id == "C05") ~ "450444",
-                                    (budget_code == "SF" & campus_id == "C06") ~ "450075",
-                                    (budget_code == "SF" & campus_id == "C07") ~  "450045",
-                                    (budget_code == "SF" & campus_id == "C08") ~  "450150",
-                                    (budget_code == "SF" & campus_id == "C09") ~  "450060",
-                                    (budget_code == "SF" & campus_id == "C10") ~  "450275",
-                                    (budget_code == "SF" & campus_id == "C11") ~  "450010",
-                                    (budget_code == "SF" & campus_id == "C12") ~  "450150",
-                                    (budget_code == "SF" & campus_id == "C13") ~  "450359",
-                                    (budget_code == "BC"
-                                     & (campus_id == "A01" | campus_id == "B80")
-                                     & instruction_method_code == "R"
-                                     & grepl("K", section_number) == TRUE) ~ "450150" ) ) %>%
+    mutate(c_dest_site = case_when(
+           budget_code %in% c("SF", "BC") & campus_id == "C01" ~ "450350",
+           budget_code %in% c("SF", "BC") & campus_id == "C02" ~ "450354",
+           budget_code %in% c("SF", "BC") & campus_id == "C03" ~ "450353",
+           budget_code %in% c("SF", "BC") & campus_id == "C04" ~ "450135",
+           budget_code %in% c("SF", "BC") & campus_id == "C05" ~ "450444",
+           budget_code %in% c("SF", "BC") & campus_id == "C06" ~ "450075",
+           budget_code %in% c("SF", "BC") & campus_id == "C07" ~ "450045",
+           budget_code %in% c("SF", "BC") & campus_id == "C08" ~ "450150",
+           budget_code %in% c("SF", "BC") & campus_id == "C09" ~ "450060",
+           budget_code %in% c("SF", "BC") & campus_id == "C10" ~ "450275",
+           budget_code %in% c("SF", "BC") & campus_id == "C11" ~ "450010",
+           budget_code %in% c("SF", "BC") & campus_id == "C12" ~ "450150",
+           budget_code %in% c("SF", "BC") & campus_id == "C13" ~ "450359",
+           budget_code %in% c("SF", "BC") & campus_id == "C15" ~ "450348",
+           budget_code %in% c("SF", "BC") & campus_id == "C16" ~ "450140",
+           budget_code %in% c("SF", "BC") & campus_id == "C17" ~ "450247",
+           budget_code %in% c("SF", "BC") & campus_id == "C18" ~ "450248",
+           budget_code %in% c("SF", "BC") & campus_id == "C19" ~ "450434",
+           budget_code %in% c("SF", "BC") & campus_id == "C20" ~ "450031",
+           budget_code %in% c("SF", "BC") & campus_id == "C21" ~ "450481",
+           budget_code %in% c("SF", "BC") & campus_id == "C22" ~ "450056",
+           budget_code %in% c("SF", "BC") & campus_id == "C23" ~ "450021",
+           budget_code %in% c("SF", "BC") & campus_id == "C24" ~ "450391",
+           budget_code %in% c("SF", "BC") & campus_id == "C25" ~ "450285",
+           budget_code %in% c("SF", "BC") & campus_id == "C26" ~ "450435",
+           budget_code %in% c("SF", "BC") & campus_id == "C27" ~ "450330",
+           budget_code %in% c("SF", "BC") & campus_id == "C28" ~ "450402",
+           budget_code %in% c("SF", "BC") & campus_id == "C29" ~ "450405",
+           budget_code %in% c("SF", "BC") & campus_id == "C50" ~ "450068",
+           budget_code %in% c("SF", "BC") & campus_id == "C51" ~ "450039",
+           budget_code %in% c("SF", "BC") & campus_id == "C52" ~ "450327",
+           (budget_code == "BC"
+             & campus_id %in% c("A01", "B80")
+             & instruction_method_code == "R"
+             & grepl("K", section_number) ) ~ "450150",
+           budget_code %in% c("SF", "BC") & campus_id %in% c("C53", "C14") ~ NA_character_,
+           TRUE ~ NA_character_))  %>%
     # Append USHE data element c_48
     mutate( c_48 = c_dest_site )
 
@@ -2113,6 +2136,7 @@ c_49 <- function(input_df=usheUtils::fake_course_df, with_intermediates=FALSE) {
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
+#' @importFrom dplyr if_else
 #'
 #' @param input_df A Data Frame. Must contain the following data fields: (instruction_method_code).
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
@@ -2127,17 +2151,8 @@ c_50 <- function(input_df=usheUtils::fake_course_df, with_intermediates=FALSE) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate(c_delivery_model = case_when( instruction_method_code == "B" ~ 'B',
-                                       instruction_method_code == "V" ~ '?', # need to check
-                                       instruction_method_code == " " ~ "P", # need to check
-                                       instruction_method_code == "E" ~ 'H', # need to check
-                                       instruction_method_code == "R" ~ '?', # need to check
-                                       instruction_method_code == "I" ~ '?', # need to check
-                                       instruction_method_code == "P" ~ '?', # need to check
-                                       instruction_method_code == "H" ~ '?', # need to check
-                                       instruction_method_code == "O" ~ 'O',
-                                       instruction_method_code == "T" ~ 'T',
-                                       TRUE ~ instruction_method_code) ) %>%
+    mutate(c_delivery_model = if_else( instruction_method_code == "E", "E", NA_character_)) %>%
+
     # Append USHE data element c_50
     mutate( c_50 = c_delivery_model )
 

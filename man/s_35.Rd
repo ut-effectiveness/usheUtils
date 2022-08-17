@@ -15,7 +15,7 @@ m_06(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
 \item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
 \value{
-Original data frame, with USHE data element s_35 appended. Will also return appended intermediate calculated fields, if option is set.
+Original data frame, with USHE data element s_35 and m_06 appended. Will also return appended intermediate calculated fields, if option is set.
 }
 \description{
 Calculate USHE Element s_35 (Institution Assigned ID)

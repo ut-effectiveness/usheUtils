@@ -362,6 +362,7 @@ sc_03 <- s_03
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
+#' @importFrom stringr str_starts
 #'
 #' @param input_df A Data Frame. Must contain the following data fields: (student_id, ssn).
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
@@ -376,7 +377,7 @@ s_04 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( s_id_flag = if_else(is.na(ssn),
+    mutate( s_id_flag = if_else(is.na(ssn) | str_starts(ssn, "9"),
                                 'I',
                                 'S' ) ) %>%
     # Append USHE data element s_04
@@ -676,9 +677,9 @@ s_11 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( s_state_origin = case_when( is.na(first_admit_state_code) ~ "UN",
-                                        ( first_admit_country_iso_code != "US"
+    mutate( s_state_origin = case_when( ( first_admit_country_iso_code != "US"
                                           & !is.na(first_admit_country_iso_code) ) ~ "XX",
+                                        is.na(first_admit_state_code) ~ "UN",
                                         TRUE ~ first_admit_state_code ) ) %>%
     # Append USHE data element s_11
     mutate( s_11 = s_state_origin )
@@ -693,13 +694,13 @@ s_11 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 }
 
 
-#' Calculate USHE Element s_12 (Birth Date)
+#' Calculate USHE Element s_12, and m_03 (Birth Date)
 #'
 #' @details
 #'
 #' **USHE Documentation**
 #' - ELEMENT NAME: Date of Birth
-#' - FIELD NAME: S_BIRTH_DT
+#' - FIELD NAME: S_BIRTH_DT, and M_BIRTH_DT
 #' - FIELD FORMAT: Varchar, 8 Characters (YYYYMMDD),
 #' - DEFINITION: The calendar student date of birth, as designated by student.
 #'
@@ -710,7 +711,7 @@ s_11 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @param input_df A Data Frame. Must contain the following data fields: (birth_date).
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
 #'
-#' @return Original data frame, with USHE data element s_12 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data elements s_12 and m_03 appended. Will also return appended intermediate calculated fields, if option is set.
 #' @export
 #'
 #' @examples
@@ -1672,7 +1673,7 @@ s_34 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @param input_df A Data Frame. Must contain the following data fields: (student_id).
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
 #'
-#' @return Original data frame, with USHE data element s_35 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element s_35 and m_06 appended. Will also return appended intermediate calculated fields, if option is set.
 #' @export
 #'
 #' @examples

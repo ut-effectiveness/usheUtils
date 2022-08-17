@@ -94,7 +94,7 @@ m_02 <- function(input_df=usheUtils::fake_mission_df, with_intermediates=FALSE) 
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
 #'
-#' @param input_df A Data Frame. Must contain the following data fields: (end_date).
+#' @param input_df A Data Frame. Must contain the following data fields: ().
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
 #'
 #' @return Original data frame, with USHE data element m_04 appended. Will also return appended intermediate calculated fields, if option is set.
@@ -107,7 +107,7 @@ m_04 <- function(input_df=usheUtils::fake_mission_df, with_intermediates=FALSE) 
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( m_end_date = gsub("-", "", end_date )) %>%
+    mutate( m_end_date = gsub("-", "", Sys.Date() )) %>%
     # Append USHE data element m_04
     mutate( m_04 =  m_end_date  )
 
@@ -133,7 +133,7 @@ m_04 <- function(input_df=usheUtils::fake_mission_df, with_intermediates=FALSE) 
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
 #'
-#' @param input_df A Data Frame. Must contain the following data fields: (start_date).
+#' @param input_df A Data Frame. Must contain the following data fields: (term_end_date).
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
 #'
 #' @return Original data frame, with USHE data element m_05 appended. Will also return appended intermediate calculated fields, if option is set.
@@ -146,7 +146,7 @@ m_05 <- function(input_df=usheUtils::fake_mission_df, with_intermediates=FALSE) 
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( m_start_date = start_date ) %>%
+    mutate( m_start_date = gsub("-", "", term_end_date )) %>%
     # Append USHE data element m_05
     mutate( m_05 =  m_start_date  )
 
