@@ -1841,30 +1841,14 @@ c_44 <- function(input_df=usheUtils::fake_course_df, with_intermediates=FALSE) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate(c_instruct_type = case_when( section_format_type_code ==	"LEV"	~	"LEC", #TODO is this right
-                                        section_format_type_code ==	"LEX"	~	"LEC",
-                                        section_format_type_code ==	"LES"	~	"LEC", #TODO is this right
-                                        section_format_type_code ==	"LEC"	~	"LEC",
-                                        section_format_type_code ==	"INS"	~	"LEC",
-                                        section_format_type_code ==	"STU"	~	"LEL",
-                                        section_format_type_code ==	"ENS"	~	"LEL",
-                                        section_format_type_code ==	"LEL"	~	"LEL",
-                                        section_format_type_code ==	"LBV"	~	"LAB", #TODO is this right
-                                        section_format_type_code ==	"LAB"	~	"LAB",
-                                        section_format_type_code ==	"LBS"	~	"LAB", #TODO is this right
-                                        section_format_type_code ==	"LBC"	~	"LAB",
-                                        section_format_type_code ==	"PRA"	~	"SUP",
-                                        section_format_type_code ==	"SUP"	~	"SUP",
-                                        section_format_type_code ==	"INT"	~	"SUP",
-                                        section_format_type_code ==	"CLN"	~	"SUP",
-                                        section_format_type_code ==	"MUN"	~	"INV",
-                                        section_format_type_code ==	"INV"	~	"INV",
-                                        section_format_type_code ==	"MUN" ~	"INV",
-                                        section_format_type_code ==	"ACT"	~	"INV",
-                                        section_format_type_code ==	"THE"	~	"THE",
-                                        section_format_type_code ==	"CON"	~	"CON", #TODO is this right according to USHE pdf
-                                        section_format_type_code ==	"CLS"	~	"OTH",
-                                        section_format_type_code ==	"OTH"	~	"OTH" )) %>%
+    mutate(c_instruct_type = case_when( section_format_type_code %in% c("LEV", "LEX", "LES", "INS")	~	"LEC",
+                                        section_format_type_code %in% c("STU", "ENS")	~	"LEL",
+                                        section_format_type_code %in%	c("LBV", "LBS", "LBC")	~	"LAB",
+                                        section_format_type_code %in%	c("PRA", "INT", "CLN")	~	"SUP",
+                                        section_format_type_code %in% c("MUN", "ACT")	~	"INV",
+                                        section_format_type_code == "CLS"	~	"OTH",
+                                        TRUE ~ section_format_type_code)) %>%
+
     # Append USHE data element c_44
     mutate( c_44 = c_instruct_type )
 

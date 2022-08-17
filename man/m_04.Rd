@@ -2,7 +2,7 @@
 % Please edit documentation in R/missionary.R
 \name{m_04}
 \alias{m_04}
-\title{Calculate USHE Element m_04 ()}
+\title{Calculate USHE Element m_04 (Start Search Date)}
 \usage{
 m_04(input_df = usheUtils::fake_mission_df, with_intermediates = FALSE)
 }
@@ -15,7 +15,7 @@ m_04(input_df = usheUtils::fake_mission_df, with_intermediates = FALSE)
 Original data frame, with USHE data element m_04 appended. Will also return appended intermediate calculated fields, if option is set.
 }
 \description{
-Calculate USHE Element m_04 ()
+Calculate USHE Element m_04 (Start Search Date)
 }
 \details{
 \strong{USHE Documentation}
