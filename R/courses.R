@@ -1845,7 +1845,7 @@ c_44 <- function(input_df=usheUtils::fake_course_df, with_intermediates=FALSE) {
                                         section_format_type_code %in% c("STU", "ENS")	~	"LEL",
                                         section_format_type_code %in%	c("LBV", "LBS", "LBC")	~	"LAB",
                                         section_format_type_code %in%	c("PRA", "INT", "CLN")	~	"SUP",
-                                        section_format_type_code %in% c("MUN", "ACT")	~	"INV",
+                                        section_format_type_code %in% c("MUN", "MUM", "ACT")	~	"INV",
                                         section_format_type_code == "CLS"	~	"OTH",
                                         TRUE ~ section_format_type_code)) %>%
 
