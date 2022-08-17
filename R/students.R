@@ -1523,7 +1523,7 @@ s_30 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
 #'
-#' @param input_df A Data Frame. Must contain the following data fields: (?).
+#' @param input_df A Data Frame. Must contain the following data fields: ().
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
 #'
 #' @return Original data frame, with USHE data element s_31 appended. Will also return appended intermediate calculated fields, if option is set.
@@ -1536,7 +1536,7 @@ s_31 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    # TODO: This needs to be implemented.
+    # Na because we do not currently have Cumulative Membership Hours.
     mutate( s_cum_membership = NA ) %>%
     # Append USHE data element s_31
     mutate( s_31 = s_cum_membership )
