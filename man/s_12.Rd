@@ -2,9 +2,12 @@
 % Please edit documentation in R/students.R
 \name{s_12}
 \alias{s_12}
+\alias{m_03}
 \title{Calculate USHE Element s_12 (Birth Date)}
 \usage{
 s_12(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
+
+m_03(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (birth_date).}
@@ -29,4 +32,5 @@ Calculate USHE Element s_12 (Birth Date)
 \examples{
 s_12()
 
+m_03()
 }

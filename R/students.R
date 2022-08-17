@@ -154,7 +154,6 @@ s_xx <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @export
 s_alias <- s_xx
 
-
 #' Calculate USHE Element s_01 (Institution)
 #'
 #' @details
@@ -190,7 +189,8 @@ s_01 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
     mutate( s_01 = s_inst,
             c_01 = s_inst,
             sc_01 = s_inst,
-            pf_01 = s_inst)
+            pf_01 = s_inst,
+            m_01 = s_inst)
 
   if (!with_intermediates) {
     output_df <- output_df %>%
@@ -216,6 +216,10 @@ sc_01 <- s_01
 #' @export
 pf_01 <- s_01
 
+#' @rdname s_01
+#' @examples m_01()
+#' @export
+m_01 <- s_01
 
 #' Calculate USHE Element s_02 (Year, Term, & Extract)
 #'
@@ -289,7 +293,6 @@ c_02 <- s_02
 #' @examples sc_02()
 #' @export
 sc_02 <- s_02
-
 
 #' Calculate USHE Element s_03 (Student ID)
 #'
@@ -453,17 +456,16 @@ s_06 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
             s_middle = coalesce(middle_name, ''),
             s_suffix = coalesce(name_suffix, '') ) %>%
     # Append USHE data element s_06
-    mutate( s_06 = paste0(s_last, s_first, s_middle, s_suffix, sep='|') )
+    mutate( s_06 = paste(s_last, s_first, s_middle, s_suffix, sep='|') )
 
   if (!with_intermediates) {
     output_df <- output_df %>%
       # Remove fields used for intermediate calculations
-      select( -c(s_last, s_middle, s_middle, s_suffix) )
+      select( -c(s_last, s_first, s_middle, s_suffix) )
   }
 
   return(output_df)
 }
-
 
 #' Calculate USHE Element s_07 (Student Previous Name)
 #'
@@ -499,7 +501,7 @@ s_07 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
   if (!with_intermediates) {
     output_df <- output_df %>%
       # Remove fields used for intermediate calculations
-      select( -c(s_prev_last, s_prev_middle, s_prev_middle, s_prev_suffix) )
+      select( -c(s_prev_last, s_prev_first, s_prev_middle, s_prev_suffix) )
   }
 
   return(output_df)
@@ -720,7 +722,8 @@ s_12 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
     # Calculate intermediate fields
     mutate( s_birth_dt = gsub("-", "", birth_date) ) %>%
     # Append USHE data element s_12
-    mutate( s_12 = s_birth_dt )
+    mutate( s_12 = s_birth_dt,
+            m_03 = s_birth_dt)
 
   if (!with_intermediates) {
     output_df <- output_df %>%
@@ -731,6 +734,10 @@ s_12 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
   return(output_df)
 }
 
+#' @rdname s_12
+#' @examples m_03()
+#' @export
+m_03 <- s_12
 
 #' Calculate USHE Element s_13 (Gender)
 #'
@@ -1677,7 +1684,8 @@ s_35 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
     # Calculate intermediate fields
     mutate( s_banner_id = paste0('D', student_id )) %>%
     # Append USHE data element s_35
-    mutate( s_35 = s_banner_id )
+    mutate( s_35 = s_banner_id,
+            m_06 = s_banner_id)
 
   if (!with_intermediates) {
     output_df <- output_df %>%
@@ -1687,6 +1695,11 @@ s_35 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 
   return(output_df)
 }
+
+#' @rdname s_35
+#' @examples m_06()
+#' @export
+m_06 <- s_35
 
 #' Calculate USHE Element s_36 (ACT Composite Score)
 #'

@@ -2,9 +2,12 @@
 % Please edit documentation in R/students.R
 \name{s_35}
 \alias{s_35}
+\alias{m_06}
 \title{Calculate USHE Element s_35 (Institution Assigned ID)}
 \usage{
 s_35(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
+
+m_06(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (student_id).}
@@ -23,4 +26,5 @@ Calculate USHE Element s_35 (Institution Assigned ID)
 \examples{
 s_35()
 
+m_06()
 }
