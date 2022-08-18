@@ -272,7 +272,7 @@ s_02 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
       version_id == '3' ~ 'E',
       TRUE ~ " ")) %>%
     # Append USHE data element s_02
-    mutate(s_02 = paste0(s_year, s_term, s_extract) ) %>%
+    mutate(s_02 = paste(s_year, s_term, s_extract, sep= "|") ) %>%
     mutate(c_02 = s_02,
            sc_02 = s_02)
 
@@ -458,7 +458,7 @@ s_06 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
             s_middle = coalesce(middle_name, ''),
             s_suffix = coalesce(name_suffix, '') ) %>%
     # Append USHE data element s_06
-    mutate( s_06 = paste(s_last, s_first, s_middle, s_suffix, sep='|') )
+    mutate( s_06 = paste(s_last, s_first, s_middle, s_suffix, sep = "|"))
 
   if (!with_intermediates) {
     output_df <- output_df %>%
@@ -806,17 +806,17 @@ s_14 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate(s_ethnic_h = if_else(is_hispanic_latino_ethnicity, "H", " "),
-           s_ethnic_a = if_else(is_asian, "A", " "),
-           s_ethnic_b = if_else(is_black, "B", " "),
-           s_ethnic_i = if_else(is_american_indian_alaskan, "I", " "),
-           s_ethnic_p = if_else(is_hawaiian_pacific_islander, "P", " "),
-           s_ethnic_w = if_else(is_white, "W", " "),
-           s_ethnic_n = if_else(is_international, "N", " "),
-           s_ethnic_u = if_else(is_other_race, "U", " ") ) %>%
-    mutate( s_14_intermediate = paste0(s_ethnic_h, s_ethnic_a, s_ethnic_b, s_ethnic_i, s_ethnic_p, s_ethnic_w, s_ethnic_n, s_ethnic_u)) %>%
+    mutate(s_ethnic_h = if_else(is_hispanic_latino_ethnicity, "H", ""),
+           s_ethnic_a = if_else(is_asian, "A", ""),
+           s_ethnic_b = if_else(is_black, "B", ""),
+           s_ethnic_i = if_else(is_american_indian_alaskan, "I", ""),
+           s_ethnic_p = if_else(is_hawaiian_pacific_islander, "P", ""),
+           s_ethnic_w = if_else(is_white, "W", ""),
+           s_ethnic_n = if_else(is_international, "N", ""),
+           s_ethnic_u = if_else(is_other_race, "U", "") ) %>%
+    mutate( s_14_intermediate = paste(s_ethnic_h, s_ethnic_a, s_ethnic_b, s_ethnic_i, s_ethnic_p, s_ethnic_w, s_ethnic_n, s_ethnic_u, sep= "|" )) %>%
     # Append USHE data element s_14
-    mutate( s_14 = if_else(is_international, "N", s_14_intermediate) )
+    mutate( s_14 = if_else(is_international, paste("", "", "", "", "", "", s_ethnic_n, "", sep = "|"), s_14_intermediate) )
 
   if (!with_intermediates) {
     output_df <- output_df %>%
