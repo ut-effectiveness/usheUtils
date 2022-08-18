@@ -107,14 +107,14 @@ m_04 <- function(input_df=usheUtils::fake_mission_df, with_intermediates=FALSE) 
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( m_end_date = gsub("-", "", term_end_date )) %>%
+    mutate( m_start_dt = gsub("-", "", term_end_date )) %>%
     # Append USHE data element m_04
-    mutate( m_04 =  m_end_date  )
+    mutate( m_04 =  m_start_dt  )
 
   if (!with_intermediates) {
     output_df <- output_df %>%
       # Remove fields used for intermediate calculations
-      select( -c( m_end_date) )
+      select( -c( m_start_dt) )
   }
 
   return(output_df)
@@ -146,14 +146,14 @@ m_05 <- function(input_df=usheUtils::fake_mission_df, with_intermediates=FALSE) 
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( m_start_date = gsub("-", "", Sys.Date())) %>%
+    mutate( m_end_dt = gsub("-", "", Sys.Date())) %>%
     # Append USHE data element m_05
-    mutate( m_05 =  m_start_date  )
+    mutate( m_05 =  m_end_dt  )
 
   if (!with_intermediates) {
     output_df <- output_df %>%
       # Remove fields used for intermediate calculations
-      select( -c( m_start_date) )
+      select( -c( m_end_dt) )
   }
 
   return(output_df)
