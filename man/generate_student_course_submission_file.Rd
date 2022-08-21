@@ -5,7 +5,8 @@
 \title{Generate Students Courses Submission File}
 \usage{
 generate_student_course_submission_file(
-  input_df = usheUtils::fake_student_course_df
+  input_df = usheUtils::fake_student_course_df,
+  with_intermediates = FALSE
 )
 }
 \arguments{
@@ -22,9 +23,12 @@ is_concurrent_course,
 student_id,
 ssn,
 course_reference_number).}
+
+\item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
 \value{
 A Data Frame, with all of the USHE elements required for upload submission.
+This will also include intermediate values, used to calculate USHE data elements, if option is set.
 }
 \description{
 Generate Students Courses Submission File

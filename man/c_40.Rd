@@ -4,12 +4,10 @@
 \alias{c_40}
 \title{Calculate USHE Element c_40 (Course End Date)}
 \usage{
-c_40(input_df = usheUtils::fake_course_df, with_intermediates = FALSE)
+c_40(input_df = usheUtils::fake_course_df)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (meet_end_date).}
-
-\item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
 \value{
 Original data frame, with USHE data element c_40 appended. Will also return appended intermediate calculated fields, if option is set.

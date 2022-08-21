@@ -4,15 +4,13 @@
 \alias{pf_02}
 \title{Calculate USHE Element pf_02 (Academic Year)}
 \usage{
-pf_02(input_df = usheUtils::fake_program_df, with_intermediates = FALSE)
+pf_02(input_df = usheUtils::fake_program_df)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (academic_year).}
-
-\item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
 \value{
-Original data frame, with USHE data element pf_02 appended. Will also return appended intermediate calculated fields, if option is set.
+Original data frame, with USHE data element pf_02 appended.
 }
 \description{
 Calculate USHE Element pf_02 (Academic Year)

@@ -4,15 +4,13 @@
 \alias{pf_03}
 \title{Calculate USHE Element pf_03 (CIP Code)}
 \usage{
-pf_03(input_df = usheUtils::fake_program_df, with_intermediates = FALSE)
+pf_03(input_df = usheUtils::fake_program_df)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (cip_code).}
-
-\item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
 \value{
-Original data frame, with USHE data element pf_03 appended. Will also return appended intermediate calculated fields, if option is set.
+Original data frame, with USHE data element pf_03 appended.
 }
 \description{
 Calculate USHE Element pf_03 (CIP Code)

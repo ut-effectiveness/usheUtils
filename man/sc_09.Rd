@@ -4,15 +4,13 @@
 \alias{sc_09}
 \title{Calculate USHE Element sc_09 (Non-Credit Contact Hours)}
 \usage{
-sc_09(input_df = usheUtils::fake_student_course_df, with_intermediates = FALSE)
+sc_09(input_df = usheUtils::fake_student_course_df)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (earned_credits, course_level_id).}
-
-\item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
 \value{
-Original data frame, with USHE data element sc_09 appended. Will also return appended intermediate calculated fields, if option is set.
+Original data frame, with USHE data element sc_09 appended.
 }
 \description{
 Calculate USHE Element sc_09 (Non-Credit Contact Hours)

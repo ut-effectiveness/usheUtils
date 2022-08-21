@@ -4,15 +4,13 @@
 \alias{s_18}
 \title{Calculate USHE Element s_18 (Class Level)}
 \usage{
-s_18(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
+s_18(input_df = usheUtils::fake_student_df)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (primary_level_class_id).}
-
-\item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
 \value{
-Original data frame, with USHE data element s_18 appended. Will also return appended intermediate calculated fields, if option is set.
+Original data frame, with USHE data element s_18 appended.
 }
 \description{
 Calculate USHE Element s_18 (Class Level)

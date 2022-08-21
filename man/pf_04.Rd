@@ -4,15 +4,13 @@
 \alias{pf_04}
 \title{Calculate USHE Element pf_04 (Degree Level)}
 \usage{
-pf_04(input_df = usheUtils::fake_program_df, with_intermediates = FALSE)
+pf_04(input_df = usheUtils::fake_program_df)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (ipeds_award_level_code).}
-
-\item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
 \value{
-Original data frame, with USHE data element pf_04 appended. Will also return appended intermediate calculated fields, if option is set.
+Original data frame, with USHE data element pf_04 appended.
 }
 \description{
 Calculate USHE Element pf_04 (Degree Level)

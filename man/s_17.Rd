@@ -4,15 +4,13 @@
 \alias{s_17}
 \title{Calculate USHE Element s_17 (Registration Status)}
 \usage{
-s_17(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
+s_17(input_df = usheUtils::fake_student_df)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (student_type_code, high_school_graduation_date, term_start_date).}
-
-\item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
 \value{
-Original data frame, with USHE data element s_17 appended. Will also return appended intermediate calculated fields, if option is set.
+Original data frame, with USHE data element s_17 appended.
 }
 \description{
 Calculate USHE Element s_17 (Registration Status)

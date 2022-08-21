@@ -4,12 +4,10 @@
 \alias{c_28}
 \title{Calculate USHE Element c_28 (Room Number 2)}
 \usage{
-c_28(input_df = usheUtils::fake_course_df, with_intermediates = FALSE)
+c_28(input_df = usheUtils::fake_course_df)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (meet_room_number_2).}
-
-\item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
 \value{
 Original data frame, with USHE data element c_28 appended. Will also return appended intermediate calculated fields, if option is set.

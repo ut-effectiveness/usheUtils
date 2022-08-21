@@ -4,12 +4,10 @@
 \alias{c_41}
 \title{Calculate USHE Element c_41 (Course Title)}
 \usage{
-c_41(input_df = usheUtils::fake_course_df, with_intermediates = FALSE)
+c_41(input_df = usheUtils::fake_course_df)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (course_title).}
-
-\item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
 \value{
 Original data frame, with USHE data element c_41 appended. Will also return appended intermediate calculated fields, if option is set.
