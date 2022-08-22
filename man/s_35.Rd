@@ -5,17 +5,15 @@
 \alias{m_06}
 \title{Calculate USHE Element s_35 (Institution Assigned ID)}
 \usage{
-s_35(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
+s_35(input_df = usheUtils::fake_student_df)
 
-m_06(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
+m_06(input_df = usheUtils::fake_student_df)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (student_id).}
-
-\item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
 \value{
-Original data frame, with USHE data element s_35 and m_06 appended. Will also return appended intermediate calculated fields, if option is set.
+Original data frame, with USHE data element s_35 and m_06 appended.
 }
 \description{
 Calculate USHE Element s_35 (Institution Assigned ID)

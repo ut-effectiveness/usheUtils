@@ -4,15 +4,13 @@
 \alias{m_04}
 \title{Calculate USHE Element m_04 (Start Search Date)}
 \usage{
-m_04(input_df = usheUtils::fake_mission_df, with_intermediates = FALSE)
+m_04(input_df = usheUtils::fake_mission_df)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (term_end_date).}
-
-\item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
 \value{
-Original data frame, with USHE data element m_04 appended. Will also return appended intermediate calculated fields, if option is set.
+Original data frame, with USHE data element m_04 appended.
 }
 \description{
 Calculate USHE Element m_04 (Start Search Date)

@@ -4,15 +4,13 @@
 \alias{s_33}
 \title{Calculate USHE Element s_33 (Total Cum U-grad AP Cr Accepted)}
 \usage{
-s_33(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
+s_33(input_df = usheUtils::fake_student_df)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (total_cumulative_ap_credits_earned).}
-
-\item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
 \value{
-Original data frame, with USHE data element s_33 appended. Will also return appended intermediate calculated fields, if option is set.
+Original data frame, with USHE data element s_33 appended.
 }
 \description{
 Calculate USHE Element s_33 (Total Cum U-grad AP Cr Accepted)

@@ -4,15 +4,13 @@
 \alias{sc_10}
 \title{Calculate USHE Element sc_10 (Course Grade)}
 \usage{
-sc_10(input_df = usheUtils::fake_student_course_df, with_intermediates = FALSE)
+sc_10(input_df = usheUtils::fake_student_course_df)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (final_grade).}
-
-\item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
 \value{
-Original data frame, with USHE data element sc_10 appended. Will also return appended intermediate calculated fields, if option is set.
+Original data frame, with USHE data element sc_10 appended.
 }
 \description{
 Calculate USHE Element sc_10 (Course Grade)

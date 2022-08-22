@@ -4,15 +4,13 @@
 \alias{s_48}
 \title{Calculate USHE Element s_48 (Major College for Second Major)}
 \usage{
-s_48(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
+s_48(input_df = usheUtils::fake_student_df)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (secondary_major_college_id).}
-
-\item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
 \value{
-Original data frame, with USHE data element s_48 appended. Will also return appended intermediate calculated fields, if option is set.
+Original data frame, with USHE data element s_48 appended.
 }
 \description{
 Calculate USHE Element s_48 (Major College for Second Major)

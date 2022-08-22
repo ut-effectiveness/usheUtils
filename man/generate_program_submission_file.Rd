@@ -4,7 +4,10 @@
 \alias{generate_program_submission_file}
 \title{Generate Programs Submission File}
 \usage{
-generate_program_submission_file(input_df = usheUtils::fake_program_df)
+generate_program_submission_file(
+  input_df = usheUtils::fake_program_df,
+  with_intermediates = FALSE
+)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (major_desc,
@@ -14,9 +17,12 @@ degree_id,
 ipeds_award_level_code,
 cip_code,
 academic_year).}
+
+\item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
 \value{
 A Data Frame, with all of the USHE elements required for upload submission.
+This will also include intermediate values, used to calculate USHE data elements, if option is set.
 }
 \description{
 Generate Programs Submission File

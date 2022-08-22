@@ -4,12 +4,10 @@
 \alias{c_12}
 \title{Calculate USHE Element c_12 (Delivery Method)}
 \usage{
-c_12(input_df = usheUtils::fake_course_df, with_intermediates = FALSE)
+c_12(input_df = usheUtils::fake_course_df)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (instruction_method_code).}
-
-\item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
 \value{
 Original data frame, with USHE data element c_12 appended. Will also return appended intermediate calculated fields, if option is set.

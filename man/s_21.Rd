@@ -4,15 +4,13 @@
 \alias{s_21}
 \title{Calculate USHE Element s_21 (Cumulative Inst Undergrad GPA)}
 \usage{
-s_21(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
+s_21(input_df = usheUtils::fake_student_df)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (level_id, institutional_cumulative_gpa).}
-
-\item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
 \value{
-Original data frame, with USHE data element s_21 appended. Will also return appended intermediate calculated fields, if option is set.
+Original data frame, with USHE data element s_21 appended.
 }
 \description{
 Calculate USHE Element s_21 (Cumulative Inst Undergrad GPA)

@@ -4,15 +4,13 @@
 \alias{sc_12}
 \title{Calculate USHE Element sc_12 (Student Type)}
 \usage{
-sc_12(input_df = usheUtils::fake_student_course_df, with_intermediates = FALSE)
+sc_12(input_df = usheUtils::fake_student_course_df)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (latest_student_type_code, budget_code, is_concurrent_course).}
-
-\item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
 \value{
-Original data frame, with USHE data element sc_12 appended. Will also return appended intermediate calculated fields, if option is set.
+Original data frame, with USHE data element sc_12 appended.
 }
 \description{
 Calculate USHE Element sc_12 (Student Type)

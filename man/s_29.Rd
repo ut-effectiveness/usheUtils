@@ -4,15 +4,13 @@
 \alias{s_29}
 \title{Calculate USHE Element s_29 (Non Resident Tuition Waiver)}
 \usage{
-s_29(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
+s_29(input_df = usheUtils::fake_student_df)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (house_bill_75_waiver).}
-
-\item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
 \value{
-Original data frame, with USHE data element s_29 appended. Will also return appended intermediate calculated fields, if option is set.
+Original data frame, with USHE data element s_29 appended.
 }
 \description{
 Calculate USHE Element s_29 (Non Resident Tuition Waiver)

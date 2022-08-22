@@ -4,15 +4,13 @@
 \alias{s_41}
 \title{Calculate USHE Element s_41 (ACT Science Sub-score)}
 \usage{
-s_41(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
+s_41(input_df = usheUtils::fake_student_df)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (act_science_score).}
-
-\item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
 \value{
-Original data frame, with USHE data element s_41 appended. Will also return appended intermediate calculated fields, if option is set.
+Original data frame, with USHE data element s_41 appended.
 }
 \description{
 Calculate USHE Element s_41 (ACT Science Sub-score)

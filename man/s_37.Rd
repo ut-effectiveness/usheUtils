@@ -4,15 +4,13 @@
 \alias{s_37}
 \title{Calculate USHE Element s_37 (Student's Long-term Intended CIP)}
 \usage{
-s_37(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
+s_37(input_df = usheUtils::fake_student_df)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (primary_major_cip_code).}
-
-\item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
 \value{
-Original data frame, with USHE data element s_37 appended. Will also return appended intermediate calculated fields, if option is set.
+Original data frame, with USHE data element s_37 appended.
 }
 \description{
 Calculate USHE Element s_37 (Student's Long-term Intended CIP)

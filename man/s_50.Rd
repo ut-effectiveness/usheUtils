@@ -4,15 +4,13 @@
 \alias{s_50}
 \title{Calculate USHE Element s_50 (Degree Intent of Second Degree)}
 \usage{
-s_50(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
+s_50(input_df = usheUtils::fake_student_df)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (secondary_ipeds_award_level_code).}
-
-\item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
 \value{
-Original data frame, with USHE data element s_50 appended. Will also return appended intermediate calculated fields, if option is set.
+Original data frame, with USHE data element s_50 appended.
 }
 \description{
 Calculate USHE Element s_50 (Degree Intent of Second Degree)

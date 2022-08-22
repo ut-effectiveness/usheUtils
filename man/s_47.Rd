@@ -4,15 +4,13 @@
 \alias{s_47}
 \title{Calculate USHE Element s_47 (Major Name)}
 \usage{
-s_47(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
+s_47(input_df = usheUtils::fake_student_df)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (primary_major_desc).}
-
-\item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
 \value{
-Original data frame, with USHE data element s_47 appended. Will also return appended intermediate calculated fields, if option is set.
+Original data frame, with USHE data element s_47 appended.
 }
 \description{
 Calculate USHE Element s_47 (Major Name)

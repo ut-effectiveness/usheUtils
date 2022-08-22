@@ -4,7 +4,10 @@
 \alias{generate_course_submission_file}
 \title{Generate Course Submission File}
 \usage{
-generate_course_submission_file(input_df = usheUtils::fake_course_df)
+generate_course_submission_file(
+  input_df = usheUtils::fake_course_df,
+  with_intermediates = FALSE
+)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (course_reference_number,
@@ -57,9 +60,12 @@ course_min_credits,
 season,
 academic_year_code,
 version_id).}
+
+\item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
 \value{
 A Data Frame, with all of the USHE elements required for upload submission.
+This will also include intermediate values, used to calculate USHE data elements, if option is set.
 }
 \description{
 Generate Course Submission File

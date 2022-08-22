@@ -5,17 +5,15 @@
 \alias{m_03}
 \title{Calculate USHE Element s_12, and m_03 (Birth Date)}
 \usage{
-s_12(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
+s_12(input_df = usheUtils::fake_student_df)
 
-m_03(input_df = usheUtils::fake_student_df, with_intermediates = FALSE)
+m_03(input_df = usheUtils::fake_student_df)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (birth_date).}
-
-\item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
 \value{
-Original data frame, with USHE data elements s_12 and m_03 appended. Will also return appended intermediate calculated fields, if option is set.
+Original data frame, with USHE data elements s_12 and m_03 appended.
 }
 \description{
 Calculate USHE Element s_12, and m_03 (Birth Date)

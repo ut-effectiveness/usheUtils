@@ -4,15 +4,13 @@
 \alias{m_02}
 \title{Calculate USHE Element m_02 (Student Name)}
 \usage{
-m_02(input_df = usheUtils::fake_mission_df, with_intermediates = FALSE)
+m_02(input_df = usheUtils::fake_mission_df)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (last_name, first_name, middle_name).}
-
-\item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
 \value{
-Original data frame, with USHE data element m_02 appended. Will also return appended intermediate calculated fields, if option is set.
+Original data frame, with USHE data element m_02 appended.
 }
 \description{
 Calculate USHE Element m_02 (Student Name)

@@ -25,12 +25,12 @@ generate_missionary_submission_file <- function(input_df=usheUtils::fake_mission
                           "m_05", "m_06")
 
   output_df <- input_df %>%
-    m_01(with_intermediates) %>%
-    m_02(with_intermediates) %>%
-    m_03(with_intermediates) %>%
-    m_04(with_intermediates) %>%
-    m_05(with_intermediates) %>%
-    m_06(with_intermediates)
+    m_01() %>%
+    m_02() %>%
+    m_03() %>%
+    m_04() %>%
+    m_05() %>%
+    m_06()
 
 
   if (!with_intermediates) {
@@ -53,15 +53,14 @@ generate_missionary_submission_file <- function(input_df=usheUtils::fake_mission
 #' @importFrom dplyr coalesce
 #'
 #' @param input_df A Data Frame. Must contain the following data fields: (last_name, first_name, middle_name).
-#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
 #'
-#' @return Original data frame, with USHE data element m_02 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element m_02 appended.
 #' @export
 #'
 #' @examples
 #' m_02()
 #'
-m_02 <- function(input_df=usheUtils::fake_mission_df, with_intermediates=FALSE) {
+m_02 <- function(input_df=usheUtils::fake_mission_df) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
@@ -70,12 +69,6 @@ m_02 <- function(input_df=usheUtils::fake_mission_df, with_intermediates=FALSE) 
             m_middle = coalesce(middle_name, '')) %>%
     # Append USHE data element m_02
     mutate( m_02 = paste(m_last, m_first, m_middle, sep='|'))
-
-  if (!with_intermediates) {
-    output_df <- output_df %>%
-      # Remove fields used for intermediate calculations
-      select( -c(m_last, m_first, m_middle,) )
-  }
 
   return(output_df)
 }
@@ -95,27 +88,20 @@ m_02 <- function(input_df=usheUtils::fake_mission_df, with_intermediates=FALSE) 
 #' @importFrom dplyr select
 #'
 #' @param input_df A Data Frame. Must contain the following data fields: (term_end_date).
-#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
 #'
-#' @return Original data frame, with USHE data element m_04 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element m_04 appended.
 #' @export
 #'
 #' @examples
 #' m_04()
 #'
-m_04 <- function(input_df=usheUtils::fake_mission_df, with_intermediates=FALSE) {
+m_04 <- function(input_df=usheUtils::fake_mission_df) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
     mutate( m_start_dt = gsub("-", "", term_end_date )) %>%
     # Append USHE data element m_04
     mutate( m_04 =  m_start_dt  )
-
-  if (!with_intermediates) {
-    output_df <- output_df %>%
-      # Remove fields used for intermediate calculations
-      select( -c( m_start_dt) )
-  }
 
   return(output_df)
 }
@@ -134,27 +120,20 @@ m_04 <- function(input_df=usheUtils::fake_mission_df, with_intermediates=FALSE) 
 #' @importFrom dplyr select
 #'
 #' @param input_df A Data Frame. Must contain the following data fields: ().
-#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
 #'
-#' @return Original data frame, with USHE data element m_05 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element m_05 appended.
 #' @export
 #'
 #' @examples
 #' m_05()
 #'
-m_05 <- function(input_df=usheUtils::fake_mission_df, with_intermediates=FALSE) {
+m_05 <- function(input_df=usheUtils::fake_mission_df) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
     mutate( m_end_dt = gsub("-", "", Sys.Date())) %>%
     # Append USHE data element m_05
     mutate( m_05 =  m_end_dt  )
-
-  if (!with_intermediates) {
-    output_df <- output_df %>%
-      # Remove fields used for intermediate calculations
-      select( -c( m_end_dt) )
-  }
 
   return(output_df)
 }
