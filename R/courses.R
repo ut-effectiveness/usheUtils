@@ -1352,6 +1352,7 @@ c_40 <- function(input_df=usheUtils::fake_course_df) {
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
+#' @importFrom stringr str_replace_all
 #'
 #' @param input_df A Data Frame. Must contain the following data fields: (course_title).
 #'
@@ -1366,7 +1367,9 @@ c_41 <- function(input_df=usheUtils::fake_course_df) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( c_title = course_title) %>%
+    mutate( c_title_intermediate_1 = str_replace_all(course_title, "([,.;:-])", "") ) %>%
+    mutate( c_title_intermediate_2 = str_replace_all(c_title_intermediate_1, "&", "and") ) %>%
+    mutate( c_title = c_title_intermediate_2) %>%
     # Append USHE data element c_41
     mutate( c_41 = c_title )
 
