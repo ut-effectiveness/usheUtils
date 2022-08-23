@@ -64,8 +64,8 @@ generate_space_inventory_building_submission_file <- function(input_df=usheUtils
 #' @details
 #'
 #' **USHE Documentation**
-#' - ELEMENT NAME: b_location
-#' - FIELD NAME: Site Location (main campus, branch campus, or other site)
+#' - ELEMENT NAME: Building Location Code
+#' - FIELD NAME: b_location
 #' - FIELD FORMAT: Varchar, 3 Characters
 #' - DEFINITION: This field has been established to identify the campus location or other site  where the space is located.
 #'
@@ -183,7 +183,7 @@ b_04 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @export
 #'
 #' @examples
-#' b_04()
+#' b_05()
 #'
 b_05 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
 
@@ -218,7 +218,7 @@ b_05 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @export
 #'
 #' @examples
-#' b_04()
+#' b_06()
 #'
 b_06 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
 
@@ -253,7 +253,7 @@ b_06 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @export
 #'
 #' @examples
-#' b_04()
+#' b_07()
 #'
 b_07 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
 
@@ -288,7 +288,7 @@ b_07 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @export
 #'
 #' @examples
-#' b_04()
+#' b_08()
 #'
 b_08 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
 
@@ -324,7 +324,7 @@ b_08 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @export
 #'
 #' @examples
-#' b_04()
+#' b_09()
 #'
 b_09 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
 
@@ -359,7 +359,7 @@ b_09 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @export
 #'
 #' @examples
-#' b_04()
+#' b_10()
 #'
 b_10 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
 
@@ -394,7 +394,7 @@ b_10 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @export
 #'
 #' @examples
-#' b_04()
+#' b_11()
 #'
 b_11 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
 
@@ -429,7 +429,7 @@ b_11 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @export
 #'
 #' @examples
-#' b_04()
+#' b_12()
 #'
 b_12 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
 
@@ -464,7 +464,7 @@ b_12 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @export
 #'
 #' @examples
-#' b_04()
+#' b_13()
 #'
 b_13 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
 
@@ -499,7 +499,7 @@ b_13 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @export
 #'
 #' @examples
-#' b_04()
+#' b_14()
 #'
 b_14 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
 
@@ -534,7 +534,7 @@ b_14 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @export
 #'
 #' @examples
-#' b_04()
+#' b_15()
 #'
 b_15 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
 
