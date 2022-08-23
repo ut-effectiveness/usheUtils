@@ -1825,7 +1825,7 @@ c_53 <- function(input_df=usheUtils::fake_course_df) {
     mutate( c_site_type2 = case_when(
       !is.na(meet_building_id_2) &  (campus_id == "ONLINE" | campus_id == "VIRT") ~ "V",
       meet_building_id_2 == "HURCTR" ~ "B80",
-      !is.na(meet_building_id_2) ~ "AO1",
+      !is.na(meet_building_id_2) ~ "A01",
       TRUE ~ NA_character_)) %>%
     # Append USHE data element c_53
     mutate( c_53 = c_site_type2 )
@@ -1859,7 +1859,7 @@ c_54 <- function(input_df=usheUtils::fake_course_df) {
     mutate( c_site_type3 = case_when(
       !is.na(meet_building_id_3) &  (campus_id == "ONLINE" | campus_id == "VIRT") ~ "V",
       meet_building_id_3 == "HURCTR" ~ "B80",
-      !is.na(meet_building_id_2) ~ "AO1",
+      !is.na(meet_building_id_2) ~ "A01",
       TRUE ~ NA_character_)) %>%
     # Append USHE data element c_54
     mutate( c_54 = c_site_type3 )
