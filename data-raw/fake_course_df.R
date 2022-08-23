@@ -18,7 +18,7 @@ fake_course_df <- data.frame(
   instructor_last_name = sample(c("", NA), sample_size, replace = TRUE),
   instructor_middle_name = sample(c("", NA), sample_size, replace = TRUE),
   instructor_employee_id = sample(c("", NA), sample_size, replace = TRUE),
-  course_title = sample(c("", NA), sample_size, replace = TRUE),
+  course_title = sample(c("MATH, & ENGL-1010", NA), sample_size, replace = TRUE),
   meet_end_date = sample(c("", NA), sample_size, replace = TRUE),
   meet_start_date = sample(c("", NA), sample_size, replace = TRUE),
   room_use_code_3 = sample(c("", NA), sample_size, replace = TRUE),
