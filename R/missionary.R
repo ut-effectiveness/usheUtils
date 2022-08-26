@@ -51,6 +51,7 @@ generate_missionary_submission_file <- function(input_df=usheUtils::fake_mission
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
 #' @importFrom dplyr coalesce
+#' @importFrom stringr str_sub
 #'
 #' @param input_df A Data Frame. Must contain the following data fields: (last_name, first_name, middle_name).
 #'
@@ -64,9 +65,9 @@ m_02 <- function(input_df=usheUtils::fake_mission_df) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( m_last = coalesce(last_name, ''),
-            m_first = coalesce(first_name, ''),
-            m_middle = coalesce(middle_name, '')) %>%
+    mutate( m_last = str_sub(coalesce(last_name, ''), end = 60),
+            m_first = str_sub(coalesce(first_name, ''), end = 15),
+            m_middle = str_sub(coalesce(middle_name, ''), end = 15) ) %>%
     # Append USHE data element m_02
     mutate( m_02 = paste(m_last, m_first, m_middle, sep='|'))
 
