@@ -243,7 +243,7 @@ s_02 <- function(input_df=usheUtils::fake_student_df) {
     # Calculate intermediate fields
     mutate(s_year = case_when(
       season == "Summer" ~ as.character( (as.numeric(academic_year_code) + 1) ),
-      season == "Fall" ~ as.character( (as.numeric(academic_year_code) + 1) ),
+      season == "Fall" ~ as.character(academic_year_code),
       season == "Spring" ~ as.character( academic_year_code ),
       TRUE ~ " ")) %>%
     mutate(s_term = case_when(
@@ -1263,6 +1263,7 @@ s_28 <- function(input_df=usheUtils::fake_student_df) {
       high_school_code ==  "459993" ~ "459050",
       high_school_code ==  "459995" ~ "459300",
       high_school_code ==  "960000" ~ "459400",
+      high_school_code ==  "459999" ~ "459150",
       high_school_code %in% c("459994","459996") ~ "459200",
       high_school_code %in% c("459998","969999") ~ "459500",
       TRUE ~ high_school_code)) %>%
@@ -1296,7 +1297,8 @@ s_29 <- function(input_df=usheUtils::fake_student_df) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( s_hb75_waiver = house_bill_75_waiver ) %>%
+    #mutate( s_hb75_waiver = house_bill_75_waiver ) %>%
+    mutate( s_hb75_waiver = if_else(house_bill_75_waiver > 100, 100, house_bill_75_waiver) ) %>%
     # Append USHE data element s_29
     mutate( s_29 = s_hb75_waiver )
 
