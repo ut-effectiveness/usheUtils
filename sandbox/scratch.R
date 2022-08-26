@@ -1,40 +1,21 @@
-#' Calculate USHE Element s_50 (Degree Intent of Second Degree)
-#'
-#' @details
-#'
-#' **USHE Documentation**
-#' - ELEMENT NAME: Degree Intent of Second Degree
-#' - FIELD NAME: S_DEG_INTENT2
-#' - FIELD FORMAT: Varchar, 2 Character
-#' - DEFINITION: The length/nature of the degree that the student is working toward.
-#'               S_DEG_INTENT2 with S_CURR_CIP2 represents the student’s major and ties to S_MAJOR2
-#'
-#' @importFrom magrittr %>%
-#' @importFrom dplyr mutate
-#' @importFrom dplyr select
-#'
-#' @param input_df A Data Frame. Must contain the following data fields: (secondary_ipeds_award_level_code).
-#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
-#'
-#' @return Original data frame, with USHE data element s_50 appended. Will also return appended intermediate calculated fields, if option is set.
-#' @export
-#'
-#' @examples
-#' s_50()
-#'
-s_50 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+## code to prepare `fake_rooms_df` dataset goes here
 
-  output_df <- input_df %>%
-    # Calculate intermediate fields
-    mutate(s_deg_intent = secondary_ipeds_award_level_code) %>%
-    # Append USHE data element s_50
-    mutate( s_50 = s_deg_intent )
+sample_size <- 1000
 
-  if (!with_intermediates) {
-    output_df <- output_df %>%
-      # Remove fields used for intermediate calculations
-      select( -c(s_deg_intent) )
-  }
+fake_rooms_df <- data.frame(
+building_id = sample(c("", NA), sample_size, replace = TRUE),
+room_number = sample(c("", NA), sample_size, replace = TRUE),
+room_group1_code = sample(c("", NA), sample_size, replace = TRUE),
+room_use_code_group = sample(c("", NA), sample_size, replace = TRUE),
+room_use_code = sample(c("", NA), sample_size, replace = TRUE),
+room_name = sample(c("", NA), sample_size, replace = TRUE),
+room_stations = sample(c("", NA), sample_size, replace = TRUE),
+room_area = sample(c("", NA), sample_size, replace = TRUE),
+room_disabled_access = sample(c("", NA), sample_size, replace = TRUE),
+room_prorated = sample(c("", NA), sample_size, replace = TRUE),
+room_prorated_area = sample(c("", NA), sample_size, replace = TRUE),
+room_activity_date  = sample(c("", NA), sample_size, replace = TRUE)
 
-  return(output_df)
-}
+)
+
+usethis::use_data(fake_rooms_df, overwrite = TRUE)

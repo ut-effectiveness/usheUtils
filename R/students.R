@@ -243,7 +243,7 @@ s_02 <- function(input_df=usheUtils::fake_student_df) {
     # Calculate intermediate fields
     mutate(s_year = case_when(
       season == "Summer" ~ as.character( (as.numeric(academic_year_code) + 1) ),
-      season == "Fall" ~ as.character( (as.numeric(academic_year_code) + 1) ),
+      season == "Fall" ~ as.character(academic_year_code),
       season == "Spring" ~ as.character( academic_year_code ),
       TRUE ~ " ")) %>%
     mutate(s_term = case_when(
@@ -291,8 +291,10 @@ sc_02 <- s_02
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
+#' @importFrom dplyr if_else
 #' @importFrom stringr str_replace_all
 #' @importFrom stringr str_starts
+#' @importFrom stringr str_length
 #'
 #' @param input_df A Data Frame. Must contain the following data fields: (student_id, ssn).
 #'
@@ -308,10 +310,12 @@ s_03 <- function(input_df=usheUtils::fake_student_df) {
   output_df <- input_df %>%
     # Calculate intermediate fields
     # Note: ssn that start with 9 are actually IRS issued tax IDs; USHE only wants valid ssn.
-
-    mutate( s_id = if_else(is.na(ssn) | str_starts(ssn, "9"),
-                           paste0('D', student_id),
-                           str_replace_all(ssn, "-", "") ) ) %>%
+    mutate( s_id = if_else(is.na(ssn) |
+                          str_starts(ssn, "9") |
+                          str_length(ssn) >= 10 |
+                          str_length(ssn) <= 8,
+                          paste0('D', student_id),
+                          str_replace_all(ssn, "-", "") ) )  %>%
 
     # Append USHE data element s_03
     mutate( s_03 = s_id,
@@ -339,7 +343,10 @@ sc_03 <- s_03
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
+#' @importFrom dplyr if_else
+#' @importFrom stringr str_replace_all
 #' @importFrom stringr str_starts
+#' @importFrom stringr str_length
 #'
 #' @param input_df A Data Frame. Must contain the following data fields: (student_id, ssn).
 #'
@@ -354,7 +361,10 @@ s_04 <- function(input_df=usheUtils::fake_student_df) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( s_id_flag = if_else(is.na(ssn) | str_starts(ssn, "9"),
+    mutate( s_id_flag = if_else(is.na(ssn) |
+                                str_starts(ssn, "9") |
+                                str_length(ssn) >= 10 |
+                                str_length(ssn) <= 8,
                                 'I',
                                 'S' ) ) %>%
     # Append USHE data element s_04
@@ -850,7 +860,7 @@ s_17 <- function(input_df=usheUtils::fake_student_df) {
                                      student_type_code == "5" ~ 'CG', # Continuing Graduate
                                      student_type_code == "C" ~ 'CS', # Continuing Registration
                                      student_type_code == "H" ~ 'HS', # High School
-                                     student_type_code == "P" ~ 'CE', # Personal Interest, Non-Degree
+                                     student_type_code == "P" ~ 'NM', # Personal Interest, Non-Degree
                                      student_type_code == "R" ~ 'RS', # Readmit
                                      student_type_code == "T" ~ 'TU', # Transfer
                                      TRUE ~ student_type_code_2) ) %>%
@@ -1251,10 +1261,11 @@ s_28 <- function(input_df=usheUtils::fake_student_df) {
       high_school_code ==  "CHSPE" ~ "459700",
       high_school_code ==  "459992" ~ "459600",
       high_school_code ==  "459993" ~ "459050",
-      high_school_code ==  "459994" ~ "459200",
-      high_school_code ==  "459996" ~ "459200",
       high_school_code ==  "459995" ~ "459300",
-      high_school_code ==  "459998" ~ "459500",
+      high_school_code ==  "960000" ~ "459400",
+      high_school_code ==  "459999" ~ "459150",
+      high_school_code %in% c("459994","459996") ~ "459200",
+      high_school_code %in% c("459998","969999") ~ "459500",
       TRUE ~ high_school_code)) %>%
     # Append USHE data element s_28
     mutate( s_28 = s_high_school )
@@ -1286,7 +1297,8 @@ s_29 <- function(input_df=usheUtils::fake_student_df) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( s_hb75_waiver = house_bill_75_waiver ) %>%
+    #mutate( s_hb75_waiver = house_bill_75_waiver ) %>%
+    mutate( s_hb75_waiver = if_else(house_bill_75_waiver > 100, 100, house_bill_75_waiver) ) %>%
     # Append USHE data element s_29
     mutate( s_29 = s_hb75_waiver )
 
@@ -1539,7 +1551,9 @@ s_37 <- function(input_df=usheUtils::fake_student_df) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( s_intent_cip = primary_major_cip_code) %>%
+    mutate( s_intent_cip = if_else( primary_major_cip_code == "999999",
+                                    "240102",
+                                    primary_major_cip_code ) ) %>%
     # Append USHE data element s_37
     mutate( s_37 = s_intent_cip )
 

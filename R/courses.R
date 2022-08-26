@@ -1352,6 +1352,7 @@ c_40 <- function(input_df=usheUtils::fake_course_df) {
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
+#' @importFrom stringr str_replace_all
 #'
 #' @param input_df A Data Frame. Must contain the following data fields: (course_title).
 #'
@@ -1366,7 +1367,9 @@ c_41 <- function(input_df=usheUtils::fake_course_df) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( c_title = course_title) %>%
+    mutate( c_title_intermediate_1 = str_replace_all(course_title, "([,.;:-])", "") ) %>%
+    mutate( c_title_intermediate_2 = str_replace_all(c_title_intermediate_1, "&", "and") ) %>%
+    mutate( c_title = c_title_intermediate_2) %>%
     # Append USHE data element c_41
     mutate( c_41 = c_title )
 
@@ -1825,7 +1828,7 @@ c_53 <- function(input_df=usheUtils::fake_course_df) {
     mutate( c_site_type2 = case_when(
       !is.na(meet_building_id_2) &  (campus_id == "ONLINE" | campus_id == "VIRT") ~ "V",
       meet_building_id_2 == "HURCTR" ~ "B80",
-      !is.na(meet_building_id_2) ~ "AO1",
+      !is.na(meet_building_id_2) ~ "A01",
       TRUE ~ NA_character_)) %>%
     # Append USHE data element c_53
     mutate( c_53 = c_site_type2 )
@@ -1859,7 +1862,7 @@ c_54 <- function(input_df=usheUtils::fake_course_df) {
     mutate( c_site_type3 = case_when(
       !is.na(meet_building_id_3) &  (campus_id == "ONLINE" | campus_id == "VIRT") ~ "V",
       meet_building_id_3 == "HURCTR" ~ "B80",
-      !is.na(meet_building_id_2) ~ "AO1",
+      !is.na(meet_building_id_2) ~ "A01",
       TRUE ~ NA_character_)) %>%
     # Append USHE data element c_54
     mutate( c_54 = c_site_type3 )
