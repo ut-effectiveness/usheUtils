@@ -1,34 +1,21 @@
-#' Calculate USHE Element b_15 (Auxiliary Building)
-#'
-#' @details
-#'
-#' **USHE Documentation**
-#' - ELEMENT NAME: Auxiliary Building
-#' - FIELD NAME: b_aux
-#' - FIELD FORMAT:  Numeric 1 Character.
-#' - DEFINITION: Business space or other support facilities (as distinguished from primary programs of  instruction, research, and public service, and from organized activities and intercollegiate athletics)
-#'
-#'
-#' @importFrom magrittr %>%
-#' @importFrom dplyr mutate
-#' @importFrom dplyr select
-#'
-#' @param input_df A Data Frame. Must contain the following data fields: (building_auxiliary).
-#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
-#'
-#' @return Original data frame, with USHE data element b_15 appended. Will also return appended intermediate calculated fields, if option is set.
-#' @export
-#'
-#' @examples
-#' b_04()
-#'
-b_15 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+## code to prepare `fake_rooms_df` dataset goes here
 
-  output_df <- input_df %>%
-    # Calculate intermediate fields
-    mutate( b_aux = building_auxiliary ) %>%
-    # Append USHE data element b_15
-    mutate( b_15 =  b_aux )
+sample_size <- 1000
 
-  return(output_df)
-}
+fake_rooms_df <- data.frame(
+building_id = sample(c("", NA), sample_size, replace = TRUE),
+room_number = sample(c("", NA), sample_size, replace = TRUE),
+room_group1_code = sample(c("", NA), sample_size, replace = TRUE),
+room_use_code_group = sample(c("", NA), sample_size, replace = TRUE),
+room_use_code = sample(c("", NA), sample_size, replace = TRUE),
+room_name = sample(c("", NA), sample_size, replace = TRUE),
+room_stations = sample(c("", NA), sample_size, replace = TRUE),
+room_area = sample(c("", NA), sample_size, replace = TRUE),
+room_disabled_access = sample(c("", NA), sample_size, replace = TRUE),
+room_prorated = sample(c("", NA), sample_size, replace = TRUE),
+room_prorated_area = sample(c("", NA), sample_size, replace = TRUE),
+room_activity_date  = sample(c("", NA), sample_size, replace = TRUE)
+
+)
+
+usethis::use_data(fake_rooms_df, overwrite = TRUE)
