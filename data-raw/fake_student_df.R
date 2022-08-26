@@ -65,10 +65,11 @@ fake_student_df <- data.frame(
   primary_major_desc = sample(c("Great Major", "Awesome Major", NA), sample_size, replace = TRUE),
   secondary_major_desc = sample(c("Great Major", "Awesome Major", NA), sample_size, replace = TRUE),
   ipeds_award_level_code = sample(as.character(c(1:7, NA)), sample_size, replace = TRUE),
-  house_bill_75_waiver = sample(as.numeric(c(-100:100, NA)), sample_size, replace = TRUE),
+  house_bill_75_waiver = sample(as.numeric(c(0:140, NA)), sample_size, replace = TRUE),
   mailing_address_country_code = sample(c("Canada", "Japan", "USA", NA), sample_size, replace = TRUE),
   local_address_country= sample(c("Canada", "Japan", "USA", NA), sample_size, replace = TRUE),
   institutional_term_gpa = sample(0:400, sample_size, replace = TRUE) / 100,
   secondary_ipeds_award_level_code = sample(as.character(c(1:7, NA)), sample_size, replace = TRUE))
 
 usethis::use_data(fake_student_df, overwrite = TRUE)
+
