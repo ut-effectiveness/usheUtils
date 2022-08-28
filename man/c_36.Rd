@@ -10,7 +10,7 @@ c_36(input_df = usheUtils::fake_course_df)
 \item{input_df}{A Data Frame. Must contain the following data fields: (meet_room_number_3).}
 }
 \value{
-Original data frame, with USHE data element c_36 appended. Will also return appended intermediate calculated fields, if option is set.
+Original data frame, with USHE data element c_36 appended.
 }
 \description{
 Calculate USHE Element c_36 (Room Number 3)

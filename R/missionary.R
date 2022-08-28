@@ -30,8 +30,8 @@ generate_missionary_submission_file <- function(input_df=usheUtils::fake_mission
     m_03() %>%
     m_04() %>%
     m_05() %>%
-    m_06()
-
+    m_06() %>%
+    clean()
 
   if (!with_intermediates) {
     output_df <- output_df %>%

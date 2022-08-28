@@ -10,7 +10,7 @@ c_32(input_df = usheUtils::fake_course_df)
 \item{input_df}{A Data Frame. Must contain the following data fields: (meet_end_time_3).}
 }
 \value{
-Original data frame, with USHE data element c_32 appended. Will also return appended intermediate calculated fields, if option is set.
+Original data frame, with USHE data element c_32 appended.
 }
 \description{
 Calculate USHE Element c_32 (Course Stop Time 3)

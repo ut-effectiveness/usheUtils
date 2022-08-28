@@ -10,7 +10,7 @@ c_15(input_df = usheUtils::fake_course_df)
 \item{input_df}{A Data Frame. Must contain the following data fields: (meet_start_time_1).}
 }
 \value{
-Original data frame, with USHE data element c_15 appended. Will also return appended intermediate calculated fields, if option is set.
+Original data frame, with USHE data element c_15 appended.
 }
 \description{
 Calculate USHE Element c_15 (Course Start Time 1)

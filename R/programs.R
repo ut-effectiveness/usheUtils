@@ -37,7 +37,8 @@ generate_program_submission_file <- function(input_df=usheUtils::fake_program_df
     pf_07() %>%
     pf_08() %>%
     pf_09() %>%
-    pf_10()
+    pf_10() %>%
+    clean()
 
   if (!with_intermediates) {
     output_df <- output_df %>%

@@ -10,7 +10,7 @@ c_51(input_df = usheUtils::fake_course_df)
 \item{input_df}{A Data Frame. Must contain the following data fields: (course_level_id, course_number, subject_code).}
 }
 \value{
-Original data frame, with USHE data element c_51 appended. Will also return appended intermediate calculated fields, if option is set.
+Original data frame, with USHE data element c_51 appended.
 }
 \description{
 Calculate USHE Element c_51 (Class Level)

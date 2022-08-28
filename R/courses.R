@@ -136,7 +136,8 @@ generate_course_submission_file <- function(input_df=usheUtils::fake_course_df, 
     c_51() %>%
     c_52() %>%
     c_53() %>%
-    c_54()
+    c_54() %>%
+    clean()
 
   if (!with_intermediates) {
     output_df <- output_df %>%
@@ -159,7 +160,7 @@ generate_course_submission_file <- function(input_df=usheUtils::fake_course_df, 
 #'
 #' @param input_df A Data Frame. Must contain the following data fields: (subject_code).
 #'
-#' @return Original data frame, with USHE data element c_03 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_03 appended.
 #' @export
 #'
 #' @examples
@@ -189,7 +190,7 @@ c_03 <- function(input_df=usheUtils::fake_course_df) {
 #'
 #' @param input_df A Data Frame. Must contain the following data fields: (course_number).
 #'
-#' @return Original data frame, with USHE data element c_04 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_04 appended.
 #' @export
 #'
 #' @examples
@@ -218,7 +219,7 @@ c_04 <- function(input_df=usheUtils::fake_course_df) {
 #'
 #' @param input_df A Data Frame. Must contain the following data fields: (section_number).
 #'
-#' @return Original data frame, with USHE data element c_05 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_05 appended.
 #' @export
 #'
 #' @examples
@@ -248,7 +249,7 @@ c_05 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (course_min_credits).
 #'
 #'
-#' @return Original data frame, with USHE data element c_06 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_06 appended.
 #' @export
 #'
 #' @examples
@@ -279,7 +280,7 @@ c_06 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (course_max_credits).
 #'
 #'
-#' @return Original data frame, with USHE data element c_07 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_07 appended.
 #' @export
 #'
 #' @examples
@@ -317,7 +318,7 @@ c_07 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (course_level_id, contact_hours).
 #'
 #'
-#' @return Original data frame, with USHE data element c_08 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_08 appended.
 #' @export
 #'
 #' @examples
@@ -348,7 +349,7 @@ c_08 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: ().
 #'
 #'
-#' @return Original data frame, with USHE data element c_09 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_09 appended.
 #' @export
 #'
 #' @examples
@@ -384,7 +385,7 @@ c_09 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (campus_id).
 #'
 #'
-#' @return Original data frame, with USHE data element c_10 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_10 appended.
 #' @export
 #'
 #' @examples
@@ -420,7 +421,7 @@ c_10 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (budget_code).
 #'
 #'
-#' @return Original data frame, with USHE data element c_11 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_11 appended.
 #' @export
 #'
 #' @examples
@@ -452,7 +453,7 @@ c_11 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (instruction_method_code).
 #'
 #'
-#' @return Original data frame, with USHE data element c_12 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_12 appended.
 #' @export
 #'
 #' @examples
@@ -483,7 +484,7 @@ c_12 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (program_type).
 #'
 #'
-#' @return Original data frame, with USHE data element c_13 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_13 appended.
 #' @export
 #'
 #' @examples
@@ -515,7 +516,7 @@ c_13 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (course_level_id).
 #'
 #'
-#' @return Original data frame, with USHE data element c_14 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_14 appended.
 #' @export
 #'
 #' @examples
@@ -547,7 +548,7 @@ c_14 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (meet_start_time_1).
 #'
 #'
-#' @return Original data frame, with USHE data element c_15 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_15 appended.
 #' @export
 #'
 #' @examples
@@ -579,7 +580,7 @@ c_15 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (meet_end_time_1).
 #'
 #'
-#' @return Original data frame, with USHE data element c_16 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_16 appended.
 #' @export
 #'
 #' @examples
@@ -610,7 +611,7 @@ c_16 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (meet_days_1).
 #'
 #'
-#' @return Original data frame, with USHE data element c_17 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_17 appended.
 #' @export
 #'
 #' @examples
@@ -641,7 +642,7 @@ c_17 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (meet_building_id_1).
 #'
 #'
-#' @return Original data frame, with USHE data element c_18 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_18 appended.
 #' @export
 #'
 #' @examples
@@ -672,7 +673,7 @@ c_18 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (building_number_1).
 #'
 #'
-#' @return Original data frame, with USHE data element c_19 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_19 appended.
 #' @export
 #'
 #' @examples
@@ -702,7 +703,7 @@ c_19 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (meet_room_number_1).
 #'
 #'
-#' @return Original data frame, with USHE data element c_20 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_20 appended.
 #' @export
 #'
 #' @examples
@@ -733,7 +734,7 @@ c_20 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (room_max_occupancy_1).
 #'
 #'
-#' @return Original data frame, with USHE data element c_21 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_21 appended.
 #' @export
 #'
 #' @examples
@@ -764,7 +765,7 @@ c_21 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (room_use_code_1).
 #'
 #'
-#' @return Original data frame, with USHE data element c_22 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_22 appended.
 #' @export
 #'
 #' @examples
@@ -797,7 +798,7 @@ c_22 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (meet_start_time_2).
 #'
 #'
-#' @return Original data frame, with USHE data element c_23 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_23 appended.
 #' @export
 #'
 #' @examples
@@ -829,7 +830,7 @@ c_23 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (meet_end_time_2).
 #'
 #'
-#' @return Original data frame, with USHE data element c_24 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_24 appended.
 #' @export
 #'
 #' @examples
@@ -860,7 +861,7 @@ c_24 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (meet_days_2).
 #'
 #'
-#' @return Original data frame, with USHE data element c_25 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_25 appended.
 #' @export
 #'
 #' @examples
@@ -891,7 +892,7 @@ c_25 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (meet_building_id_2).
 #'
 #'
-#' @return Original data frame, with USHE data element c_26 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_26 appended.
 #' @export
 #'
 #' @examples
@@ -922,7 +923,7 @@ c_26 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (building_number_2).
 #'
 #'
-#' @return Original data frame, with USHE data element c_27 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_27 appended.
 #' @export
 #'
 #' @examples
@@ -952,7 +953,7 @@ c_27 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (meet_room_number_2).
 #'
 #'
-#' @return Original data frame, with USHE data element c_28 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_28 appended.
 #' @export
 #'
 #' @examples
@@ -983,7 +984,7 @@ c_28 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (room_max_occupancy_2).
 #'
 #'
-#' @return Original data frame, with USHE data element c_29 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_29 appended.
 #' @export
 #'
 #' @examples
@@ -1014,7 +1015,7 @@ c_29 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (room_use_code_2).
 #'
 #'
-#' @return Original data frame, with USHE data element c_30 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_30 appended.
 #' @export
 #'
 #' @examples
@@ -1045,7 +1046,7 @@ c_30 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (meet_start_time_3).
 #'
 #'
-#' @return Original data frame, with USHE data element c_31 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_31 appended.
 #' @export
 #'
 #' @examples
@@ -1077,7 +1078,7 @@ c_31 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (meet_end_time_3).
 #'
 #'
-#' @return Original data frame, with USHE data element c_32 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_32 appended.
 #' @export
 #'
 #' @examples
@@ -1108,7 +1109,7 @@ c_32 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (meet_days_3).
 #'
 #'
-#' @return Original data frame, with USHE data element c_33 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_33 appended.
 #' @export
 #'
 #' @examples
@@ -1139,7 +1140,7 @@ c_33 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (meet_building_id_3).
 #'
 #'
-#' @return Original data frame, with USHE data element c_34 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_34 appended.
 #' @export
 #'
 #' @examples
@@ -1170,7 +1171,7 @@ c_34 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (building_number_3).
 #'
 #'
-#' @return Original data frame, with USHE data element c_35 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_35 appended.
 #' @export
 #'
 #' @examples
@@ -1200,7 +1201,7 @@ c_35 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (meet_room_number_3).
 #'
 #'
-#' @return Original data frame, with USHE data element c_36 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_36 appended.
 #' @export
 #'
 #' @examples
@@ -1231,7 +1232,7 @@ c_36 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (room_max_occupancy_3).
 #'
 #'
-#' @return Original data frame, with USHE data element c_37 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_37 appended.
 #' @export
 #'
 #' @examples
@@ -1262,7 +1263,7 @@ c_37 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (room_use_code_3).
 #'
 #'
-#' @return Original data frame, with USHE data element c_38 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_38 appended.
 #' @export
 #'
 #' @examples
@@ -1294,7 +1295,7 @@ c_38 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (meet_start_date).
 #'
 #'
-#' @return Original data frame, with USHE data element c_39 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_39 appended.
 #' @export
 #'
 #' @examples
@@ -1325,7 +1326,7 @@ c_39 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (meet_end_date).
 #'
 #'
-#' @return Original data frame, with USHE data element c_40 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_40 appended.
 #' @export
 #'
 #' @examples
@@ -1357,7 +1358,7 @@ c_40 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (course_title).
 #'
 #'
-#' @return Original data frame, with USHE data element c_41 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_41 appended.
 #' @export
 #'
 #' @examples
@@ -1390,7 +1391,7 @@ c_41 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (instructor_employee_id).
 #'
 #'
-#' @return Original data frame, with USHE data element c_42 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_42 appended.
 #' @export
 #'
 #' @examples
@@ -1420,7 +1421,7 @@ c_42 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (instructor_first_name, instructor_last_name, instructor_middle_name).
 #'
 #'
-#' @return Original data frame, with USHE data element c_43 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_43 appended.
 #' @export
 #'
 #' @examples
@@ -1456,7 +1457,7 @@ c_43 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (section_format_type_code).
 #'
 #'
-#' @return Original data frame, with USHE data element c_44 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_44 appended.
 #' @export
 #'
 #' @examples
@@ -1494,7 +1495,7 @@ c_44 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (college_id).
 #'
 #'
-#' @return Original data frame, with USHE data element c_45 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_45 appended.
 #' @export
 #'
 #' @examples
@@ -1524,7 +1525,7 @@ c_45 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (academic_department_id).
 #'
 #'
-#' @return Original data frame, with USHE data element c_46 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_46 appended.
 #' @export
 #'
 #' @examples
@@ -1559,7 +1560,7 @@ c_46 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (attribute_code).
 #'
 #'
-#' @return Original data frame, with USHE data element c_47 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_47 appended.
 #' @export
 #'
 #' @examples
@@ -1612,7 +1613,7 @@ c_47 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (budget_code, campus_id, instruction_method_code, section_number).
 #'
 #'
-#' @return Original data frame, with USHE data element c_48 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_48 appended.
 #' @export
 #'
 #' @examples
@@ -1679,7 +1680,7 @@ c_48 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (class_size).
 #'
 #'
-#' @return Original data frame, with USHE data element c_49 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_49 appended.
 #' @export
 #'
 #' @examples
@@ -1714,7 +1715,7 @@ c_49 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (instruction_method_code).
 #'
 #'
-#' @return Original data frame, with USHE data element c_50 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_50 appended.
 #' @export
 #'
 #' @examples
@@ -1749,7 +1750,7 @@ c_50 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (course_level_id, course_number, subject_code).
 #'
 #'
-#' @return Original data frame, with USHE data element c_51 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_51 appended.
 #' @export
 #'
 #' @examples
@@ -1785,7 +1786,7 @@ c_51 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (course_reference_number).
 #'
 #'
-#' @return Original data frame, with USHE data element c_52 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_52 appended.
 #' @export
 #'
 #' @examples
@@ -1815,7 +1816,7 @@ c_52 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (meet_building_id_2, campus_id).
 #'
 #'
-#' @return Original data frame, with USHE data element c_53 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_53 appended.
 #' @export
 #'
 #' @examples
@@ -1849,7 +1850,7 @@ c_53 <- function(input_df=usheUtils::fake_course_df) {
 #' @param input_df A Data Frame. Must contain the following data fields: (meet_building_id_3, campus_id).
 #'
 #'
-#' @return Original data frame, with USHE data element c_54 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @return Original data frame, with USHE data element c_54 appended.
 #' @export
 #'
 #' @examples
