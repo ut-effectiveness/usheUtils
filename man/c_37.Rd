@@ -10,7 +10,7 @@ c_37(input_df = usheUtils::fake_course_df)
 \item{input_df}{A Data Frame. Must contain the following data fields: (room_max_occupancy_3).}
 }
 \value{
-Original data frame, with USHE data element c_37 appended. Will also return appended intermediate calculated fields, if option is set.
+Original data frame, with USHE data element c_37 appended.
 }
 \description{
 Calculate USHE Element c_37 (Maximum Room Occupancy 3)

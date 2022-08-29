@@ -10,7 +10,7 @@ c_26(input_df = usheUtils::fake_course_df)
 \item{input_df}{A Data Frame. Must contain the following data fields: (meet_building_id_2).}
 }
 \value{
-Original data frame, with USHE data element c_26 appended. Will also return appended intermediate calculated fields, if option is set.
+Original data frame, with USHE data element c_26 appended.
 }
 \description{
 Calculate USHE Element c_26 (Building Short Name 2)

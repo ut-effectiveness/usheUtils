@@ -48,7 +48,8 @@ generate_student_course_submission_file <- function(input_df=usheUtils::fake_stu
     sc_12() %>%
     sc_13() %>%
     sc_14() %>%
-    sc_15()
+    sc_15() %>%
+    clean()
 
     if (!with_intermediates) {
       output_df <- output_df %>%

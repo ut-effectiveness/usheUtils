@@ -10,7 +10,7 @@ c_48(input_df = usheUtils::fake_course_df)
 \item{input_df}{A Data Frame. Must contain the following data fields: (budget_code, campus_id, instruction_method_code, section_number).}
 }
 \value{
-Original data frame, with USHE data element c_48 appended. Will also return appended intermediate calculated fields, if option is set.
+Original data frame, with USHE data element c_48 appended.
 }
 \description{
 Calculate USHE Element c_48 (Course Destination Site)

@@ -10,7 +10,7 @@ c_54(input_df = usheUtils::fake_course_df)
 \item{input_df}{A Data Frame. Must contain the following data fields: (meet_building_id_3, campus_id).}
 }
 \value{
-Original data frame, with USHE data element c_54 appended. Will also return appended intermediate calculated fields, if option is set.
+Original data frame, with USHE data element c_54 appended.
 }
 \description{
 Calculate USHE Element c_54 (Course Site Type 3)

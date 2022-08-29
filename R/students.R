@@ -101,7 +101,8 @@ generate_student_submission_file <- function(input_df=usheUtils::fake_student_df
     s_47() %>%
     s_48() %>%
     s_49() %>%
-    s_50()
+    s_50() %>%
+    clean()
 
   if (!with_intermediates) {
     output_df <- output_df %>%
