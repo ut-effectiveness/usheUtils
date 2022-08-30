@@ -10,7 +10,7 @@ SELECT a.building_id,
        a.room_disabled_access,
        a.room_prorated,
        a.room_prorated_area,
-       a.room_acitivity_date
+       a.room_activity_date
 FROM export.rooms a
 LEFT JOIN export.buildings b
 ON a.building_id = b.buildings_id

@@ -186,7 +186,9 @@ s_01 <- function(input_df=usheUtils::fake_student_df) {
             c_01 = s_inst,
             sc_01 = s_inst,
             pf_01 = s_inst,
-            m_01 = s_inst)
+            m_01 = s_inst,
+            b_01 = s_inst,
+            r_01 = s_inst)
 
   return(output_df)
 }
@@ -210,6 +212,16 @@ pf_01 <- s_01
 #' @examples m_01()
 #' @export
 m_01 <- s_01
+
+#' @rdname s_01
+#' @examples b_01()
+#' @export
+b_01 <- s_01
+
+#' @rdname s_01
+#' @examples r_01()
+#' @export
+r_01 <- s_01
 
 #' Calculate USHE Element s_02 (Year, Term, & Extract)
 #'
@@ -263,7 +275,8 @@ s_02 <- function(input_df=usheUtils::fake_student_df) {
     # Append USHE data element s_02
     mutate(s_02 = paste(s_year, s_term, s_extract, sep= "|") ) %>%
     mutate(c_02 = s_02,
-           sc_02 = s_02)
+           sc_02 = s_02,
+           r_02 = s_02)
 
   return(output_df)
 }
@@ -277,6 +290,11 @@ c_02 <- s_02
 #' @examples sc_02()
 #' @export
 sc_02 <- s_02
+
+#' @rdname s_02
+#' @examples r_02()
+#' @export
+r_02 <- s_02
 
 #' Calculate USHE Element s_03 (Student ID)
 #'
@@ -311,12 +329,13 @@ s_03 <- function(input_df=usheUtils::fake_student_df) {
   output_df <- input_df %>%
     # Calculate intermediate fields
     # Note: ssn that start with 9 are actually IRS issued tax IDs; USHE only wants valid ssn.
-    mutate( s_id = if_else(is.na(ssn) |
-                          str_starts(ssn, "9") |
-                          str_length(ssn) >= 10 |
-                          str_length(ssn) <= 8,
+    mutate(s_id_intermediate = str_replace_all(ssn, "-", "")) %>%
+    mutate( s_id = if_else(is.na(s_id_intermediate) |
+                          str_starts(s_id_intermediate, "9") |
+                          str_length(s_id_intermediate) >= 10 |
+                          str_length(s_id_intermediate) <= 8,
                           paste0('D', student_id),
-                          str_replace_all(ssn, "-", "") ) )  %>%
+                          s_id_intermediate ) )  %>%
 
     # Append USHE data element s_03
     mutate( s_03 = s_id,
@@ -362,10 +381,11 @@ s_04 <- function(input_df=usheUtils::fake_student_df) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( s_id_flag = if_else(is.na(ssn) |
-                                str_starts(ssn, "9") |
-                                str_length(ssn) >= 10 |
-                                str_length(ssn) <= 8,
+    mutate(s_id_flag_intermediate = str_replace_all(ssn, "-", "")) %>%
+    mutate( s_id_flag = if_else(is.na(s_id_flag_intermediate) |
+                                str_starts(s_id_flag_intermediate, "9") |
+                                str_length(s_id_flag_intermediate) >= 10 |
+                                str_length(s_id_flag_intermediate) <= 8,
                                 'I',
                                 'S' ) ) %>%
     # Append USHE data element s_04

@@ -5,7 +5,7 @@ sample_size <- 3000
 fake_student_df <- data.frame(
   student_id = stringr::str_pad( sample(1:999999, sample_size) , 8, pad = '0'),
   previous_student_id = as.character( sample(1:999999, sample_size) ),
-  ssn = sample(c("123-45-6789", NA), sample_size, replace = TRUE),
+  ssn = sample(c("123-45-6789", "123-456-789", "12-34-5678", "999-99-9999", NA), sample_size, replace = TRUE),
   ssid = as.character( sample(1000000:3000000, sample_size) ),
   gender_code = sample(c("M", "F", NA), sample_size, replace = TRUE),
   last_name = sample(c("Doe", "Smith", "Johnson", "Williams", NA), sample_size, replace = TRUE),

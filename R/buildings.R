@@ -1,7 +1,8 @@
 #' Generate Space Inventory Building Submission File
 #'
-#' @param input_df A Data Frame. Must contain the following data fields: (location_code,
+#' @param input_df A Data Frame. Must contain the following data fields: (building_location_code,
 #'                                                                        ownership_code,
+#'                                                                        submission_year,
 #'                                                                        building_name,
 #'                                                                        building_number,
 #'                                                                        building_abbrv,
@@ -82,7 +83,7 @@ generate_space_inventory_building_submission_file <- function(input_df=usheUtils
 #' @examples
 #' b_02()
 #'
-b_02 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+b_02 <- function(input_df=usheUtils::fake_building_df, with_intermediates=FALSE) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
@@ -116,7 +117,7 @@ b_02 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @examples
 #' b_03()
 #'
-b_03 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+b_03 <- function(input_df=usheUtils::fake_building_df, with_intermediates=FALSE) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
@@ -141,7 +142,7 @@ b_03 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
 #'
-#' @param input_df A Data Frame. Must contain the following data fields: (year).
+#' @param input_df A Data Frame. Must contain the following data fields: (submission_year).
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
 #'
 #' @return Original data frame, with USHE data element b_04 appended. Will also return appended intermediate calculated fields, if option is set.
@@ -150,11 +151,11 @@ b_03 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @examples
 #' b_04()
 #'
-b_04 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+b_04 <- function(input_df=usheUtils::fake_building_df, with_intermediates=FALSE) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( b_year = gsub("-", "", year) ) %>%
+    mutate( b_year = gsub("-", "", submission_year) ) %>%
     # Append USHE data element b_04
     mutate( b_04 =  b_year  )
 
@@ -185,7 +186,7 @@ b_04 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @examples
 #' b_05()
 #'
-b_05 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+b_05 <- function(input_df=usheUtils::fake_building_df, with_intermediates=FALSE) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
@@ -220,7 +221,7 @@ b_05 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @examples
 #' b_06()
 #'
-b_06 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+b_06 <- function(input_df=usheUtils::fake_building_df, with_intermediates=FALSE) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
@@ -255,7 +256,7 @@ b_06 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @examples
 #' b_07()
 #'
-b_07 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+b_07 <- function(input_df=usheUtils::fake_building_df, with_intermediates=FALSE) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
@@ -290,7 +291,7 @@ b_07 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @examples
 #' b_08()
 #'
-b_08 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+b_08 <- function(input_df=usheUtils::fake_building_df, with_intermediates=FALSE) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
@@ -326,7 +327,7 @@ b_08 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @examples
 #' b_09()
 #'
-b_09 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+b_09 <- function(input_df=usheUtils::fake_building_df, with_intermediates=FALSE) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
@@ -345,7 +346,7 @@ b_09 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' - ELEMENT NAME: Replacement Cost
 #' - FIELD NAME: b_replace_cost
 #' - FIELD FORMAT: Numeric (12,2) Characters. Two trailing 0’s added to reflect implied decimal places.
-#' - DEFINITION: The cost to replace the building as reported and supported by Risk Management.
+#' - DEFINITION: The cost to replace the building as reported and supported by Risk Management. We need to have trailing "00"s.
 #'
 #'
 #' @importFrom magrittr %>%
@@ -361,11 +362,11 @@ b_09 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @examples
 #' b_10()
 #'
-b_10 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+b_10 <- function(input_df=usheUtils::fake_building_df, with_intermediates=FALSE) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( b_replace_cost = building_cost_replacement ) %>% #TODO find out if we need to add to trailing 00's
+    mutate( b_replace_cost = building_cost_replacement) %>%
     # Append USHE data element b_10
     mutate( b_10 =  b_replace_cost  )
 
@@ -396,7 +397,7 @@ b_10 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @examples
 #' b_11()
 #'
-b_11 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+b_11 <- function(input_df=usheUtils::fake_building_df, with_intermediates=FALSE) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
@@ -431,7 +432,7 @@ b_11 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @examples
 #' b_12()
 #'
-b_12 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+b_12 <- function(input_df=usheUtils::fake_building_df, with_intermediates=FALSE) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
@@ -466,7 +467,7 @@ b_12 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @examples
 #' b_13()
 #'
-b_13 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+b_13 <- function(input_df=usheUtils::fake_building_df, with_intermediates=FALSE) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
@@ -501,7 +502,7 @@ b_13 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @examples
 #' b_14()
 #'
-b_14 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+b_14 <- function(input_df=usheUtils::fake_building_df, with_intermediates=FALSE) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
@@ -536,7 +537,7 @@ b_14 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) 
 #' @examples
 #' b_15()
 #'
-b_15 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+b_15 <- function(input_df=usheUtils::fake_building_df, with_intermediates=FALSE) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
