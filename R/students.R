@@ -275,8 +275,7 @@ s_02 <- function(input_df=usheUtils::fake_student_df) {
     # Append USHE data element s_02
     mutate(s_02 = paste(s_year, s_term, s_extract, sep= "|") ) %>%
     mutate(c_02 = s_02,
-           sc_02 = s_02,
-           r_02 = s_02)
+           sc_02 = s_02)
 
   return(output_df)
 }
@@ -290,11 +289,6 @@ c_02 <- s_02
 #' @examples sc_02()
 #' @export
 sc_02 <- s_02
-
-#' @rdname s_02
-#' @examples r_02()
-#' @export
-r_02 <- s_02
 
 #' Calculate USHE Element s_03 (Student ID)
 #'

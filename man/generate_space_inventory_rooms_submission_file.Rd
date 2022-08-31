@@ -10,9 +10,7 @@ generate_space_inventory_rooms_submission_file(
 )
 }
 \arguments{
-\item{input_df}{A Data Frame. Must contain the following data fields: (season,
-academic_year_code,
-version_id,
+\item{input_df}{A Data Frame. Must contain the following data fields: (submission_year,
 building_id,
 room_number,
 room_group1_code,

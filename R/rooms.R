@@ -1,8 +1,6 @@
 #' Generate Space Inventory Rooms Submission File
 #'
-#' @param input_df A Data Frame. Must contain the following data fields: (season,
-#'                                                                        academic_year_code,
-#'                                                                        version_id,
+#' @param input_df A Data Frame. Must contain the following data fields: (submission_year,
 #'                                                                        building_id,
 #'                                                                        room_number,
 #'                                                                        room_group1_code,
@@ -56,6 +54,40 @@ generate_space_inventory_rooms_submission_file <- function(input_df=usheUtils::f
     output_df <- output_df %>%
       dplyr::select( ushe_data_elements )
   }
+
+  return(output_df)
+}
+
+#' Calculate USHE Element r_02 (Year Submission)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#' - ELEMENT NAME: Submission Year
+#' - FIELD NAME: r_year
+#' - FIELD FORMAT: Varchar, 4 Characters (YYYY format)
+#' - DEFINITION:The fiscal year in which the Space Inventory - Building inventory was conducted.
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (submission_year).
+#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
+#'
+#' @return Original data frame, with USHE data element r_02 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @export
+#'
+#' @examples
+#' r_02()
+#'
+r_02 <- function(input_df=usheUtils::fake_building_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate( r_year = gsub("-", "", submission_year) ) %>%
+    # Append USHE data element r_02
+    mutate( r_02 =  r_year  )
 
   return(output_df)
 }

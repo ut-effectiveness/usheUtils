@@ -3,9 +3,7 @@
 sample_size <- 1000
 
 fake_rooms_df <- data.frame(
-  season = sample(c("Fall", "Spring", "Summer"), sample_size, replace = TRUE),
-  academic_year_code = as.character( sample(1978:2022, sample_size, replace = TRUE) ),
-  version_id = sample(c("1", "2", "3"), sample_size, replace = TRUE),
+  submission_year = sample(c("", NA), sample_size, replace = TRUE),
   building_id = sample(c("", NA), sample_size, replace = TRUE),
   room_number = sample(c("", NA), sample_size, replace = TRUE),
   room_group1_code = sample(c("", NA), sample_size, replace = TRUE),
