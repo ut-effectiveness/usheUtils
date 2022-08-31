@@ -4,7 +4,6 @@
 \alias{s_02}
 \alias{c_02}
 \alias{sc_02}
-\alias{r_02}
 \title{Calculate USHE Element s_02 (Year, Term, & Extract)}
 \usage{
 s_02(input_df = usheUtils::fake_student_df)
@@ -12,8 +11,6 @@ s_02(input_df = usheUtils::fake_student_df)
 c_02(input_df = usheUtils::fake_student_df)
 
 sc_02(input_df = usheUtils::fake_student_df)
-
-r_02(input_df = usheUtils::fake_student_df)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (season, academic_year_code, version_id).}
@@ -41,5 +38,4 @@ s_02()
 
 c_02()
 sc_02()
-r_02()
 }

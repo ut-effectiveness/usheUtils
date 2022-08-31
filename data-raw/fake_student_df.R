@@ -48,7 +48,7 @@ fake_student_df <- data.frame(
   level_id = sample(c("UG", "NC", "GR", "CE", "00", ""), sample_size, replace = TRUE),
   total_cumulative_ap_credits_earned = sample(0:32, sample_size, replace = TRUE),
   total_cumulative_clep_credits_earned = sample(0:32, sample_size, replace = TRUE),
-  transfer_cumulative_credits_earned = sample(0:32, sample_size, replace = TRUE),
+  transfer_cumulative_credits_earned = sample(c(100.5, 36.7, 192), sample_size, replace = TRUE),
   full_time_part_time_code = sample(c('F', 'P', NA), sample_size, replace = TRUE),
   high_school_code = sample(c('991746', '969999', '050208', '164495', NA), sample_size, replace = TRUE),
   high_school_graduation_date = sample(seq(as.Date('1978/01/01'), as.Date('2022/01/01'), by="day"), sample_size, replace = TRUE),
