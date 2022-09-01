@@ -41,6 +41,7 @@
                 '0' AS program_hrs,
                 a.graduated_academic_year_code,
                 a.graduated_term_id,
+                e.financial_aid_year_id,
                 e.season,
                 a.primary_major_college_desc,
                 a.primary_major_desc,
