@@ -1446,11 +1446,16 @@ s_33 <- function(input_df=usheUtils::fake_student_df) {
 }
 
 
-#' Calculate USHE Element s_34 (SSID aka USOE Unique ID)
+#' Calculate USHE Element s_34, g_20 (SSID aka USOE Unique ID)
 #'
 #' @details
 #'
 #' **USHE Documentation**
+#' ELEMENT NAME: Unique USOE State Student Identifier
+#' FIELD NAME: s_ssid, s_G_SSID
+#' FIELD FORMAT: Varchar, 9 Characters
+#' DEFINITION: The unique Utah State Student Identifier as assigned to each Utah public education student by the Utah State Board of Education.
+#' This 9-digit number will appear on all high school transcripts beginning the 2006-2007 academic year.
 #'
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate

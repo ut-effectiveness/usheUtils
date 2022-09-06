@@ -11,7 +11,7 @@ generate_space_inventory_rooms_submission_file(
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (submission_year,
-building_id,
+building_number,
 room_number,
 room_group1_code,
 room_use_code_group,

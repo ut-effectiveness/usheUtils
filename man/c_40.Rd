@@ -7,7 +7,7 @@
 c_40(input_df = usheUtils::fake_course_df)
 }
 \arguments{
-\item{input_df}{A Data Frame. Must contain the following data fields: (meet_end_date).}
+\item{input_df}{A Data Frame. Must contain the following data fields: (course_end_date).}
 }
 \value{
 Original data frame, with USHE data element c_40 appended.
