@@ -30,7 +30,7 @@ gen_ushe_inst <- function(input_df=usheUtils::fake_student_df) {
   output_df <- input_df %>%
     # Calculate intermediate fields
     mutate( institution = "3671") %>%
-    # Append USHE data element s_01
+    # Append USHE data element gen_ushe_inst
     mutate( gen_ushe_inst = institution,
             s_01 = institution,
             c_01 = institution,
@@ -212,7 +212,7 @@ g_07 <- gen_ushe_ethnicty
 #' @export
 #'
 #' @examples
-#' s_10()
+#' gen_ushe_county_origin()
 #'
 gen_ushe_county_origin <- function(input_df=usheUtils::fake_student_df) {
 
@@ -223,7 +223,7 @@ gen_ushe_county_origin <- function(input_df=usheUtils::fake_student_df) {
       first_admit_country_iso_code == "US" ~ "UT099",
       first_admit_country_iso_code != "US" ~ "UT097",
       TRUE ~ "UT030")) %>%
-    # Append USHE data element s_10
+    # Append USHE data element gen_ushe_county_origin
     mutate( gen_ushe_county_origin = county_origin,
             s_10 = county_origin,
             g_04 = county_origin)
@@ -240,3 +240,122 @@ s_10 <- gen_ushe_county_origin
 #' @examples g_04()
 #' @export
 g_04 <- gen_ushe_county_origin
+
+#' Calculate USHE Element Social Security Number or Institutionally Assigned ID (Student ID)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#' - ELEMENT NAME: Institutionally Assigned ID
+#' - FIELD NAME: s_id, sc_id, and g_id
+#' - FIELD FORMAT: Varchar, 9 Characters
+#' - DEFINITION: The unique institutionally assigned identification number for each student intended to be used in lieu of using a student’s social security number.
+#'               G_Banner_ID must begin with an Alpha character representing the institution.
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#' @importFrom dplyr if_else
+#' @importFrom stringr str_replace_all
+#' @importFrom stringr str_starts
+#' @importFrom stringr str_length
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (student_id, ssn).
+#'
+#'
+#' @return Original data frame, with USHE data element s_03 appended.
+#' @export
+#'
+#' @examples
+#' gen_ushe_id()
+#'
+gen_ushe_id <- function(input_df=usheUtils::fake_student_df) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    # Note: ssn that start with 9 are actually IRS issued tax IDs; USHE only wants valid ssn.
+    mutate( id_intermediate = str_replace_all(ssn, "-", "")) %>%
+    mutate( id = if_else(is.na(s_id_intermediate) |
+                           str_starts(id_intermediate, "9") |
+                           str_length(id_intermediate) >= 10 |
+                           str_length(id_intermediate) <= 8,
+                         paste0('D', student_id),
+                         id_intermediate ) )  %>%
+
+    # Append USHE data element gen_ushe_id
+    mutate( gen_ushe_id = id,
+            s_03 = id,
+            sc_03 = id,
+            g_02 = id )
+
+  return(output_df)
+}
+
+#' @rdname gen_ushe_id
+#' @examples sc_03()
+#' @export
+sc_03 <- gen_ushe_id
+
+#' @rdname gen_ushe_id
+#' @examples sc_03()
+#' @export
+sc_03 <- gen_ushe_id
+
+#' @rdname gen_ushe_id
+#' @examples g_02()
+#' @export
+g_02 <- gen_ushe_id
+
+#' Calculate USHE Element (Birth Date)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#' - ELEMENT NAME: Date of Birth
+#' - FIELD NAME: S_BIRTH_DT, M_BIRTH_DT, & G_BIRTH_DT
+#' - FIELD FORMAT: Varchar, 8 Characters (YYYYMMDD),
+#' - DEFINITION: The calendar student date of birth, as designated by student.
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (birth_date).
+#'
+#'
+#' @return Original data frame, with USHE data elements gen_ushe_birth_date and m_03 appended.
+#' @export
+#'
+#' @examples
+#' gen_ushe_birth_date()
+#'
+gen_ushe_birth_date <- function(input_df=usheUtils::fake_student_df) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate( birth_dt = gsub("-", "", birth_date) ) %>%
+    # Append USHE data element gen_ushe_birth_date
+    mutate( gen_ushe_birth_date = birth_dt,
+            s_12 = birth_dt,
+            m_03 = birth_dt,
+            g_05 = birth_dt)
+
+  return(output_df)
+}
+
+#' @rdname gen_ushe_birth_date
+#' @examples s_12()
+#' @export
+s_12 <- gen_ushe_birth_date
+
+#' @rdname gen_ushe_birth_date
+#' @examples m_03()
+#' @export
+m_03 <- gen_ushe_birth_date
+
+#' @rdname gen_ushe_birth_date
+#' @examples g_05()
+#' @export
+g_05 <- gen_ushe_birth_date
+
+
