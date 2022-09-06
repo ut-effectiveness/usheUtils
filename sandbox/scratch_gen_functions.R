@@ -29,16 +29,17 @@ gen_ushe_inst <- function(input_df=usheUtils::fake_student_df) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( gen_ushe_inst = "3671") %>%
+    mutate( institution = "3671") %>%
     # Append USHE data element s_01
-    mutate( s_01 = gen_ushe_inst,
-            c_01 = gen_ushe_inst,
-            sc_01 = gen_ushe_inst,
-            pf_01 = gen_ushe_inst,
-            m_01 = gen_ushe_inst,
-            b_01 = gen_ushe_inst,
-            r_01 = gen_ushe_inst,
-            g_01 = gen_ushe_inst )
+    mutate( gen_ushe_inst = institution,
+            s_01 = institution,
+            c_01 = institution,
+            sc_01 = institution,
+            pf_01 = institutiont,
+            m_01 = institutiont,
+            b_01 = institution,
+            r_01 = institution,
+            g_01 = institution )
 
   return(output_df)
 }
@@ -112,9 +113,10 @@ gen_ushe_name <- function(input_df=usheUtils::fake_student_df) {
             middle = coalesce(middle_name, ''),
             suffix = coalesce(name_suffix, '') ) %>%
     # Append USHE data element gen_ushe_name
-    mutate( gen_ushe_name = paste(last, first, middle, suffix, sep = "|")) %>%
-    mutate(s_06 = gen_ushe_name,
-           g_03 = gen_ushe_name)
+    mutate( name = paste(last, first, middle, suffix, sep = "|")) %>%
+    mutate(gen_ushe_name = name,
+           s_06 = name,
+           g_03 = name)
 
   return(output_df)
 }
@@ -165,11 +167,12 @@ gen_ushe_ethnicty <- function(input_df=usheUtils::fake_student_df) {
            ethnic_w = if_else(is_white, "W", ""),
            ethnic_n = if_else(is_international, "N", ""),
            ethnic_u = if_else(is_other_race, "U", "") ) %>%
-    mutate( gen_ushe_ethnicty_intermediate = paste(ethnic_h, ethnic_a, ethnic_b, ethnic_i, ethnic_p, ethnic_w, ethnic_n, ethnic_u, sep= "|" )) %>%
+    mutate( ethnicty_intermediate = paste(ethnic_h, ethnic_a, ethnic_b, ethnic_i, ethnic_p, ethnic_w, ethnic_n, ethnic_u, sep= "|" )) %>%
     # Append USHE data element gen_ushe_ethnicty
-    mutate( gen_ushe_ethnicty = if_else(is_international, paste("", "", "", "", "", "", ethnic_n, "", sep = "|"), gen_ushe_ethnicty_intermediate) ) %>%
-    mutate(s_14 = gen_ushe_ethnicty,
-           g_07 = gen_ushe_ethnicty)
+    mutate( ethnicty = if_else(is_international, paste("", "", "", "", "", "", ethnic_n, "", sep = "|"), ethnicty_intermediate) ) %>%
+    mutate(gen_ushe_ethnicty = ethnicty,
+           s_14 = ethnicty,
+           g_07 = ethnicty )
 
   return(output_df)
 }
@@ -183,3 +186,57 @@ s_14 <- gen_ushe_ethnicty
 #' @examples g_07()
 #' @export
 g_07 <- gen_ushe_ethnicty
+
+#' Calculate USHE Element Utah County Code (Utah County Code)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#' - ELEMENT NAME: Utah County Code
+#' - FIELD NAME: S_COUNTY_ORIGIN, and G_COUNTY_ORIGIN,
+#' - FIELD FORMAT: Varchar, 5 Characters,
+#' - DEFINITION: The Utah county code indicating the student’s county of origin as described at the time of first application to the institution for enrollment and if the S_STATE_ORIGIN is UT.
+#'               Enter UT030 if  county is Unknown.
+#'               Enter UT097 if student is Out of State, Out of US.
+#'               Enter UT099 if student is Out  of State, In the US.
+#'               This element should be logically consistent with S-11: S_STATE_ORIGIN and S 27: S_COUNTRY_ORIGIN.
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (first_admit_county_code, first_admit_state_code, first_admit_country_iso_code).
+#'
+#'
+#' @return Original data frame, with USHE data element s_10 appended.
+#' @export
+#'
+#' @examples
+#' s_10()
+#'
+gen_ushe_county_origin <- function(input_df=usheUtils::fake_student_df) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate(county_origin = case_when(
+      ( first_admit_state_code == "UT" & !is.na(first_admit_county_code) ) ~ paste0("UT", first_admit_county_code),
+      first_admit_country_iso_code == "US" ~ "UT099",
+      first_admit_country_iso_code != "US" ~ "UT097",
+      TRUE ~ "UT030")) %>%
+    # Append USHE data element s_10
+    mutate( gen_ushe_county_origin = county_origin,
+            s_10 = county_origin,
+            g_04 = county_origin)
+
+  return(output_df)
+}
+
+#' @rdname gen_ushe_county_origin
+#' @examples s_10()
+#' @export
+s_10 <- gen_ushe_county_origin
+
+#' @rdname gen_ushe_county_origin
+#' @examples g_04()
+#' @export
+g_04 <- gen_ushe_county_origin
