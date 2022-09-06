@@ -7,6 +7,7 @@
                 c.name_suffix,
                 c.first_admit_county_code,
                 c.first_admit_state_code,
+                c.first_admit_country_iso_code,
                 c.first_admit_country_code,
                 c.birth_date,
                 c.gender_code,
@@ -43,7 +44,7 @@
                 a.graduated_term_id,
                 e.financial_aid_year_id,
                 e.season,
-                a.primary_major_college_desc,
+                a.primary_major_college_id,
                 a.primary_major_desc,
                 a.degree_desc
            FROM export.degrees_awarded a
