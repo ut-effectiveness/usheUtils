@@ -4,7 +4,7 @@ sample_size <- 1000
 
 fake_rooms_df <- data.frame(
   submission_year = sample(c("", NA), sample_size, replace = TRUE),
-  building_id = sample(c("", NA), sample_size, replace = TRUE),
+  building_number = sample(c("", NA), sample_size, replace = TRUE),
   room_number = sample(c("", NA), sample_size, replace = TRUE),
   room_group1_code = sample(c("", NA), sample_size, replace = TRUE),
   room_use_code_group = sample(c("", NA), sample_size, replace = TRUE),

@@ -1,7 +1,7 @@
 #' Generate Space Inventory Rooms Submission File
 #'
 #' @param input_df A Data Frame. Must contain the following data fields: (submission_year,
-#'                                                                        building_id,
+#'                                                                        building_number,
 #'                                                                        room_number,
 #'                                                                        room_group1_code,
 #'                                                                        room_use_code_group,
@@ -106,7 +106,7 @@ r_02 <- function(input_df=usheUtils::fake_building_df, with_intermediates=FALSE)
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
 #'
-#' @param input_df A Data Frame. Must contain the following data fields: (building_id).
+#' @param input_df A Data Frame. Must contain the following data fields: (building_number).
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
 #'
 #' @return Original data frame, with USHE data element r_03 appended. Will also return appended intermediate calculated fields, if option is set.
@@ -119,7 +119,7 @@ r_03 <- function(input_df=usheUtils::fake_rooms_df, with_intermediates=FALSE) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( r_build_number = building_id ) %>%
+    mutate( r_build_number = building_number ) %>%
     # Append USHE data element r_03
     mutate( r_03 =  r_build_number  )
 

@@ -1,5 +1,6 @@
 --Space Inventory Rooms
-SELECT a.building_id,
+SELECT --a.building_id,
+       b.building_number,
        a.room_number,
        '' AS room_suffix,
        a.room_group1_code,

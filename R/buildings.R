@@ -527,6 +527,7 @@ b_14 <- function(input_df=usheUtils::fake_building_df, with_intermediates=FALSE)
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
+#' @importFrom dplyr if_else
 #'
 #' @param input_df A Data Frame. Must contain the following data fields: (building_auxiliary).
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
@@ -541,7 +542,7 @@ b_15 <- function(input_df=usheUtils::fake_building_df, with_intermediates=FALSE)
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( b_aux = building_auxiliary ) %>%
+    mutate( b_aux = if_else(building_auxiliary == "Y", "A", building_auxiliary) ) %>%
     # Append USHE data element b_15
     mutate( b_15 =  b_aux )
 

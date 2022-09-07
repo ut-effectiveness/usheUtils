@@ -17,8 +17,8 @@
 #'                                                                        instructor_last_name,
 #'                                                                        instructor_employee_id,
 #'                                                                        course_title,
-#'                                                                        meet_end_date,
-#'                                                                        meet_start_date,
+#'                                                                        course_end_date,
+#'                                                                        course_start_date,
 #'                                                                        room_use_code_3,
 #'                                                                        room_max_occupancy_3,
 #'                                                                        meet_room_number_3,
@@ -1292,7 +1292,7 @@ c_38 <- function(input_df=usheUtils::fake_course_df) {
 #' @importFrom dplyr select
 #' @importFrom stringr str_remove_all
 #'
-#' @param input_df A Data Frame. Must contain the following data fields: (meet_start_date).
+#' @param input_df A Data Frame. Must contain the following data fields: (course_start_date).
 #'
 #'
 #' @return Original data frame, with USHE data element c_39 appended.
@@ -1305,7 +1305,7 @@ c_39 <- function(input_df=usheUtils::fake_course_df) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( c_start_date = str_remove_all(meet_start_date, "-") ) %>%
+    mutate( c_start_date = str_remove_all(course_start_date, "-") ) %>%
     # Append USHE data element c_39
     mutate( c_39 = c_start_date )
 
@@ -1323,7 +1323,7 @@ c_39 <- function(input_df=usheUtils::fake_course_df) {
 #' @importFrom dplyr select
 #' @importFrom stringr str_remove_all
 #'
-#' @param input_df A Data Frame. Must contain the following data fields: (meet_end_date).
+#' @param input_df A Data Frame. Must contain the following data fields: (course_end_date).
 #'
 #'
 #' @return Original data frame, with USHE data element c_40 appended.
@@ -1336,7 +1336,7 @@ c_40 <- function(input_df=usheUtils::fake_course_df) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( c_end_date =  str_remove_all(meet_end_date, "-") ) %>%
+    mutate( c_end_date =  str_remove_all(course_end_date, "-") ) %>%
     # Append USHE data element c_40
     mutate( c_40 = c_end_date )
 
