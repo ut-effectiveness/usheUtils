@@ -46,7 +46,8 @@
                 e.season,
                 a.primary_major_college_id,
                 a.primary_major_desc,
-                a.degree_desc
+                a.degree_desc,
+                e.academic_year_code
            FROM export.degrees_awarded a
       LEFT JOIN export.student_term_level b
              ON b.student_id = a.student_id

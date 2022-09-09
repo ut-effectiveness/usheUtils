@@ -1,52 +1,73 @@
-#' Calculate USHE Element (Birth Date)
+#' Calculate USHE Element (Year, Term, & Extract)
 #'
 #' @details
 #'
 #' **USHE Documentation**
-#' - ELEMENT NAME: Date of Birth
-#' - FIELD NAME: S_BIRTH_DT, M_BIRTH_DT, & G_BIRTH_DT
-#' - FIELD FORMAT: Varchar, 8 Characters (YYYYMMDD),
-#' - DEFINITION: The calendar student date of birth, as designated by student.
+#' - ELEMENT NAME: Year, Term & Extract Code
+#' - FIELD NAME: gen_ushe_, s_, sc_term_id & c_term_id
+#' - FIELD FORMAT: Number, 4 Characters (YYYY format)
+#' - Number, 1 Character (T format)
+#' - Varchar, 1 character (E format)
+#' - DEFINITION: The current academic year, term, and extract in which course is offered.
+#'               Format YYYYTE is made up of academic year YYYY, academic term T, and extract E (3rd week or End of Term).
 #'
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
+#' @importFrom dplyr case_when
 #' @importFrom dplyr select
 #'
-#' @param input_df A Data Frame. Must contain the following data fields: (birth_date).
+#' @param input_df A Data Frame. Must contain the following data fields: (season, academic_year_code, version_id).
 #'
 #'
-#' @return Original data frame, with USHE data elements gen_ushe_birth_date and m_03 appended.
+#' @return Original data frame, with USHE data element gen_ushe_year_term_extract s_02, sc_02, c_02 appended.
 #' @export
 #'
 #' @examples
-#' gen_ushe_birth_date()
+#' gen_ushe_year_term_extract()
 #'
-gen_ushe_birth_date <- function(input_df=usheUtils::fake_student_df) {
+gen_ushe_year_term_extract <- function(input_df=usheUtils::fake_student_df) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( birth_dt = gsub("-", "", birth_date) ) %>%
-    # Append USHE data element gen_ushe_birth_date
-    mutate( gen_ushe_birth_date = birth_dt,
-            s_12 = birth_dt,
-            m_03 = birth_dt,
-            g_05 = birth_dt)
+    mutate(s_year = case_when(
+      season == "Summer" ~ as.character( (as.numeric(academic_year_code) + 1) ),
+      season == "Fall" ~ as.character(academic_year_code),
+      season == "Spring" ~ as.character( academic_year_code ),
+      TRUE ~ " ")) %>%
+    mutate(s_term = case_when(
+      season == "Summer" ~ '1',
+      season == "Fall" ~ '2',
+      season == "Spring" ~ '3',
+      TRUE ~ " ")) %>%
+    mutate(s_extract = case_when(
+      # 'C' for current
+      version_id == '1' ~ 'C',
+      # '3' for 3rd term
+      version_id == '2' ~ '3',
+      # 'E' for End of Term
+      version_id == '3' ~ 'E',
+      TRUE ~ " ")) %>%
+    # Append USHE data element year_term_extract
+    mutate(year_term_extract = paste(year, term, extract, sep= "|") ) %>%
+    mutate(gen_ushe_year_term_extract = year_term_extract,
+           s_02 = year_term_extract,
+           c_02 = year_term_extract,
+           sc_02 = year_term_extract)
 
   return(output_df)
 }
 
-#' @rdname gen_ushe_birth_date
-#' @examples s_12()
+#' @rdname gen_ushe_year_term_extract
+#' @examples s_02()
 #' @export
-s_12 <- gen_ushe_birth_date
+s_02 <- gen_ushe_year_term_extract
 
-
-#' @rdname gen_ushe_birth_date
-#' @examples m_03()
+#' @rdname gen_ushe_year_term_extract
+#' @examples c_02()
 #' @export
-m_03 <- gen_ushe_birth_date
+c_02 <- gen_ushe_year_term_extract
 
-#' @rdname gen_ushe_birth_date
-#' @examples g_05()
+#' @rdname gen_ushe_year_term_extract
+#' @examples sc_02()
 #' @export
-g_05 <- gen_ushe_birth_date
+sc_02 <- gen_ushe_year_term_extract

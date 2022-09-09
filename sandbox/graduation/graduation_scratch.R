@@ -230,6 +230,7 @@ g_10 <- function(input_df=usheUtils::fake_graduation_df, with_intermediates=FALS
 #' @examples
 #' g_11()
 #'
+
 g_11 <- function(input_df=usheUtils::fake_graduation_df, with_intermediates=FALSE) {
 
   output_df <- input_df %>%
@@ -237,6 +238,47 @@ g_11 <- function(input_df=usheUtils::fake_graduation_df, with_intermediates=FALS
     mutate(g_gpa = round(cumulative_graduation_gpa, digits = 3) )%>%
     # Append USHE data element g_11
     mutate( g_11 = g_gpa  )
+
+  return(output_df)
+}
+
+#' Calculate USHE Element (Total Cum Transfer Hrs Accepted)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#' - ELEMENT NAME: Cumulative Transfer Semester Credit Hours Accepted
+#' - FIELD NAME: G_TRANS_TOTAL
+#' - FIELD FORMAT: Numeric (5,1)
+#' - DEFINITION: Total number of credit hours accepted by graduation date at your institution relevant to the degree being awarded.
+#'  (e.g. Transfer credit from another institution). This does not include credits earned at your institution (see S-20).
+#'  This does not include AP, CLEP, Challenge, or Military  Credit. These hours are included in the G_HRS_OTHER field.
+#'  Hours should all be converted to  semester hours.
+
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (transfer_cumulative_credits_earned, total_cumulative_ap_credits_earned, total_cumulative_clep_credits_earned ).
+#'
+#'
+#' @return Original data frame, with USHE data element g_12 appended.
+#' @export
+#'
+#' @examples
+#' g_12()
+#'
+g_12 <- function(input_df=usheUtils::fake_student_df) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate( g_trans_total_itermediate = (transfer_cumulative_credits_earned -
+                                           (total_cumulative_ap_credits_earned +
+                                              total_cumulative_clep_credits_earned)) ) %>%
+    mutate( g_trans_total = round(g_trans_total_itermediate, digits = 1) )  %>%
+    # Append USHE data element g_12
+    mutate(g_12 = g_trans_total)
 
   return(output_df)
 }
