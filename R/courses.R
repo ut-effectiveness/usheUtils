@@ -259,7 +259,7 @@ c_06 <- function(input_df=usheUtils::fake_course_df) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( c_min_credit = course_min_credits ) %>%
+    mutate( c_min_credit = as.numeric(course_min_credits) ) %>%
     # Append USHE data element c_06
     mutate( c_06 = c_min_credit )
 
@@ -290,7 +290,7 @@ c_07 <- function(input_df=usheUtils::fake_course_df) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( c_max_credit = course_max_credits ) %>%
+    mutate( c_max_credit = as.numeric(course_max_credits) ) %>%
     # Append USHE data element c_07
     mutate( c_07 = c_max_credit )
 
