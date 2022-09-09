@@ -223,6 +223,26 @@ s_05 <- function(input_df=usheUtils::fake_student_df) {
   return(output_df)
 }
 
+#' Calculate USHE Element s_07 (Student Previous Name)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#' @importFrom dplyr coalesce
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (previous_last_name, previous_first_name, previous_middle_name, previous_name_suffix).
+#'
+#'
+#' @return Original data frame, with USHE data element s_07 appended.
+#' @export
+#'
+#' @examples
+#' s_07()
+#'
 s_07 <- function(input_df=usheUtils::fake_student_df) {
 
   output_df <- input_df %>%
