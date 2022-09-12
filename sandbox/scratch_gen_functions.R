@@ -358,4 +358,54 @@ m_03 <- gen_ushe_birth_date
 #' @export
 g_05 <- gen_ushe_birth_date
 
+#' Calculate USHE Element ushe_banner_id (Institution Assigned ID)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#' - ELEMENT NAME: Institutionally Assigned ID
+#' - FIELD NAME: gen_ushe_banner_id, s_banner_id, m_banner_id & g_banner_id
+#' - FIELD FORMAT: Varchar, 5 Characters,
+#' - DEFINITION: The unique institutionally assigned identification number for each student.
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (student_id).
+#'
+#'
+#' @return Original data frame, with USHE data element s_35, m_06, g_21 appended.
+#' @export
+#'
+#' @examples
+#' gen_ushe_banner_id()
+#'
+gen_ushe_banner_id <- function(input_df=usheUtils::fake_student_df) {
 
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate( banner_id = paste0('D', student_id )) %>%
+    # Append USHE data element gen_ushe_banner_id
+    mutate( gen_ushe_banner_id = banner_id,
+            s_35 = banner_id,
+            m_06 = banner_id,
+            g_21 = banner_id)
+
+  return(output_df)
+}
+
+#' @rdname gen_ushe_banner_id
+#' @examples s_35()
+#' @export
+s_35 <- gen_ushe_banner_id
+
+#' @rdname gen_ushe_banner_id
+#' @examples m_06()
+#' @export
+m_06 <- gen_ushe_banner_id
+
+#' @rdname gen_ushe_banner_id
+#' @examples g_21()
+#' @export
+g_21 <- gen_ushe_banner_id

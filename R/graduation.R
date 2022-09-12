@@ -24,10 +24,12 @@
 #'                                                                        degree_id,
 #'                                                                        degree_status_code,
 #'                                                                        cumulative_graduation_gpa,
+#'                                                                        transfer_cumulative_credits_earned,
 #'                                                                        total_cumulative_ap_credits_earned,
+#'                                                                        total_cumulative_clep_credits_earned,
+#'                                                                        overall_cumulative_credits_earned,
 #'                                                                        total_remedial_hours,
 #'                                                                        total_cumulative_credits_attempted_other_sources,
-#'                                                                        total_remedial_hours,
 #'                                                                        level_id,
 #'                                                                        previous_degree_type,
 #'                                                                        ipeds_award_level_code,
@@ -128,11 +130,11 @@ generate_graduation_submission_file <- function(input_df=usheUtils::fake_graduat
 #' @examples
 #' g_08()
 #'
-g_08 <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
+g_08 <- function(input_df=usheUtils::fake_graduation_df, with_intermediates=FALSE) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate(g_date = g_sub("-", "", graduation_date) ) %>%
+    mutate(g_date = gsub("-", "", graduation_date) ) %>%
     # Append USHE data element g_08
     mutate( g_08 = g_date  )
 
@@ -269,7 +271,7 @@ g_11 <- function(input_df=usheUtils::fake_graduation_df, with_intermediates=FALS
 #' @examples
 #' g_12()
 #'
-g_12 <- function(input_df=usheUtils::fake_student_df) {
+g_12 <- function(input_df=usheUtils::fake_graduation_df) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
@@ -312,7 +314,7 @@ g_13 <- function(input_df=usheUtils::fake_graduation_df, with_intermediates=FALS
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate(g_grad_hrs_intermediate = (overall_cumulative_credits_earned - total_remedial_hours) )%>%
+    mutate(g_grad_hrs_intermediate = (as.numeric(overall_cumulative_credits_earned) - as.numeric(total_remedial_hours) ) )%>%
     mutate(g_grad_hrs = round(g_grad_hrs_intermediate, digits = 1) ) %>%
     # Append USHE data element g_13
     mutate( g_13 = g_grad_hrs  )
@@ -381,7 +383,7 @@ g_15 <- function(input_df=usheUtils::fake_graduation_df, with_intermediates=FALS
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate(g_remedial_hrs = if_else(level_id == "UG", round(total_remedial_hours, digits = 1), "0") ) %>%
+    mutate(g_remedial_hrs = ifelse(level_id == "UG", round(as.numeric(total_remedial_hours), digits = 1), "0") ) %>%
     # Append USHE data element g_15
     mutate( g_15 = g_remedial_hrs  )
 
@@ -501,7 +503,6 @@ g_18 <- function(input_df=usheUtils::fake_graduation_df, with_intermediates=FALS
 #' - FIELD FORMAT: Varchar, 6 Characters
 #' - DEFINITION: The High School or Special Secondary School code which uniquely identifies each student’s secondary institution.
 #'  The codes for any secondary institution located within the United States can be found by accessing the URL
-#' [act.org](http://www.act.org/content/act/en/products-and services/the-act/registration/high-school-codes-lookup.html)
 #'  **For undergraduate students only**
 #'
 #' @importFrom magrittr %>%
@@ -682,7 +683,7 @@ g_25 <- function(input_df=usheUtils::fake_graduation_df, with_intermediates=FALS
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
 #'
-#' @param input_df A Data Frame. Must contain the following data fields: (primary_major_college_desc).
+#' @param input_df A Data Frame. Must contain the following data fields: (primary_major_college_id).
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
 #'
 #' @return Original data frame, with USHE data element g_26 appended. Will also return appended intermediate calculated fields, if option is set.
@@ -695,7 +696,7 @@ g_26 <- function(input_df=usheUtils::fake_graduation_df, with_intermediates=FALS
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate(g_college = primary_major_college_desc)%>%
+    mutate(g_college = primary_major_college_id)%>%
     # Append USHE data element g_26
     mutate( g_26 = g_college  )
 
@@ -732,6 +733,40 @@ g_27 <- function(input_df=usheUtils::fake_graduation_df, with_intermediates=FALS
     mutate(g_major = primary_major_desc)%>%
     # Append USHE data element g_27
     mutate( g_27 = g_major  )
+
+  return(output_df)
+}
+
+#' Calculate USHE Element g_28 (Degree Type Name )
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#' - ELEMENT NAME: Degree Type Name
+#' - FIELD NAME: g_deg_type_name
+#' - FIELD FORMAT: Varchar, 100 Characters
+#' - DEFINITION: Used to describe the acronyms/abbreviations in G-10 G_DEG_TYPE
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (degree_desc).
+#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
+#'
+#' @return Original data frame, with USHE data element g_28 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @export
+#'
+#' @examples
+#' g_28()
+#'
+g_28 <- function(input_df=usheUtils::fake_graduation_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate(g_major = degree_desc)%>%
+    # Append USHE data element g_28
+    mutate( g_28 = g_major  )
 
   return(output_df)
 }

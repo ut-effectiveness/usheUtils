@@ -1,52 +1,39 @@
-#' Calculate USHE Element (Birth Date)
+#' Check for valid SSN characters ()
 #'
 #' @details
 #'
-#' **USHE Documentation**
-#' - ELEMENT NAME: Date of Birth
-#' - FIELD NAME: S_BIRTH_DT, M_BIRTH_DT, & G_BIRTH_DT
-#' - FIELD FORMAT: Varchar, 8 Characters (YYYYMMDD),
-#' - DEFINITION: The calendar student date of birth, as designated by student.
+#' Is valid ssn id
 #'
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
+#' @importFrom dplyr if_else
 #' @importFrom dplyr select
 #'
-#' @param input_df A Data Frame. Must contain the following data fields: (birth_date).
+#' @param input_df A Data Frame. Must contain the following data fields: (ssn).
 #'
 #'
-#' @return Original data frame, with USHE data elements gen_ushe_birth_date and m_03 appended.
+#' @return A Boolean TRUE or FALSE if SSN is valid.
 #' @export
 #'
 #' @examples
-#' gen_ushe_birth_date()
+#' is_valid_ssn()
 #'
-gen_ushe_birth_date <- function(input_df=usheUtils::fake_student_df) {
+is_valid_ssn <- function() {
 
-  output_df <- input_df %>%
-    # Calculate intermediate fields
-    mutate( birth_dt = gsub("-", "", birth_date) ) %>%
-    # Append USHE data element gen_ushe_birth_date
-    mutate( gen_ushe_birth_date = birth_dt,
-            s_12 = birth_dt,
-            m_03 = birth_dt,
-            g_05 = birth_dt)
+ssn_regex <- "^[0-8][0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9]$"
+
+  valid_ssn_check = (str_detect(ssn, ssn_regex) )
 
   return(output_df)
 }
 
-#' @rdname gen_ushe_birth_date
-#' @examples s_12()
-#' @export
-s_12 <- gen_ushe_birth_date
 
+zipcode_regex <- "^[0-9]{5}(-[0-9]{4})?$"
 
-#' @rdname gen_ushe_birth_date
-#' @examples m_03()
-#' @export
-m_03 <- gen_ushe_birth_date
+output_df <- input_df %>%
 
-#' @rdname gen_ushe_birth_date
-#' @examples g_05()
-#' @export
-g_05 <- gen_ushe_birth_date
+  # Calculate intermediate fields
+  mutate(s_curr_zip = coalesce(if_else(str_detect(local_address_zip_code, zipcode_regex),
+                                       local_address_zip_code, NA_character_ ),
+                               if_else(str_detect(mailing_address_zip_code, zipcode_regex),
+                                       mailing_address_zip_code, NA_character_ ))) %>%
