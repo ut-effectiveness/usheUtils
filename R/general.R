@@ -49,6 +49,34 @@ return(x)
 
 }
 
+#' Check for valid SSN characters
+#'
+#' @details
+#'
+#' Is valid ssn id
+#'
+#' @importFrom stringr str_detect
+#'
+#' @param ssn a vector of ssn to check for validity.
+#'
+#'
+#' @return A Boolean TRUE or FALSE if SSN is valid.
+#' @export
+#'
+#' @examples
+#' is_valid_ssn(c("123-45-6789", "987-65-4321"))
+#'
+is_valid_ssn <- function(ssn) {
+  # Note: ssn that start with 9 are actually IRS issued tax IDs; USHE only wants valid ssn.
+  ssn_regex <- "^[0-8][0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9]$"
+
+  valid_ssn_check <- str_detect(ssn, ssn_regex)
+
+  valid_ssn_check <- if_else(is.na(valid_ssn_check), FALSE, TRUE )
+
+  return(valid_ssn_check)
+}
+
 #' Calculate USHE Element Institution (Institution)
 #'
 #' @details
@@ -305,11 +333,8 @@ g_04 <- gen_ushe_county_origin
 #'
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
-#' @importFrom dplyr select
 #' @importFrom dplyr if_else
 #' @importFrom stringr str_replace_all
-#' @importFrom stringr str_starts
-#' @importFrom stringr str_length
 #'
 #' @param input_df A Data Frame. Must contain the following data fields: (student_id, ssn).
 #'
@@ -324,14 +349,9 @@ gen_ushe_id <- function(input_df=usheUtils::fake_student_df) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    # Note: ssn that start with 9 are actually IRS issued tax IDs; USHE only wants valid ssn.
-    mutate( id_intermediate = str_replace_all(ssn, "-", "")) %>%
-    mutate( id = if_else(is.na(id_intermediate) |
-                           str_starts(id_intermediate, "9") |
-                           str_length(id_intermediate) >= 10 |
-                           str_length(id_intermediate) <= 8,
-                         paste0('D', student_id),
-                         id_intermediate ) )  %>%
+    mutate( id = if_else(is_valid_ssn(ssn),
+                         str_replace_all(ssn, "-", ""),
+                         paste0('D', student_id) ) )  %>%
 
     # Append USHE data element gen_ushe_id
     mutate( gen_ushe_id = id,

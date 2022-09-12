@@ -503,7 +503,6 @@ g_18 <- function(input_df=usheUtils::fake_graduation_df, with_intermediates=FALS
 #' - FIELD FORMAT: Varchar, 6 Characters
 #' - DEFINITION: The High School or Special Secondary School code which uniquely identifies each student’s secondary institution.
 #'  The codes for any secondary institution located within the United States can be found by accessing the URL
-#' [act.org](http://www.act.org/content/act/en/products-and services/the-act/registration/high-school-codes-lookup.html)
 #'  **For undergraduate students only**
 #'
 #' @importFrom magrittr %>%

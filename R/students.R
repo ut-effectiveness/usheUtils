@@ -161,13 +161,10 @@ s_alias <- s_xx
 #'
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
-#' @importFrom dplyr select
 #' @importFrom dplyr if_else
-#' @importFrom stringr str_replace_all
-#' @importFrom stringr str_starts
-#' @importFrom stringr str_length
 #'
-#' @param input_df A Data Frame. Must contain the following data fields: (student_id, ssn).
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (ssn).
 #'
 #'
 #' @return Original data frame, with USHE data element s_04 appended.
@@ -180,13 +177,9 @@ s_04 <- function(input_df=usheUtils::fake_student_df) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate(s_id_flag_intermediate = str_replace_all(ssn, "-", "")) %>%
-    mutate( s_id_flag = if_else(is.na(s_id_flag_intermediate) |
-                                str_starts(s_id_flag_intermediate, "9") |
-                                str_length(s_id_flag_intermediate) >= 10 |
-                                str_length(s_id_flag_intermediate) <= 8,
-                                'I',
-                                'S' ) ) %>%
+    mutate( s_id_flag = if_else(is_valid_ssn(ssn),
+                                'S',
+                                'I' ) ) %>%
     # Append USHE data element s_04
     mutate( s_04 = s_id_flag  )
 

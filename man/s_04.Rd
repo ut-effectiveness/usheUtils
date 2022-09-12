@@ -7,7 +7,7 @@
 s_04(input_df = usheUtils::fake_student_df)
 }
 \arguments{
-\item{input_df}{A Data Frame. Must contain the following data fields: (student_id, ssn).}
+\item{input_df}{A Data Frame. Must contain the following data fields: (ssn).}
 }
 \value{
 Original data frame, with USHE data element s_04 appended.

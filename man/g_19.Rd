@@ -25,7 +25,6 @@ Calculate USHE Element g_19 (High School Codes)
 \item FIELD FORMAT: Varchar, 6 Characters
 \item DEFINITION: The High School or Special Secondary School code which uniquely identifies each student’s secondary institution.
 The codes for any secondary institution located within the United States can be found by accessing the URL
-\link{act.org}(http://www.act.org/content/act/en/products-and services/the-act/registration/high-school-codes-lookup.html)
 \strong{For undergraduate students only}
 }
 }
