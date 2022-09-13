@@ -27,7 +27,7 @@
 #'                                                                        transfer_cumulative_credits_earned,
 #'                                                                        total_cumulative_ap_credits_earned,
 #'                                                                        total_cumulative_clep_credits_earned,
-#'                                                                        cumulative_credits_earned,
+#'                                                                        overall_cumulative_credits_earned,
 #'                                                                        total_remedial_hours,
 #'                                                                        total_cumulative_credits_attempted_other_sources,
 #'                                                                        level_id,
@@ -267,7 +267,7 @@ g_12 <- function(input_df=usheUtils::fake_graduation_df) {
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
 #'
-#' @param input_df A Data Frame. Must contain the following data fields: (cumulative_credits_earned, total_remedial_hours).
+#' @param input_df A Data Frame. Must contain the following data fields: (overall_cumulative_credits_earned, total_remedial_hours).
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
 #'
 #' @return Original data frame, with USHE data element g_13 appended. Will also return appended intermediate calculated fields, if option is set.
@@ -280,7 +280,7 @@ g_13 <- function(input_df=usheUtils::fake_graduation_df, with_intermediates=FALS
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate(g_grad_hrs_intermediate = (as.numeric(cumulative_credits_earned) - as.numeric(total_remedial_hours) ) )%>%
+    mutate(g_grad_hrs_intermediate = (as.numeric(overall_cumulative_credits_earned) - as.numeric(total_remedial_hours) ) )%>%
     mutate(g_grad_hrs = round(g_grad_hrs_intermediate, digits = 1) ) %>%
     # Append USHE data element g_13
     mutate( g_13 = g_grad_hrs  )

@@ -32,7 +32,7 @@ fake_graduation_df <- data.frame(
   total_cumulative_clep_credits_earned = sample(0:32, sample_size, replace = TRUE),
   total_cumulative_credits_attempted_other_sources = sample(c(100.5, 36.7, 192), sample_size, replace = TRUE),
   total_remedial_hours = sample(c("", NA), sample_size, replace = TRUE),
-  cumulative_credits_earned = sample(0:32, sample_size, replace = TRUE),
+  overall_cumulative_credits_earned = sample(0:32, sample_size, replace = TRUE),
   level_id = sample(c("UG", NA), sample_size, replace = TRUE),
   previous_degree_type = sample(c("", NA), sample_size, replace = TRUE),
   ipeds_award_level_code = sample(as.character(c(1:7, NA)), sample_size, replace = TRUE),
