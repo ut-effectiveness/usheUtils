@@ -44,7 +44,7 @@ fake_graduation_df <- data.frame(
   graduated_term_id = sample(c("", NA), sample_size, replace = TRUE),
   financial_aid_year_id = sample(c("1920", "2021", NA), sample_size, replace = TRUE),
   season = sample(c("Fall", "Summer", "spring", NA), sample_size, replace = TRUE),
-  primary_major_college_id = sample(c("SC", "HO", NA), sample_size, replace = TRUE),
+  primary_major_college_desc = sample(c("Psychology", "Marriage Family Therapy", NA), sample_size, replace = TRUE),
   primary_major_desc = sample(c("Great Major", "Awesome Major", NA), sample_size, replace = TRUE),
   degree_desc = sample(c("", NA), sample_size, replace = TRUE)
 
