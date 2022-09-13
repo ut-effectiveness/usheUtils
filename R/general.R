@@ -56,6 +56,7 @@ return(x)
 #' Is valid ssn id
 #'
 #' @importFrom stringr str_detect
+#' @importFrom dplyr if_else
 #'
 #' @param ssn a vector of ssn to check for validity.
 #'
@@ -72,7 +73,7 @@ is_valid_ssn <- function(ssn) {
 
   valid_ssn_check <- str_detect(ssn, ssn_regex)
 
-  valid_ssn_check <- if_else(is.na(valid_ssn_check), FALSE, TRUE )
+  valid_ssn_check <- if_else(is.na(valid_ssn_check), FALSE, valid_ssn_check )
 
   return(valid_ssn_check)
 }
