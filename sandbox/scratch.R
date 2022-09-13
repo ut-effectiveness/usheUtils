@@ -1,39 +1,49 @@
-#' Check for valid SSN characters ()
+#' Calculate USHE Element (Degree Type)
 #'
 #' @details
 #'
-#' Is valid ssn id
+#' **USHE Documentation**
+#' ELEMENT NAME: Degree Type
+#' FIELD NAME: gen_ushe_deg_type, pf_deg_type & g_deg_type
+#' FIELD FORMAT: Varchar, 6 Characters
+#' DEFINITION: The Level of Degree or Certificate. Refer to the  Degree Type Table for all degrees.
+
 #'
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
-#' @importFrom dplyr if_else
 #' @importFrom dplyr select
+#' @importFrom dplyr if_else
 #'
-#' @param input_df A Data Frame. Must contain the following data fields: (ssn).
+#' @param input_df A Data Frame. Must contain the following data fields: (degree_id).
 #'
 #'
-#' @return A Boolean TRUE or FALSE if SSN is valid.
+#' @return Original data frame, with USHE data element gen_ushe_deg_type appended.
 #' @export
 #'
 #' @examples
-#' is_valid_ssn()
+#' gen_ushe_deg_type()
 #'
-is_valid_ssn <- function() {
+gen_ushe_deg_type <- function(input_df=usheUtils::fake_program_df) {
 
-ssn_regex <- "^[0-8][0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9]$"
-
-  valid_ssn_check = (str_detect(ssn, ssn_regex) )
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate( deg_type = if_else( degree_id == "MMFT",
+                                   "MMF",
+                                   degree_id ) ) %>%
+    # Append USHE data element gen_ushe_deg_type
+    mutate( gen_ushe_deg_type = deg_type,
+            pf_05 = deg_type,
+            g_10 = deg_type)
 
   return(output_df)
 }
 
+#' @rdname gen_ushe_deg_type
+#' @examples pf_05()
+#' @export
+pf_05 <- gen_ushe_deg_type
 
-zipcode_regex <- "^[0-9]{5}(-[0-9]{4})?$"
-
-output_df <- input_df %>%
-
-  # Calculate intermediate fields
-  mutate(s_curr_zip = coalesce(if_else(str_detect(local_address_zip_code, zipcode_regex),
-                                       local_address_zip_code, NA_character_ ),
-                               if_else(str_detect(mailing_address_zip_code, zipcode_regex),
-                                       mailing_address_zip_code, NA_character_ ))) %>%
+#' @rdname gen_ushe_deg_type
+#' @examples g_10()
+#' @export
+g_10 <- gen_ushe_deg_type

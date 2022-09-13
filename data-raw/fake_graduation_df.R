@@ -32,7 +32,7 @@ fake_graduation_df <- data.frame(
   total_cumulative_clep_credits_earned = sample(0:32, sample_size, replace = TRUE),
   total_cumulative_credits_attempted_other_sources = sample(c(100.5, 36.7, 192), sample_size, replace = TRUE),
   total_remedial_hours = sample(c("", NA), sample_size, replace = TRUE),
-  overall_cumulative_credits_earned = sample(0:32, sample_size, replace = TRUE),
+  cumulative_credits_earned = sample(0:32, sample_size, replace = TRUE),
   level_id = sample(c("UG", NA), sample_size, replace = TRUE),
   previous_degree_type = sample(c("", NA), sample_size, replace = TRUE),
   ipeds_award_level_code = sample(as.character(c(1:7, NA)), sample_size, replace = TRUE),
@@ -44,7 +44,7 @@ fake_graduation_df <- data.frame(
   graduated_term_id = sample(c("", NA), sample_size, replace = TRUE),
   financial_aid_year_id = sample(c("1920", "2021", NA), sample_size, replace = TRUE),
   season = sample(c("Fall", "Summer", "spring", NA), sample_size, replace = TRUE),
-  primary_major_college_id = sample(c("SC", "HO", NA), sample_size, replace = TRUE),
+  primary_major_college_desc = sample(c("Psychology", "Marriage Family Therapy", NA), sample_size, replace = TRUE),
   primary_major_desc = sample(c("Great Major", "Awesome Major", NA), sample_size, replace = TRUE),
   degree_desc = sample(c("", NA), sample_size, replace = TRUE)
 

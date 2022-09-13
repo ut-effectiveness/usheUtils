@@ -7,7 +7,7 @@
 g_24(input_df = usheUtils::fake_graduation_df, with_intermediates = FALSE)
 }
 \arguments{
-\item{input_df}{A Data Frame. Must contain the following data fields: (financial_aid_year_id).}
+\item{input_df}{A Data Frame. Must contain the following data fields: (financial_aid_year_id, season).}
 
 \item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }
