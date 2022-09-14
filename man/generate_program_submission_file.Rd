@@ -13,7 +13,7 @@ generate_program_submission_file(
 \item{input_df}{A Data Frame. Must contain the following data fields: (major_desc,
 required_credits,
 is_perkins,
-degree_id,
+primary_degree_id,
 ipeds_award_level_code,
 cip_code,
 academic_year).}

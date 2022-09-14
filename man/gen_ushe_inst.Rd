@@ -10,6 +10,8 @@
 \alias{b_01}
 \alias{r_01}
 \alias{g_01}
+\alias{f_01}
+\alias{d_01}
 \title{Calculate USHE Element Institution (Institution)}
 \usage{
 gen_ushe_inst(input_df = usheUtils::fake_student_df)
@@ -29,6 +31,10 @@ b_01(input_df = usheUtils::fake_student_df)
 r_01(input_df = usheUtils::fake_student_df)
 
 g_01(input_df = usheUtils::fake_student_df)
+
+f_01(input_df = usheUtils::fake_student_df)
+
+d_01(input_df = usheUtils::fake_student_df)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (no data fields required).}
@@ -61,4 +67,6 @@ m_01()
 b_01()
 r_01()
 g_01()
+f_01()
+d_01()
 }

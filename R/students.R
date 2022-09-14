@@ -524,42 +524,6 @@ s_18 <- function(input_df=usheUtils::fake_student_df) {
   return(output_df)
 }
 
-
-#' Calculate USHE Element s_19 (Degree Intent)
-#'
-#' @details
-#'
-#' **USHE Documentation**
-#' - ELEMENT NAME: Degree Intent
-#' - FIELD NAME: S_DEG_INTENT
-#' - FIELD FORMAT: Varchar, 2 Character
-#' - DEFINITION: The length/nature of the degree that the student is working toward.
-#'               S_DEG_INTENT with S_CURR_CIP represents the student’s major and ties to S_MAJOR
-#'
-#' @importFrom magrittr %>%
-#' @importFrom dplyr mutate
-#' @importFrom dplyr select
-#'
-#' @param input_df A Data Frame. Must contain the following data fields: (ipeds_award_level_code).
-#'
-#'
-#' @return Original data frame, with USHE data element s_19 appended.
-#' @export
-#'
-#' @examples
-#' s_19()
-#'
-s_19 <- function(input_df=usheUtils::fake_student_df) {
-
-  output_df <- input_df %>%
-    # Calculate intermediate fields
-    mutate(s_deg_intent = if_else(is.na(ipeds_award_level_code), "0", ipeds_award_level_code)) %>%
-    # Append USHE data element s_19
-    mutate( s_19 = s_deg_intent )
-
-  return(output_df)
-}
-
 #' Calculate USHE Element s_20 (Total Cumulative Undergrad Hrs)
 #'
 #' @details
@@ -852,46 +816,6 @@ s_27 <- function(input_df=usheUtils::fake_student_df) {
     mutate( s_country_origin = first_admit_country_iso_code) %>%
     # Append USHE data element s_27
     mutate( s_27 = s_country_origin )
-
-  return(output_df)
-}
-
-#' Calculate USHE Element s_28 (High School Codes)
-#'
-#' @details
-#'
-#' **USHE Documentation**
-#'
-#' @importFrom magrittr %>%
-#' @importFrom dplyr mutate
-#' @importFrom dplyr select
-#' @importFrom dplyr case_when
-#'
-#' @param input_df A Data Frame. Must contain the following data fields: (high_school_code).
-#'
-#'
-#' @return Original data frame, with USHE data element s_28 appended.
-#' @export
-#'
-#' @examples
-#' s_28()
-#'
-s_28 <- function(input_df=usheUtils::fake_student_df) {
-
-  output_df <- input_df %>%
-    # Calculate intermediate fields
-    mutate( s_high_school = case_when(
-      high_school_code ==  "CHSPE" ~ "459700",
-      high_school_code ==  "459992" ~ "459600",
-      high_school_code ==  "459993" ~ "459050",
-      high_school_code ==  "459995" ~ "459300",
-      high_school_code ==  "960000" ~ "459400",
-      high_school_code ==  "459999" ~ "459150",
-      high_school_code %in% c("459994","459996") ~ "459200",
-      high_school_code %in% c("459998","969999") ~ "459500",
-      TRUE ~ high_school_code)) %>%
-    # Append USHE data element s_28
-    mutate( s_28 = s_high_school )
 
   return(output_df)
 }

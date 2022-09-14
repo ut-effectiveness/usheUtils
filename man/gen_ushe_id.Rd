@@ -5,6 +5,8 @@
 \alias{s_03}
 \alias{sc_03}
 \alias{g_02}
+\alias{f_04}
+\alias{d_02}
 \title{Calculate USHE Element Social Security Number or Institutionally Assigned ID (Student ID)}
 \usage{
 gen_ushe_id(input_df = usheUtils::fake_student_df)
@@ -14,6 +16,10 @@ s_03(input_df = usheUtils::fake_student_df)
 sc_03(input_df = usheUtils::fake_student_df)
 
 g_02(input_df = usheUtils::fake_student_df)
+
+f_04(input_df = usheUtils::fake_student_df)
+
+d_02(input_df = usheUtils::fake_student_df)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (student_id, ssn).}
@@ -28,7 +34,7 @@ Calculate USHE Element Social Security Number or Institutionally Assigned ID (St
 \strong{USHE Documentation}
 \itemize{
 \item ELEMENT NAME: Institutionally Assigned ID
-\item FIELD NAME: s_id, sc_id, and g_id
+\item FIELD NAME: s_id, sc_id, d_id & g_id
 \item FIELD FORMAT: Varchar, 9 Characters
 \item DEFINITION: The unique institutionally assigned identification number for each student intended to be used in lieu of using a student’s social security number.
 G_Banner_ID must begin with an Alpha character representing the institution.
@@ -40,4 +46,6 @@ gen_ushe_id()
 s_03()
 sc_03()
 g_02()
+f_04()
+d_02()
 }

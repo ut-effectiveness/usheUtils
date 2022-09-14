@@ -5,6 +5,8 @@
 \alias{s_35}
 \alias{m_06}
 \alias{g_21}
+\alias{f_05}
+\alias{d_03}
 \title{Calculate USHE Element ushe_banner_id (Institution Assigned ID)}
 \usage{
 gen_ushe_banner_id(input_df = usheUtils::fake_student_df)
@@ -14,6 +16,10 @@ s_35(input_df = usheUtils::fake_student_df)
 m_06(input_df = usheUtils::fake_student_df)
 
 g_21(input_df = usheUtils::fake_student_df)
+
+f_05(input_df = usheUtils::fake_student_df)
+
+d_03(input_df = usheUtils::fake_student_df)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (student_id).}
@@ -39,4 +45,6 @@ gen_ushe_banner_id()
 s_35()
 m_06()
 g_21()
+f_05()
+d_03()
 }

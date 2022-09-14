@@ -13,7 +13,7 @@ pf_05(input_df = usheUtils::fake_program_df)
 g_10(input_df = usheUtils::fake_program_df)
 }
 \arguments{
-\item{input_df}{A Data Frame. Must contain the following data fields: (degree_id).}
+\item{input_df}{A Data Frame. Must contain the following data fields: (primary_degree_id).}
 }
 \value{
 Original data frame, with USHE data element gen_ushe_deg_type appended.

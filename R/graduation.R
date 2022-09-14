@@ -41,7 +41,7 @@
 #'                                                                        graduated_term_id,
 #'                                                                        financial_aid_year_id,
 #'                                                                        season,
-#'                                                                        primary_major_college_desc,
+#'                                                                        college_desc,
 #'                                                                        primary_major_desc,
 #'                                                                        degree_desc)
 #'
@@ -390,39 +390,6 @@ g_16 <- function(input_df=usheUtils::fake_graduation_df, with_intermediates=FALS
   return(output_df)
 }
 
-#' Calculate USHE Element g_17 (IPEDS Award Level Code  )
-#'
-#' @details
-#'
-#' **USHE Documentation**
-#' - ELEMENT NAME: IPEDS Award Level Code
-#' - FIELD NAME: g_ipeds
-#' - FIELD FORMAT: Number, 2 Characters
-#' - DEFINITION: TThe Award Level codes that correspond with the IPEDS Completion Survey.
-#'
-#' @importFrom magrittr %>%
-#' @importFrom dplyr mutate
-#' @importFrom dplyr select
-#'
-#' @param input_df A Data Frame. Must contain the following data fields: (ipeds_award_level_code).
-#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
-#'
-#' @return Original data frame, with USHE data element g_17 appended. Will also return appended intermediate calculated fields, if option is set.
-#' @export
-#'
-#' @examples
-#' g_17()
-#'
-g_17 <- function(input_df=usheUtils::fake_graduation_df, with_intermediates=FALSE) {
-
-  output_df <- input_df %>%
-    # Calculate intermediate fields
-    mutate(g_ipeds = ipeds_award_level_code ) %>%
-    # Append USHE data element g_17
-    mutate( g_17 = g_ipeds  )
-
-  return(output_df)
-}
 
 #' Calculate USHE Element g_18 (Required Hours for Degree)
 #'
@@ -459,41 +426,7 @@ g_18 <- function(input_df=usheUtils::fake_graduation_df, with_intermediates=FALS
   return(output_df)
 }
 
-#' Calculate USHE Element g_19 (High School Codes)
-#'
-#' @details
-#'
-#' **USHE Documentation**
-#' - ELEMENT NAME: High School Codes
-#' - FIELD NAME: g_high_school
-#' - FIELD FORMAT: Varchar, 6 Characters
-#' - DEFINITION: The High School or Special Secondary School code which uniquely identifies each student’s secondary institution.
-#'  The codes for any secondary institution located within the United States can be found by accessing the URL
-#'  **For undergraduate students only**
-#'
-#' @importFrom magrittr %>%
-#' @importFrom dplyr mutate
-#' @importFrom dplyr select
-#'
-#' @param input_df A Data Frame. Must contain the following data fields: (high_school_code).
-#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
-#'
-#' @return Original data frame, with USHE data element g_19 appended. Will also return appended intermediate calculated fields, if option is set.
-#' @export
-#'
-#' @examples
-#' g_19()
-#'
-g_19 <- function(input_df=usheUtils::fake_graduation_df, with_intermediates=FALSE) {
 
-  output_df <- input_df %>%
-    # Calculate intermediate fields
-    mutate(g_high_school = high_school_code ) %>%
-    # Append USHE data element g_19
-    mutate( g_19 = g_high_school  )
-
-  return(output_df)
-}
 
 #' Calculate USHE Element g_22 (Workforce Education Earned Contact Hours)
 #'
@@ -563,12 +496,12 @@ g_23 <- function(input_df=usheUtils::fake_graduation_df, with_intermediates=FALS
   return(output_df)
 }
 
-#' Calculate USHE Element g_24 (Date of Graduation )
+#' Calculate USHE Element g_24 (Fiscal Year of Graduation )
 #'
 #' @details
 #'
 #' **USHE Documentation**
-#' - ELEMENT NAME: Date of Graduation
+#' - ELEMENT NAME: Fiscal Year of Graduation
 #' - FIELD NAME: g_fis_year
 #' - FIELD FORMAT: Varchar, 4 Characters (YYYY Format, i.e. 0809)
 #' - DEFINITION: The fiscal or academic year the formal award was conferred by the institution.
@@ -597,43 +530,6 @@ g_24 <- function(input_df=usheUtils::fake_graduation_df, with_intermediates=FALS
   return(output_df)
 }
 
-#' Calculate USHE Element g_25 (Term of Graduation)
-#'
-#' @details
-#'
-#' **USHE Documentation**
-#' - ELEMENT NAME: Term of Graduation
-#' - FIELD NAME: g_term
-#' - FIELD FORMAT: Varchar, 1 Character
-#' - DEFINITION: The term in which the student graduated.
-#'
-#' @importFrom magrittr %>%
-#' @importFrom dplyr mutate
-#' @importFrom dplyr select
-#' @importFrom dplyr case_when
-#'
-#' @param input_df A Data Frame. Must contain the following data fields: (season).
-#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
-#'
-#' @return Original data frame, with USHE data element g_25 appended. Will also return appended intermediate calculated fields, if option is set.
-#' @export
-#'
-#' @examples
-#' g_25()
-#'
-g_25 <- function(input_df=usheUtils::fake_graduation_df, with_intermediates=FALSE) {
-
-  output_df <- input_df %>%
-    # Calculate intermediate fields
-    mutate(g_term = case_when(
-      season == "Summer" ~ "1",
-      season == "Fall" ~ "2",
-      season == "Spring" ~ "3") )%>%
-    # Append USHE data element g_25
-    mutate( g_25 = g_term  )
-
-  return(output_df)
-}
 
 #' Calculate USHE Element g_26 (Major College)
 #'
@@ -649,7 +545,7 @@ g_25 <- function(input_df=usheUtils::fake_graduation_df, with_intermediates=FALS
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
 #'
-#' @param input_df A Data Frame. Must contain the following data fields: (primary_major_college_desc).
+#' @param input_df A Data Frame. Must contain the following data fields: (college_desc).
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
 #'
 #' @return Original data frame, with USHE data element g_26 appended. Will also return appended intermediate calculated fields, if option is set.
@@ -662,7 +558,7 @@ g_26 <- function(input_df=usheUtils::fake_graduation_df, with_intermediates=FALS
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate(g_college = primary_major_college_desc)%>%
+    mutate(g_college = college_desc)%>%
     # Append USHE data element g_26
     mutate( g_26 = g_college  )
 
