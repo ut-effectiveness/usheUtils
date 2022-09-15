@@ -2,7 +2,7 @@
 % Please edit documentation in R/graduation.R
 \name{g_24}
 \alias{g_24}
-\title{Calculate USHE Element g_24 (Date of Graduation )}
+\title{Calculate USHE Element g_24 (Fiscal Year of Graduation )}
 \usage{
 g_24(input_df = usheUtils::fake_graduation_df, with_intermediates = FALSE)
 }
@@ -15,12 +15,12 @@ g_24(input_df = usheUtils::fake_graduation_df, with_intermediates = FALSE)
 Original data frame, with USHE data element g_24 appended. Will also return appended intermediate calculated fields, if option is set.
 }
 \description{
-Calculate USHE Element g_24 (Date of Graduation )
+Calculate USHE Element g_24 (Fiscal Year of Graduation )
 }
 \details{
 \strong{USHE Documentation}
 \itemize{
-\item ELEMENT NAME: Date of Graduation
+\item ELEMENT NAME: Fiscal Year of Graduation
 \item FIELD NAME: g_fis_year
 \item FIELD FORMAT: Varchar, 4 Characters (YYYY Format, i.e. 0809)
 \item DEFINITION: The fiscal or academic year the formal award was conferred by the institution.

@@ -7,7 +7,7 @@
 g_13(input_df = usheUtils::fake_graduation_df, with_intermediates = FALSE)
 }
 \arguments{
-\item{input_df}{A Data Frame. Must contain the following data fields: (cumulative_credits_earned, total_remedial_hours).}
+\item{input_df}{A Data Frame. Must contain the following data fields: (overall_cumulative_credits_earned, total_remedial_hours).}
 
 \item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }

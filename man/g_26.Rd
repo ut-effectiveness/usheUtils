@@ -7,7 +7,7 @@
 g_26(input_df = usheUtils::fake_graduation_df, with_intermediates = FALSE)
 }
 \arguments{
-\item{input_df}{A Data Frame. Must contain the following data fields: (primary_major_college_desc).}
+\item{input_df}{A Data Frame. Must contain the following data fields: (college_desc).}
 
 \item{with_intermediates}{Boolean: Option to include intermediate calculated fields.}
 }

@@ -4,7 +4,7 @@
 #' @param input_df A Data Frame. Must contain the following data fields: (major_desc,
 #'                                                                        required_credits,
 #'                                                                        is_perkins,
-#'                                                                        degree_id,
+#'                                                                        primary_degree_id,
 #'                                                                        ipeds_award_level_code,
 #'                                                                        cip_code,
 #'                                                                        academic_year).
@@ -105,36 +105,6 @@ pf_03 <- function(input_df=usheUtils::fake_program_df) {
     mutate( pf_deg_level = cip_code ) %>%
     # Append USHE data element pf_04
     mutate( pf_03 = pf_deg_level  )
-
-  return(output_df)
-}
-
-#' Calculate USHE Element pf_04 (Degree Level)
-#'
-#' @details
-#'
-#' **USHE Documentation**
-#'
-#' @importFrom magrittr %>%
-#' @importFrom dplyr mutate
-#' @importFrom dplyr select
-#'
-#' @param input_df A Data Frame. Must contain the following data fields: (ipeds_award_level_code).
-#'
-#'
-#' @return Original data frame, with USHE data element pf_04 appended.
-#' @export
-#'
-#' @examples
-#' pf_04()
-#'
-pf_04 <- function(input_df=usheUtils::fake_program_df) {
-
-  output_df <- input_df %>%
-    # Calculate intermediate fields
-    mutate( pf_deg_level = ipeds_award_level_code ) %>%
-    # Append USHE data element pf_04
-    mutate( pf_04 = pf_deg_level  )
 
   return(output_df)
 }

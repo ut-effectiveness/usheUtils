@@ -119,7 +119,9 @@ gen_ushe_inst <- function(input_df=usheUtils::fake_student_df) {
             m_01 = institution,
             b_01 = institution,
             r_01 = institution,
-            g_01 = institution )
+            g_01 = institution,
+            f_01 = institution,
+            d_01 = institution )
 
   return(output_df)
 }
@@ -164,6 +166,17 @@ r_01 <- gen_ushe_inst
 #' @export
 g_01 <- gen_ushe_inst
 
+#' @rdname gen_ushe_inst
+#' @examples f_01()
+#' @export
+f_01 <- gen_ushe_inst
+
+#' @rdname gen_ushe_inst
+#' @examples d_01()
+#' @export
+d_01 <- gen_ushe_inst
+
+
 #' Calculate USHE Elements for Names (Student Name)
 #'
 #' @details
@@ -185,6 +198,7 @@ g_01 <- gen_ushe_inst
 #' gen_ushe_name()
 #'
 gen_ushe_name <- function(input_df=usheUtils::fake_student_df) {
+  gen_ushe_name <- NULL
 
   output_df <- input_df %>%
     # Calculate intermediate fields
@@ -236,6 +250,7 @@ g_03 <- gen_ushe_name
 #' gen_ushe_ethnicty()
 #'
 gen_ushe_ethnicty <- function(input_df=usheUtils::fake_student_df) {
+  gen_ushe_ethnicty <- NULL
 
   output_df <- input_df %>%
     # Calculate intermediate fields
@@ -295,6 +310,7 @@ g_07 <- gen_ushe_ethnicty
 #' gen_ushe_county_origin()
 #'
 gen_ushe_county_origin <- function(input_df=usheUtils::fake_student_df) {
+  gen_ushe_county_origin <- NULL
 
   output_df <- input_df %>%
     # Calculate intermediate fields
@@ -327,7 +343,7 @@ g_04 <- gen_ushe_county_origin
 #'
 #' **USHE Documentation**
 #' - ELEMENT NAME: Institutionally Assigned ID
-#' - FIELD NAME: s_id, sc_id, and g_id
+#' - FIELD NAME: s_id, sc_id, d_id & g_id
 #' - FIELD FORMAT: Varchar, 9 Characters
 #' - DEFINITION: The unique institutionally assigned identification number for each student intended to be used in lieu of using a student’s social security number.
 #'               G_Banner_ID must begin with an Alpha character representing the institution.
@@ -347,6 +363,7 @@ g_04 <- gen_ushe_county_origin
 #' gen_ushe_id()
 #'
 gen_ushe_id <- function(input_df=usheUtils::fake_student_df) {
+  gen_ushe_id <- NULL
 
   output_df <- input_df %>%
     # Calculate intermediate fields
@@ -358,7 +375,9 @@ gen_ushe_id <- function(input_df=usheUtils::fake_student_df) {
     mutate( gen_ushe_id = id,
             s_03 = id,
             sc_03 = id,
-            g_02 = id )
+            g_02 = id,
+            f_04 = id,
+            d_02 = id )
 
   return(output_df)
 }
@@ -377,6 +396,16 @@ sc_03 <- gen_ushe_id
 #' @examples g_02()
 #' @export
 g_02 <- gen_ushe_id
+
+#' @rdname gen_ushe_id
+#' @examples f_04()
+#' @export
+f_04 <- gen_ushe_id
+
+#' @rdname gen_ushe_id
+#' @examples d_02()
+#' @export
+d_02 <- gen_ushe_id
 
 #' Calculate USHE Element (Birth Date)
 #'
@@ -402,6 +431,7 @@ g_02 <- gen_ushe_id
 #' gen_ushe_birth_date()
 #'
 gen_ushe_birth_date <- function(input_df=usheUtils::fake_student_df) {
+  gen_ushe_birth_date <- NULL
 
   output_df <- input_df %>%
     # Calculate intermediate fields
@@ -454,6 +484,7 @@ g_05 <- gen_ushe_birth_date
 #' gen_ushe_banner_id()
 #'
 gen_ushe_banner_id <- function(input_df=usheUtils::fake_student_df) {
+  gen_ushe_banner_id <- NULL
 
   output_df <- input_df %>%
     # Calculate intermediate fields
@@ -462,7 +493,9 @@ gen_ushe_banner_id <- function(input_df=usheUtils::fake_student_df) {
     mutate( gen_ushe_banner_id = banner_id,
             s_35 = banner_id,
             m_06 = banner_id,
-            g_21 = banner_id)
+            g_21 = banner_id,
+            f_05 = banner_id,
+            d_03 = banner_id )
 
   return(output_df)
 }
@@ -481,6 +514,16 @@ m_06 <- gen_ushe_banner_id
 #' @examples g_21()
 #' @export
 g_21 <- gen_ushe_banner_id
+
+#' @rdname gen_ushe_banner_id
+#' @examples f_05()
+#' @export
+f_05 <- gen_ushe_banner_id
+
+#' @rdname gen_ushe_banner_id
+#' @examples d_03()
+#' @export
+d_03 <- gen_ushe_banner_id
 
 #' Calculate USHE Element s_34, g_20 (SSID aka USOE Unique ID)
 #'
@@ -507,6 +550,7 @@ g_21 <- gen_ushe_banner_id
 #' gen_ushe_ssid()
 #'
 gen_ushe_ssid <- function(input_df=usheUtils::fake_student_df) {
+  gen_ushe_ssid <- NULL
 
   output_df <- input_df %>%
     # Calculate intermediate fields
@@ -553,6 +597,7 @@ g_20 <- gen_ushe_ssid
 #' gen_ushe_gender()
 #'
 gen_ushe_gender <- function(input_df=usheUtils::fake_student_df) {
+  gen_ushe_gender <- NULL
 
   output_df <- input_df %>%
     # Calculate intermediate fields
@@ -603,6 +648,7 @@ g_06 <- gen_ushe_gender
 #' gen_ushe_year_term_extract()
 #'
 gen_ushe_year_term_extract <- function(input_df=usheUtils::fake_student_df) {
+  gen_ushe_year_term_extract <- NULL
 
   output_df <- input_df %>%
     # Calculate intermediate fields
@@ -665,7 +711,7 @@ sc_02 <- gen_ushe_year_term_extract
 #' @importFrom dplyr select
 #' @importFrom dplyr if_else
 #'
-#' @param input_df A Data Frame. Must contain the following data fields: (degree_id).
+#' @param input_df A Data Frame. Must contain the following data fields: (primary_degree_id).
 #'
 #'
 #' @return Original data frame, with USHE data element gen_ushe_deg_type appended.
@@ -675,12 +721,13 @@ sc_02 <- gen_ushe_year_term_extract
 #' gen_ushe_deg_type()
 #'
 gen_ushe_deg_type <- function(input_df=usheUtils::fake_program_df) {
+  gen_ushe_deg_type <- NULL
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( deg_type = if_else( degree_id == "MMFT",
+    mutate( deg_type = if_else( primary_degree_id == "MMFT",
                                 "MMF",
-                                degree_id ) ) %>%
+                                primary_degree_id ) ) %>%
     # Append USHE data element gen_ushe_deg_type
     mutate( gen_ushe_deg_type = deg_type,
             pf_05 = deg_type,
@@ -698,3 +745,215 @@ pf_05 <- gen_ushe_deg_type
 #' @examples g_10()
 #' @export
 g_10 <- gen_ushe_deg_type
+
+#' Calculate USHE Element (High School Codes)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#' ELEMENT NAME: High School Codes
+#' FIELD NAME: gen_ushe_high_school, g_high_school and s_high_school.
+#' FIELD FORMAT: Varchar, 6 Characters
+#' DEFINITION: The High School or Special Secondary School code which uniquely identifies each  student’s secondary institution.
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#' @importFrom dplyr case_when
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (high_school_code).
+#'
+#'
+#' @return Original data frame, with USHE data element gen_ushe_high_school appended.
+#' @export
+#'
+#' @examples
+#' gen_ushe_high_school()
+#'
+gen_ushe_high_school <- function(input_df=usheUtils::fake_student_df) {
+  gen_ushe_high_school <- NULL
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate( high_school = case_when(
+      high_school_code ==  "CHSPE" ~ "459700",
+      high_school_code ==  "459992" ~ "459600",
+      high_school_code ==  "459993" ~ "459050",
+      high_school_code ==  "459995" ~ "459300",
+      high_school_code ==  "960000" ~ "459400",
+      high_school_code ==  "459999" ~ "459150",
+      high_school_code %in% c("459994","459996") ~ "459200",
+      high_school_code %in% c("459998","969999") ~ "459500",
+      TRUE ~ high_school_code)) %>%
+    # Append USHE data element gen_ushe_high_school
+    mutate( gen_ushe_high_school = high_school,
+            g_19 = high_school,
+            s_28 = high_school )
+
+  return(output_df)
+}
+
+#' @rdname gen_ushe_high_school
+#' @examples g_19()
+#' @export
+g_19 <- gen_ushe_high_school
+
+#' @rdname gen_ushe_high_school
+#' @examples s_28()
+#' @export
+s_28 <- gen_ushe_high_school
+
+#' Calculate USHE Element (IPEDS Award Level Code  )
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#' - ELEMENT NAME: IPEDS Award Level Code / Degree Level (for the programs file).
+#' - FIELD NAME: gen_ushe_ipeds, s_ipeds, pf_deg_level & g_ipeds
+#' - FIELD FORMAT: Number, 2 Characters
+#' - DEFINITION: The Award Level codes that correspond with the IPEDS Completion Survey.
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (ipeds_award_level_code).
+#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
+#'
+#' @return Original data frame, with USHE data element gen_ushe_ipeds appended. Will also return appended intermediate calculated fields, if option is set.
+#' @export
+#'
+#' @examples
+#' gen_ushe_ipeds()
+#'
+gen_ushe_ipeds <- function(input_df=usheUtils::fake_graduation_df, with_intermediates=FALSE) {
+  gen_ushe_ipeds <- NULL
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate(ipeds = ipeds_award_level_code ) %>%
+    mutate(pf_deg_level = ipeds_award_level_code ) %>%
+    # Append USHE data element gen_ushe_ipeds
+    mutate( gen_ushe_ipeds = ipeds,
+            s_19 = ipeds,
+            pf_04 = pf_deg_level,
+            g_17 = ipeds)
+
+  return(output_df)
+
+}
+
+#' @rdname gen_ushe_ipeds
+#' @examples s_19()
+#' @export
+s_19 <- gen_ushe_ipeds
+
+#' @rdname gen_ushe_ipeds
+#' @examples pf_04()
+#' @export
+pf_04 <- gen_ushe_ipeds
+
+#' @rdname gen_ushe_ipeds
+#' @examples g_17()
+#' @export
+g_17 <- gen_ushe_ipeds
+
+#' Calculate USHE Element (Term)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#' - ELEMENT NAME: Term
+#' - FIELD NAME: gen_ushe_term, g_term, f_term.
+#' - FIELD FORMAT: Varchar, 1 Character
+#' - DEFINITION: The term in which the student is evolved in either gradution or financial aid.
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#' @importFrom dplyr case_when
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (season).
+#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
+#'
+#' @return Original data frame, with USHE data element gen_ushe_ipeds appended. Will also return appended intermediate calculated fields, if option is set.
+#' @export
+#'
+#' @examples
+#' gen_ushe_term()
+#'
+gen_ushe_term <- function(input_df=usheUtils::fake_graduation_df, with_intermediates=FALSE) {
+  gen_ushe_term <- NULL
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate(term = case_when(
+      season == "Summer" ~ "1",
+      season == "Fall" ~ "2",
+      season == "Spring" ~ "3") )%>%
+    # Append USHE data element gen_ushe_term
+    mutate( gen_ushe_term = term,
+            g_25 = term,
+            f_03 = term)
+
+  return(output_df)
+
+}
+
+#' @rdname gen_ushe_term
+#' @examples g_25()
+#' @export
+g_25 <- gen_ushe_term
+
+#' @rdname gen_ushe_term
+#' @examples f_03()
+#' @export
+f_03 <- gen_ushe_term
+
+
+#' Calculate USHE Element g_08 (Date of Graduation)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#' - ELEMENT NAME: Date of Graduation
+#' - FIELD NAME: gen_ushe_grad_date, g_date & d_start_dt
+#' - FIELD FORMAT: Varchar, 8 Characters (YYYYMMDD Format)
+#' - DEFINITION: The calendar date the formal award was conferred by the institution.
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (graduation_date).
+#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
+#'
+#' @return Original data frame, with USHE data element g_08 appended. Will also return appended intermediate calculated fields, if option is set.
+#' @export
+#'
+#' @examples
+#' gen_ushe_grad_date()
+#'
+gen_ushe_grad_date <- function(input_df=usheUtils::fake_graduation_df, with_intermediates=FALSE) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate(date = gsub("-", "", graduation_date) ) %>%
+    # Append USHE data element gen_ushe_grad_date
+    mutate( gen_ushe_grad_date = date,
+            g_08 = date,
+            d_start_dt = date,
+            d_04 = date )
+
+  return(output_df)
+}
+
+#' @rdname gen_ushe_grad_date
+#' @examples g_08()
+#' @export
+g_08 <- gen_ushe_grad_date
+
+#' @rdname gen_ushe_grad_date
+#' @examples d_04()
+#' @export
+d_04 <- gen_ushe_grad_date
