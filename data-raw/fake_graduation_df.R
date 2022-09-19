@@ -46,7 +46,8 @@ fake_graduation_df <- data.frame(
   season = sample(c("Fall", "Summer", "spring", NA), sample_size, replace = TRUE),
   college_desc = sample(c("Psychology", "Marriage Family Therapy", NA), sample_size, replace = TRUE),
   primary_major_desc = sample(c("Great Major", "Awesome Major", NA), sample_size, replace = TRUE),
-  degree_desc = sample(c("Great Major", "Awesome Major", NA), sample_size, replace = TRUE)
+  degree_desc = sample(c("Great Major", "Awesome Major", NA), sample_size, replace = TRUE),
+  academic_year_code = as.character( sample(1978:2022, sample_size, replace = TRUE) )
 
 )
 
