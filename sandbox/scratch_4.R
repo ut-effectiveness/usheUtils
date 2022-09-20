@@ -22,14 +22,22 @@
 #' @examples
 #' d_06()
 #'
-d_06 <- function(input_df=usheUtils::fake_dws_df, with_intermediates=FALSE) {
+d_06 <- function(x, with_intermediates=FALSE) {
 
-  output_df <- input_df %>%
-    # Calculate intermediate fields
-    mutate( description = program_id ) %>%
-    # Append USHE data element d_06
-    mutate( d_06 = description)
+  if (is.data.frame(x=usheUtils::fake_graduation_df)) {
+    output_df <- x %>%
+      mutate( description = program_id ) %>%
+      mutate( d_06 = description)
 
-  return(output_df)
+    return(output_df)
+
+  } else {
+    program_id <- x %>%
+      mutate( description = program_id ) %>%
+      mutate( d_06 = description)
+
+    return(d_06)
+  }
+
 
   }

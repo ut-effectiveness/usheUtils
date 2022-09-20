@@ -107,39 +107,6 @@ generate_graduation_submission_file <- function(input_df=usheUtils::fake_graduat
   return(output_df)
 }
 
-#' Calculate USHE Element g_08 (Date of Graduation)
-#'
-#' @details
-#'
-#' **USHE Documentation**
-#' - ELEMENT NAME: Date of Graduation
-#' - FIELD NAME: g_date
-#' - FIELD FORMAT: Varchar, 8 Characters (YYYYMMDD Format)
-#' - DEFINITION: The calendar date the formal award was conferred by the institution.
-#'
-#' @importFrom magrittr %>%
-#' @importFrom dplyr mutate
-#' @importFrom dplyr select
-#'
-#' @param input_df A Data Frame. Must contain the following data fields: (graduation_date).
-#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
-#'
-#' @return Original data frame, with USHE data element g_08 appended. Will also return appended intermediate calculated fields, if option is set.
-#' @export
-#'
-#' @examples
-#' g_08()
-#'
-g_08 <- function(input_df=usheUtils::fake_graduation_df, with_intermediates=FALSE) {
-
-  output_df <- input_df %>%
-    # Calculate intermediate fields
-    mutate(g_date = gsub("-", "", graduation_date) ) %>%
-    # Append USHE data element g_08
-    mutate( g_08 = g_date  )
-
-  return(output_df)
-}
 
 #' Calculate USHE Element g_09 (Degree CIP Code)
 #'
@@ -266,6 +233,7 @@ g_12 <- function(input_df=usheUtils::fake_graduation_df) {
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
+#' @importFrom dplyr coalesce
 #'
 #' @param input_df A Data Frame. Must contain the following data fields: (overall_cumulative_credits_earned, total_remedial_hours).
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
@@ -280,7 +248,9 @@ g_13 <- function(input_df=usheUtils::fake_graduation_df, with_intermediates=FALS
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate(g_grad_hrs_intermediate = (as.numeric(overall_cumulative_credits_earned) - as.numeric(total_remedial_hours) ) )%>%
+    mutate(overall_cumulative_credits_earned = coalesce(overall_cumulative_credits_earned, 0) ) %>%
+    mutate(total_remedial_hours = coalesce(total_remedial_hours, 0) ) %>%
+    mutate(g_grad_hrs_intermediate = overall_cumulative_credits_earned - total_remedial_hours) %>%
     mutate(g_grad_hrs = round(g_grad_hrs_intermediate, digits = 1) ) %>%
     # Append USHE data element g_13
     mutate( g_13 = g_grad_hrs  )
@@ -509,6 +479,8 @@ g_23 <- function(input_df=usheUtils::fake_graduation_df, with_intermediates=FALS
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
+#' @importFrom stringr str_remove
+#' @importFrom stringr str_pad
 #'
 #' @param input_df A Data Frame. Must contain the following data fields: (financial_aid_year_id, season).
 #' @param with_intermediates Boolean: Option to include intermediate calculated fields.
@@ -522,8 +494,14 @@ g_23 <- function(input_df=usheUtils::fake_graduation_df, with_intermediates=FALS
 g_24 <- function(input_df=usheUtils::fake_graduation_df, with_intermediates=FALSE) {
 
   output_df <- input_df %>%
-    # Calculate intermediate fields
-    mutate(g_fis_year = ifelse(season == "Summer", as.numeric(financial_aid_year_id) + 1, financial_aid_year_id)) %>%
+    # Calculate intermediate fields  # bring in previous financial aid year
+    # this is giving us the summer ushe year which is the next year.
+    # For example: summer 2022 should look like 2223.
+    mutate(this_year = str_remove(academic_year_code, "20") )  %>%
+    mutate(next_year = as.numeric(this_year) + 1) %>%
+    mutate(next_year = str_pad(next_year, 2, "left", "0")) %>%
+    mutate(ushe_summer_year = paste0(this_year, next_year) ) %>%
+    mutate(g_fis_year = ifelse(season == "Summer", ushe_summer_year , financial_aid_year_id) ) %>%
     # Append USHE data element g_24
     mutate( g_24 = g_fis_year  )
 

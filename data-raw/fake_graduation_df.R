@@ -27,11 +27,11 @@ fake_graduation_df <- data.frame(
   primary_degree_id = sample(c("AS", "BME", "MAT", "TR", "AB", "BAS", "BFA", "CER1", "APE", "AC", "MA", "CER0", "AAS", "BIS", "", "BSN", "MACC", "BA", "ND", "BM", "AA", "MMFT", "BS"), sample_size, replace = TRUE),
   degree_status_code = sample(c("AW", NA), sample_size, replace = TRUE),
   cumulative_graduation_gpa = sample(0:400, sample_size, replace = TRUE) / 100,
-  transfer_cumulative_credits_earned = sample(0:32, sample_size, replace = TRUE),
+  transfer_cumulative_credits_earned = sample(c(0:32, NA_integer_), sample_size, replace = TRUE),
   total_cumulative_ap_credits_earned = sample(0:32, sample_size, replace = TRUE),
   total_cumulative_clep_credits_earned = sample(0:32, sample_size, replace = TRUE),
   total_cumulative_credits_attempted_other_sources = sample(c(100.5, 36.7, 192), sample_size, replace = TRUE),
-  total_remedial_hours = sample(c("", NA), sample_size, replace = TRUE),
+  total_remedial_hours = sample(c(0:32, NA_integer_), sample_size, replace = TRUE),
   overall_cumulative_credits_earned = sample(0:32, sample_size, replace = TRUE),
   level_id = sample(c("UG", NA), sample_size, replace = TRUE),
   previous_degree_type = sample(c("", NA), sample_size, replace = TRUE),
@@ -46,7 +46,8 @@ fake_graduation_df <- data.frame(
   season = sample(c("Fall", "Summer", "spring", NA), sample_size, replace = TRUE),
   college_desc = sample(c("Psychology", "Marriage Family Therapy", NA), sample_size, replace = TRUE),
   primary_major_desc = sample(c("Great Major", "Awesome Major", NA), sample_size, replace = TRUE),
-  degree_desc = sample(c("Great Major", "Awesome Major", NA), sample_size, replace = TRUE)
+  degree_desc = sample(c("Great Major", "Awesome Major", NA), sample_size, replace = TRUE),
+  academic_year_code = as.character( sample(1978:2022, sample_size, replace = TRUE) )
 
 )
 
