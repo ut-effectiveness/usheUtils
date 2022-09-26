@@ -105,7 +105,18 @@ is_valid_ssn <- function(ssn) {
 #' gen_ushe_inst()
 #'
 gen_ushe_inst <- function(input_df=usheUtils::fake_student_df) {
+  institution <- NULL
   gen_ushe_inst <- NULL
+  s_01 <- NULL
+  c_01 <- NULL
+  sc_01 <- NULL
+  pf_01 <- NULL
+  m_01 <- NULL
+  b_01 <- NULL
+  r_01 <- NULL
+  g_01 <- NULL
+  f_01 <- NULL
+  d_01 <- NULL
 
   output_df <- input_df %>%
     # Calculate intermediate fields
@@ -200,14 +211,19 @@ d_01 <- gen_ushe_inst
 gen_ushe_name <- function(input_df=usheUtils::fake_student_df) {
   gen_ushe_name <- NULL
 
+
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( last = coalesce(last_name, ''),
-            first = coalesce(first_name, ''),
-            middle = coalesce(middle_name, ''),
-            suffix = coalesce(name_suffix, '') ) %>%
+    mutate( last_name = as.character(last_name),
+            first_name = as.character(first_name),
+            middle_name = as.character(middle_name),
+            name_suffix = as.character(name_suffix) ) %>%
     # Append USHE data element gen_ushe_name
-    mutate( name = paste(last, first, middle, suffix, sep = "|")) %>%
+    mutate( name = paste(coalesce(last_name, ''),
+                         coalesce(first_name, ''),
+                         coalesce(middle_name, ''),
+                         coalesce(name_suffix, ''),
+                         sep = "|") ) %>%
     mutate(gen_ushe_name = name,
            s_06 = name,
            g_03 = name)
@@ -772,23 +788,28 @@ g_10 <- gen_ushe_deg_type
 #'
 gen_ushe_high_school <- function(input_df=usheUtils::fake_student_df) {
   gen_ushe_high_school <- NULL
+  high_school_code_intermediate <- NULL
+  g_19 <- NULL
+  s_28 <- NULL
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( high_school = case_when(
+    mutate( high_school_code_intermediate = case_when(
       high_school_code ==  "CHSPE" ~ "459700",
+      high_school_code ==  "459997" ~ "459100",
       high_school_code ==  "459992" ~ "459600",
       high_school_code ==  "459993" ~ "459050",
       high_school_code ==  "459995" ~ "459300",
       high_school_code ==  "960000" ~ "459400",
       high_school_code ==  "459999" ~ "459150",
-      high_school_code %in% c("459994","459996") ~ "459200",
-      high_school_code %in% c("459998","969999") ~ "459500",
-      TRUE ~ high_school_code)) %>%
+      ( high_school_code %in% c("459994", "459996")
+        | is.na(high_school_code) ) ~ "459200",
+      high_school_code %in% c("459998", "969999") ~ "459500",
+      TRUE ~ high_school_code) ) %>%
     # Append USHE data element gen_ushe_high_school
-    mutate( gen_ushe_high_school = high_school,
-            g_19 = high_school,
-            s_28 = high_school )
+    mutate( gen_ushe_high_school = high_school_code_intermediate,
+            g_19 = high_school_code_intermediate,
+            s_28 = high_school_code_intermediate )
 
   return(output_df)
 }
@@ -831,13 +852,13 @@ gen_ushe_ipeds <- function(input_df=usheUtils::fake_graduation_df, with_intermed
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate(ipeds = ipeds_award_level_code ) %>%
-    mutate(pf_deg_level = ipeds_award_level_code ) %>%
+    mutate( deg_level = ipeds_award_level_code,
+            ipeds = ipeds_award_level_code ) %>%
     # Append USHE data element gen_ushe_ipeds
-    mutate( gen_ushe_ipeds = ipeds,
-            s_19 = ipeds,
-            pf_04 = pf_deg_level,
-            g_17 = ipeds)
+    mutate( gen_ushe_ipeds = deg_level,
+            s_19 = deg_level,
+            pf_04 = deg_level,
+            g_17 = deg_level )
 
   return(output_df)
 
@@ -938,12 +959,12 @@ gen_ushe_grad_date <- function(input_df=usheUtils::fake_graduation_df, with_inte
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate(date = gsub("-", "", graduation_date) ) %>%
+    mutate(graduation_date_intermediate = gsub("-", "", graduation_date) ) %>%
     # Append USHE data element gen_ushe_grad_date
-    mutate( gen_ushe_grad_date = date,
-            g_08 = date,
-            d_start_dt = date,
-            d_04 = date )
+    mutate( gen_ushe_grad_date = graduation_date_intermediate,
+            g_08 = graduation_date_intermediate,
+            d_start_dt = graduation_date_intermediate,
+            d_04 = graduation_date_intermediate )
 
   return(output_df)
 }
