@@ -41,7 +41,7 @@ remove_special_characters  <- function(x = "spe;c.l-cha,ac?ers"){
   # Remove special characters
   if( is.character(x) )
     {x <- x %>%
-      str_replace_all("[.,;:?]", "") %>%
+      str_replace_all("[;:?]", "") %>%
       str_replace_all("[-]", "")
     }
 
