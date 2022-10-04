@@ -1468,10 +1468,10 @@ c_44 <- function(input_df=usheUtils::fake_course_df) {
   output_df <- input_df %>%
     # Calculate intermediate fields
     mutate(c_instruct_type = case_when( section_format_type_code %in% c("LEV", "LEX", "LES", "INS")	~	"LEC",
-                                        section_format_type_code %in% c("STU", "ENS")	~	"LEL",
+                                        section_format_type_code == "STU"	~	"LEL",
                                         section_format_type_code %in%	c("LBV", "LBS", "LBC")	~	"LAB",
                                         section_format_type_code %in%	c("PRA", "INT", "CLN")	~	"SUP",
-                                        section_format_type_code %in% c("MUN", "MUM", "ACT")	~	"INV",
+                                        section_format_type_code %in% c("MUN", "MUM", "ACT", "ENS")	~	"INV",
                                         section_format_type_code == "CLS"	~	"OTH",
                                         TRUE ~ section_format_type_code)) %>%
 
