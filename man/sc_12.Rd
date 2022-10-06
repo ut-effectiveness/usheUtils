@@ -7,7 +7,7 @@
 sc_12(input_df = usheUtils::fake_student_course_df)
 }
 \arguments{
-\item{input_df}{A Data Frame. Must contain the following data fields: (latest_student_type_code, budget_code, is_concurrent_course).}
+\item{input_df}{A Data Frame. Must contain the following data fields: (latest_student_type_code, budget_code, is_concurrent_course, section_number).}
 }
 \value{
 Original data frame, with USHE data element sc_12 appended.
