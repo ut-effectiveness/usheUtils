@@ -33,7 +33,7 @@ fake_course_df <- data.frame(
   room_max_occupancy_2 = sample(c("", NA), sample_size, replace = TRUE),
   meet_room_number_2 = sample(c("", NA), sample_size, replace = TRUE),
   building_number_2 = sample(c("", NA), sample_size, replace = TRUE),
-  meet_building_id_2 = sample(c("", NA), sample_size, replace = TRUE),
+  meet_building_id_2 = sample(c("VIRT", "HURCTR", "ONLINE", NA), sample_size, replace = TRUE),
   meet_days_2 = sample(c("", NA), sample_size, replace = TRUE),
   meet_end_time_2 = sample(c("", NA), sample_size, replace = TRUE),
   meet_start_time_2 = sample(c("", NA), sample_size, replace = TRUE),
