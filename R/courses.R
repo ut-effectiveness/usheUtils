@@ -1864,7 +1864,7 @@ c_54 <- function(input_df=usheUtils::fake_course_df) {
     # Calculate intermediate fields
     mutate( c_site_type3 = case_when(
       meet_building_id_3 %in% c("ONLINE","VIRT") ~ "V",
-      !is.na(meet_building_id_3) &  (campus_id == "ONLINE" | campus_id == "VIRT") ~ "V",
+      !is.na(meet_building_id_3) & (campus_id == "ONLINE" | campus_id == "VIRT") ~ "V",
       meet_building_id_3 == "HURCTR" ~ "B80",
       !is.na(meet_building_id_2) ~ "A01",
       TRUE ~ NA_character_)) %>%
