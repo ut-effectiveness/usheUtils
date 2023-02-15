@@ -401,6 +401,7 @@ c_10 <- function(input_df=usheUtils::fake_course_df) {
                                     str_starts(campus_id, "C") ~ "C",
                                     campus_id == "O03" ~ "O",
                                     campus_id %in% c("O01", "V01") ~ "V",
+                                    campus_id == "I01" ~ "I",
                                     TRUE ~ campus_id) ) %>%
     # Append USHE data element c_10
     mutate( c_10 = c_site_type )
@@ -1827,7 +1828,8 @@ c_53 <- function(input_df=usheUtils::fake_course_df) {
   output_df <- input_df %>%
     # Calculate intermediate fields
     mutate( c_site_type2 = case_when(
-      !is.na(meet_building_id_2) &  (campus_id == "ONLINE" | campus_id == "VIRT") ~ "V",
+      meet_building_id_2 %in% c("ONLINE","VIRT") ~ "V",
+      !is.na(meet_building_id_2) & (campus_id == "ONLINE" | campus_id == "VIRT") ~ "V",
       meet_building_id_2 == "HURCTR" ~ "B80",
       !is.na(meet_building_id_2) ~ "A01",
       TRUE ~ NA_character_)) %>%
@@ -1861,6 +1863,7 @@ c_54 <- function(input_df=usheUtils::fake_course_df) {
   output_df <- input_df %>%
     # Calculate intermediate fields
     mutate( c_site_type3 = case_when(
+      meet_building_id_3 %in% c("ONLINE","VIRT") ~ "V",
       !is.na(meet_building_id_3) &  (campus_id == "ONLINE" | campus_id == "VIRT") ~ "V",
       meet_building_id_3 == "HURCTR" ~ "B80",
       !is.na(meet_building_id_2) ~ "A01",
