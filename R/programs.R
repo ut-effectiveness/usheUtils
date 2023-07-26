@@ -109,6 +109,39 @@ pf_03 <- function(input_df=usheUtils::fake_program_df) {
   return(output_df)
 }
 
+#'Calculate USHE Element pf_05 (Degree Type)
+#'
+#' @details
+#'
+#' **USHE Documentation**
+#'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#' @importFrom dplyr if_else
+#'
+#' @param input_df A Data Frame. Must contain the following data fields: (degree_id).
+#'
+#'
+#' @return Original data frame, with USHE data element pf_05 appended.
+#' @export
+#'
+#' @examples
+#' pf_05()
+#'
+pf_05 <- function(input_df=usheUtils::fake_program_df) {
+
+  output_df <- input_df %>%
+    # Calculate intermediate fields
+    mutate( pf_deg_type = if_else( degree_id == "MMFT",
+      "MMF",
+      degree_id ) ) %>%
+    # Append USHE data element pf_05
+    mutate( pf_05 = pf_deg_type )
+
+  return(output_df)
+}
+
 
 #' Calculate USHE Element pf_06 (Perkins)
 #'

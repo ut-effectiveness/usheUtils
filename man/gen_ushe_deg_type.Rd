@@ -2,15 +2,12 @@
 % Please edit documentation in R/general.R
 \name{gen_ushe_deg_type}
 \alias{gen_ushe_deg_type}
-\alias{pf_05}
 \alias{g_10}
 \title{Calculate USHE Element (Degree Type)}
 \usage{
-gen_ushe_deg_type(input_df = usheUtils::fake_program_df)
+gen_ushe_deg_type(input_df = usheUtils::fake_graduation_df)
 
-pf_05(input_df = usheUtils::fake_program_df)
-
-g_10(input_df = usheUtils::fake_program_df)
+g_10(input_df = usheUtils::fake_graduation_df)
 }
 \arguments{
 \item{input_df}{A Data Frame. Must contain the following data fields: (primary_degree_id).}
@@ -24,13 +21,12 @@ Calculate USHE Element (Degree Type)
 \details{
 \strong{USHE Documentation}
 ELEMENT NAME: Degree Type
-FIELD NAME: gen_ushe_deg_type, pf_deg_type & g_deg_type
+FIELD NAME: gen_ushe_deg_type, & g_deg_type
 FIELD FORMAT: Varchar, 6 Characters
 DEFINITION: The Level of Degree or Certificate. Refer to the  Degree Type Table for all degrees.
 }
 \examples{
 gen_ushe_deg_type()
 
-pf_05()
 g_10()
 }
