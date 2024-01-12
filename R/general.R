@@ -846,8 +846,8 @@ gen_ushe_ipeds <- function(input_df=usheUtils::fake_graduation_df, with_intermed
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( deg_level = ipeds_award_level_code,
-            ipeds = ipeds_award_level_code ) %>%
+    mutate( deg_level = ifelse(is.na(ipeds_award_level_code), "0", ipeds_award_level_code),
+            ipeds = ifelse(is.na(ipeds_award_level_code), "0", ipeds_award_level_code)) %>%
     # Append USHE data element gen_ushe_ipeds
     mutate( gen_ushe_ipeds = deg_level,
             s_19 = deg_level,
