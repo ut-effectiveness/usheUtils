@@ -8,7 +8,7 @@
 #'                                                                        earned_credits,
 #'                                                                        course_level_id,
 #'                                                                        final_grade,
-#'                                                                        latest_student_type_code,
+#'                                                                        student_type_code,
 #'                                                                        budget_code,
 #'                                                                        is_concurrent_course,
 #'                                                                        student_id,
@@ -326,7 +326,7 @@ sc_11 <- function(input_df=usheUtils::fake_student_course_df) {
 #' @importFrom dplyr select
 #' @importFrom stringr str_ends
 #'
-#' @param input_df A Data Frame. Must contain the following data fields: (latest_student_type_code, budget_code, is_concurrent_course, section_number).
+#' @param input_df A Data Frame. Must contain the following data fields: (student_type_code, budget_code, is_concurrent_course, section_number).
 #'
 #'
 #'
@@ -340,9 +340,9 @@ sc_12 <- function(input_df=usheUtils::fake_student_course_df) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( sc_student_type = case_when( latest_student_type_code == "H" & stringr::str_ends(section_number, "Q") ~ "DC",
-                                         (latest_student_type_code == "H" & budget_code != "BC" & budget_code != "SF")  ~ "EC",
-                                         (latest_student_type_code == "H" & (budget_code == "BC" | budget_code == "SF") & is_concurrent_course) ~ "CC" ) ) %>%
+    mutate( sc_student_type = case_when( student_type_code == "H" & stringr::str_ends(section_number, "Q") ~ "DC",
+                                         (student_type_code == "H" & budget_code != "BC" & budget_code != "SF")  ~ "EC",
+                                         (student_type_code == "H" & (budget_code == "BC" | budget_code == "SF") & is_concurrent_course) ~ "CC" ) ) %>%
     # Append USHE data element sc_12
     mutate( sc_12 = sc_student_type )
 
