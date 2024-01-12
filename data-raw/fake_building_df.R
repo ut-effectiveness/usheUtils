@@ -1,4 +1,13 @@
-# code to prepare `fake_building_df` dataset goes here
+#'  `fake_building_df`
+#'
+#'
+#' @format ## `fake_building_df`
+#' A data frame
+#' \describe{
+#'   \item{building_location_code}{Country name}
+#'   ...
+#' }
+#' @source made up
 
 sample_size <- 1000
 

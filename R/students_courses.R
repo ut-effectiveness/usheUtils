@@ -342,7 +342,7 @@ sc_12 <- function(input_df=usheUtils::fake_student_course_df) {
     # Calculate intermediate fields
     mutate( sc_student_type = case_when( student_type_code == "H" & stringr::str_ends(section_number, "Q") ~ "DC",
                                          (student_type_code == "H" & budget_code != "BC" & budget_code != "SF")  ~ "EC",
-                                         (student_type_code == "H" & (budget_code == "BC" | budget_code == "SF") & is_concurrent_course) ~ "CC" ) ) %>%
+                                         (student_type_code == "H" & (budget_code == "BC" | budget_code == "SF")) ~ "CC" ) ) %>%
     # Append USHE data element sc_12
     mutate( sc_12 = sc_student_type )
 
