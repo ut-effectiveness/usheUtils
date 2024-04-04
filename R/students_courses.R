@@ -418,8 +418,7 @@ sc_14 <- function(input_df=usheUtils::fake_student_course_df) {
 #' **USHE Documentation**
 #'
 #' @importFrom magrittr %>%
-#' @importFrom dplyr mutate
-#' @importFrom dplyr select
+#' @importFrom dplyr select case_when mutate
 #'
 #' @param input_df A Data Frame. Must contain the following data fields: (course_level_id).
 #'
@@ -434,7 +433,10 @@ sc_15 <- function(input_df=usheUtils::fake_student_course_df) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( sc_cr_type = course_level_id ) %>%
+    mutate(sc_cr_type = case_when(
+      course_level_id == 'UG' ~ 'U',
+      course_level_id == 'GR' ~ 'G',
+      TRUE ~ 'missing')) %>%
     # Append USHE data element sc_15
     mutate( sc_15 = sc_cr_type )
 

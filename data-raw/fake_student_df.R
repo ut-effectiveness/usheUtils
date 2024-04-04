@@ -21,6 +21,7 @@ fake_student_df <- data.frame(
   term_start_date = sample(seq(as.Date('1978/01/01'), as.Date('2022/01/01'), by="day"), sample_size, replace = TRUE),
   version_id = sample(c("1", "2", "3"), sample_size, replace = TRUE),
   version_date = sample(seq(as.Date('1978/01/01'), as.Date('2022/01/01'), by="day"), sample_size, replace = TRUE),
+  census_date = sample(seq(as.Date('1978/01/01'), as.Date('2022/01/01'), by="day"), sample_size, replace = TRUE),
   birth_date = sample(seq(as.Date('1978/01/01'), as.Date('2022/01/01'), by="day"), sample_size, replace = TRUE),
   is_hispanic_latino_ethnicity = sample(c(TRUE, FALSE), sample_size, replace = TRUE),
   is_asian = sample(c(TRUE, FALSE), sample_size, replace = TRUE),

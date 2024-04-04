@@ -8,7 +8,7 @@ fake_student_course_df <- data.frame(
   section_number = sample(c("01Q", "12", NA), sample_size, replace = TRUE),
   attempted_credits = sample(c(0:120, NA), sample_size, replace = TRUE),
   earned_credits = sample(c(0:120, NA), sample_size, replace = TRUE),
-  course_level_id = sample(c("", NA), sample_size, replace = TRUE),
+  course_level_id = sample(c("GR", "UG", NA), sample_size, replace = TRUE),
   final_grade = sample(c("", NA), sample_size, replace = TRUE),
   student_type_code = sample(c("H", NA), sample_size, replace = TRUE),
   budget_code = sample(c("SF", "BC", "SD", NA), sample_size, replace = TRUE),

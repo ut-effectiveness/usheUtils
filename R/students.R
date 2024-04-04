@@ -15,6 +15,7 @@
 #'                                                                        institutional_cumulative_credits_earned, institutional_cumulative_gpa,
 #'                                                                        transfer_cumulative_credits_earned, total_cumulative_clep_credits_earned,
 #'                                                                        total_cumulative_ap_credits_earned, full_time_part_time_code, version_date,
+#'                                                                        census_date,
 #'                                                                        birth_date, first_admit_country_iso_code, high_school_code,
 #'                                                                        house_bill_75_waiver, secondary_major_cip_code, act_composite_score,
 #'                                                                        primary_major_cip_code, act_english_score, act_math_score, act_reading_score,
@@ -769,7 +770,7 @@ s_25 <- function(input_df=usheUtils::fake_student_df) {
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
 #'
-#' @param input_df A Data Frame. Must contain the following data fields: (version_date, birth_date).
+#' @param input_df A Data Frame. Must contain the following data fields: (census_date, birth_date).
 #'
 #'
 #' @return Original data frame, with USHE data element s_26 appended.
@@ -782,7 +783,7 @@ s_26 <- function(input_df=usheUtils::fake_student_df) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( s_age = floor( as.numeric( (as.Date(version_date) - as.Date(birth_date)) / 365.24 ) ) ) %>%
+    mutate( s_age = floor( as.numeric( (as.Date(census_date) - as.Date(birth_date)) / 365.24 ) ) ) %>%
     # Append USHE data element s_26
     mutate( s_26 = s_age )
 

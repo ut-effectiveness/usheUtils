@@ -24,7 +24,6 @@ fake_building_df <- data.frame(
   building_condition_code = sample(c("", NA), sample_size, replace = TRUE),
   building_area_gross = sample(c("", NA), sample_size, replace = TRUE),
   building_cost_myr = sample(c("", NA), sample_size, replace = TRUE),
-  building_number = sample(c("", NA), sample_size, replace = TRUE),
   building_auxiliary = sample(c("", NA), sample_size, replace = TRUE)
 
 )
