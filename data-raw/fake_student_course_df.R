@@ -1,6 +1,6 @@
 ## code to prepare `fake_student_course_df` dataset goes here
 
-sample_size <- 3000
+sample_size <- 30
 
 fake_student_course_df <- data.frame(
   subject_code = sample(c("", NA), sample_size, replace = TRUE),

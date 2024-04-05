@@ -9,7 +9,7 @@
 #' }
 #' @source made up
 
-sample_size <- 1000
+sample_size <- 30
 
 fake_building_df <- data.frame(
   building_location_code = sample(c("1234", NA), sample_size, replace = TRUE),

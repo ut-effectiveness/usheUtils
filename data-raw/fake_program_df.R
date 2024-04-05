@@ -1,6 +1,6 @@
 ## code to prepare `fake_program_df` dataset goes here
 
-sample_size <- 3000
+sample_size <- 30
 
 fake_program_df <- data.frame(
   major_desc = sample(c("", NA), sample_size, replace = TRUE),

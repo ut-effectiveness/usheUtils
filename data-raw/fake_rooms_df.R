@@ -1,6 +1,6 @@
 ## code to prepare `fake_rooms_df` dataset goes here
 
-sample_size <- 1000
+sample_size <- 30
 
 fake_rooms_df <- data.frame(
   submission_year = sample(c("", NA), sample_size, replace = TRUE),

@@ -1,6 +1,6 @@
 ## code to prepare `fake_dws_df` dataset goes here
 
-sample_size <- 3000
+sample_size <- 30
 
 fake_dws_df <- data.frame(
   ssn = sample(c("123-45-6789", "123-456-789", "12-34-5678", "999-99-9999", NA), sample_size, replace = TRUE),

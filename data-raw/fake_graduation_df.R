@@ -1,6 +1,6 @@
 # code to prepare `fake_graduation_df` dataset goes here
 
-sample_size <- 1000
+sample_size <- 30
 
 fake_graduation_df <- data.frame(
   student_id = stringr::str_pad( sample(1:999999, sample_size) , 8, pad = '0'),

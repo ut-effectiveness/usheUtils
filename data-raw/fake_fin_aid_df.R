@@ -1,6 +1,6 @@
 ## code to prepare `fake_fin_aid_df` dataset goes here
 
-sample_size <- 3000
+sample_size <- 30
 
 fake_fin_aid_df <- data.frame(
   financial_aid_year_id = sample(c("", NA), sample_size, replace = TRUE),
