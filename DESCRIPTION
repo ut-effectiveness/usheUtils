@@ -1,6 +1,6 @@
 Package: usheUtils
 Title: A collection of functions used to create USHE reports
-Version: 0.0.0.9000
+Version: 0.0.1.0000
 Authors@R: c(
     person("Matt", "Nickodemus", , "mattthewnickodemus@gmail.com", role = c("aut", "cre")),
     person("LaVoy", "Canfield", , "brentenlavoy@gmail.com", role = "aut"),
