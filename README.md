@@ -20,7 +20,7 @@ You can install the development version of usheUtils from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("dsu-effectiveness/usheUtils")
+devtools::install_github("ut-effectiveness/usheUtils")
 ```
 
 ## Example
