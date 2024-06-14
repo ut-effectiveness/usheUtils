@@ -78,6 +78,57 @@ is_valid_ssn <- function(ssn) {
   return(valid_ssn_check)
 }
 
+
+#' Clean names
+#'
+#' @details
+#'
+#' Removes non-alpha characters and truncation limits in names
+#'
+#' @importFrom stringr str_remove_all word str_trunc
+#' @importFrom dplyr pull
+#' @importFrom tibble tibble
+#'
+#' @param x a character element
+#' @param .width the truncation limit set to 15
+#'
+#' @return A clean name.
+#' @export
+#'
+clean_name <- function(x, .width=15){
+
+  new_name <- tibble::tibble(
+    name = x) %>%
+    mutate(name = stringr::word(name, sep = " ")) %>%
+    mutate(name = stringr::str_remove_all(string = name, pattern = '[^a-zA-Z\\d]')) %>%
+    mutate(name = stringr::str_trunc(name, width = .width, side = "right")) %>%
+    dplyr::pull(name)
+}
+
+#' Clean days of the week
+#'
+#' @details
+#'
+#' Removes extra spaces characters and truncation limit to 7 char
+#'
+#' @importFrom stringr str_replace_all str_trunc
+#' @importFrom dplyr pull
+#' @importFrom tibble tibble
+#'
+#' @param x a character element
+#'
+#' @return A clean name.
+#' @export
+#'
+clean_days <- function(x){
+
+clean_days <- tibble::tibble(
+  days = x) %>%
+  dplyr::mutate(days = stringr::str_replace_all(x, " ", "")) %>%
+  dplyr::mutate(days = stringr::str_trunc(days, width = 7, side = "right")) %>%
+  dplyr::pull(days)
+}
+
 #' Calculate USHE Element Institution (Institution)
 #'
 #' @details
@@ -214,10 +265,10 @@ gen_ushe_name <- function(input_df=usheUtils::fake_student_df) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( last_name = as.character(last_name),
-            first_name = as.character(first_name),
-            middle_name = as.character(middle_name),
-            name_suffix = as.character(name_suffix) ) %>%
+    mutate(last_name = clean_name(last_name, .width =60)) %>%
+    mutate(first_name = clean_name(first_name)) %>%
+    mutate(middle_name = clean_name(middle_name)) %>%
+    mutate(name_suffix = clean_name(name_suffix, .width =4)) %>%
     # Append USHE data element gen_ushe_name
     mutate( name = paste(coalesce(last_name, ''),
                          coalesce(first_name, ''),

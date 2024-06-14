@@ -89,5 +89,6 @@ utils::globalVariables(c(
   "total_cumulative_clep_credits_earned",
   "total_cumulative_credits_attempted_other_sources","total_remedial_hours",
   "transfer_cumulative_credits_earned","ushe_summer_year","version_date","year",
-  "year_term_extract", "census_date"
+  "year_term_extract", "census_date",
+  "days"
 ))
