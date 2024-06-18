@@ -622,7 +622,7 @@ c_17 <- function(input_df=usheUtils::fake_course_df) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( c_days = meet_days_1 ) %>%
+    mutate( c_days = clean_days(meet_days_1) ) %>%
     # Append USHE data element c_17
     mutate( c_17 = c_days )
 
@@ -872,7 +872,7 @@ c_25 <- function(input_df=usheUtils::fake_course_df) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( c_days = meet_days_2 ) %>%
+    mutate( c_days = clean_days(meet_days_2) ) %>%
     # Append USHE data element c_25
     mutate( c_25 = c_days )
 
@@ -1120,7 +1120,7 @@ c_33 <- function(input_df=usheUtils::fake_course_df) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( c_days = meet_days_3 ) %>%
+    mutate( c_days = clean_days(meet_days_3) ) %>%
     # Append USHE data element c_33
     mutate( c_33 = c_days )
 

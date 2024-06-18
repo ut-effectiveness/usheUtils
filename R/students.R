@@ -34,6 +34,7 @@
 #' @examples
 #' generate_student_submission_file()
 #'
+#' @importFrom dplyr if_else mutate
 #' @export
 #'
 generate_student_submission_file <- function(input_df=usheUtils::fake_student_df, with_intermediates=FALSE) {
@@ -97,6 +98,7 @@ generate_student_submission_file <- function(input_df=usheUtils::fake_student_df
     s_42() %>%
     s_43() %>%
     s_44() %>%
+    dplyr::mutate(s_44 = dplyr::if_else(s_17 == "HS" & s_44 == "E", NA_character_, s_44)) %>%
     s_45() %>%
     s_46() %>%
     s_47() %>%
@@ -241,6 +243,10 @@ s_07 <- function(input_df=usheUtils::fake_student_df) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
+    mutate(previous_last_name = clean_name(previous_last_name, .width =60)) %>%
+    mutate(previous_first_name = clean_name(previous_first_name)) %>%
+    mutate(previous_middle_name = clean_name(previous_middle_name)) %>%
+    mutate(previous_name_suffix = clean_name(previous_name_suffix, .width =4)) %>%
     mutate( s_prev_last = coalesce(previous_last_name, ''),
             s_prev_first = coalesce(previous_first_name, ''),
             s_prev_middle = coalesce(previous_middle_name, ''),
