@@ -7,6 +7,7 @@
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![R-CMD-check](https://github.com/ut-effectiveness/usheUtils/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ut-effectiveness/usheUtils/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The goal of usheUtils is to build a package containing all the functions
@@ -20,7 +21,7 @@ You can install the development version of usheUtils from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("ut-effectiveness/usheUtils")
+devtools::install_github("dsu-effectiveness/usheUtils")
 ```
 
 ## Example
