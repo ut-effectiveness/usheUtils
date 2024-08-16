@@ -9,7 +9,7 @@ Authors@R: c(
 Description: This package contains all the R functions the Office of
     Institutional Effectiveness uses for it's USHE reporting.
 License: MIT + file LICENSE
-URL: https://github.com/dsu-effectiveness/usheUtils
+URL: https://github.com/dsu-effectiveness/usheUtils, https://ut-effectiveness.github.io/usheUtils/
 BugReports: https://github.com/dsu-effectiveness/usheUtils/issues
 Depends: 
     R (>= 2.10)
