@@ -2,7 +2,7 @@ pandoc: 3.1.11
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles: {}
-last_built: 2024-08-16T17:36Z
+last_built: 2024-08-16T18:16Z
 urls:
   reference: https://ut-effectiveness.github.io/usheUtils/reference
   article: https://ut-effectiveness.github.io/usheUtils/articles
