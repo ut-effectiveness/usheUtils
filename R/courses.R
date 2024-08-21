@@ -77,7 +77,7 @@ generate_course_submission_file <- function(input_df=usheUtils::fake_course_df, 
                           "c_29", "c_30", "c_31", "c_32",
                           "c_33", "c_34", "c_35", "c_36",
                           "c_37", "c_38", "c_39", "c_40",
-                          "c_41", "c_42", "c_43", "c_44",
+                          "c_41", "c_44",
                           "c_45", "c_46", "c_47", "c_48",
                           "c_49", "c_50", "c_51", "c_52",
                           "c_53", "c_54")
@@ -124,8 +124,6 @@ generate_course_submission_file <- function(input_df=usheUtils::fake_course_df, 
     c_39() %>%
     c_40() %>%
     c_41() %>%
-    c_42() %>%
-    c_43() %>%
     c_44() %>%
     c_45() %>%
     c_46() %>%
@@ -1374,67 +1372,6 @@ c_41 <- function(input_df=usheUtils::fake_course_df) {
     mutate( c_title = c_title_intermediate_2) %>%
     # Append USHE data element c_41
     mutate( c_41 = c_title )
-
-  return(output_df)
-}
-
-
-#' Calculate USHE Element c_42 (Instructor ID)
-#'
-#' @details
-#'
-#' **USHE Documentation**
-#'
-#' @importFrom magrittr %>%
-#' @importFrom dplyr mutate
-#' @importFrom dplyr select
-#'
-#' @param input_df A Data Frame. Must contain the following data fields: (instructor_employee_id).
-#'
-#'
-#' @return Original data frame, with USHE data element c_42 appended.
-#' @export
-#'
-#' @examples
-#' c_42()
-#'
-c_42 <- function(input_df=usheUtils::fake_course_df) {
-
-  output_df <- input_df %>%
-    # Calculate intermediate fields
-    mutate( c_instruct_id = paste0('D', instructor_employee_id) ) %>%
-    # Append USHE data element c_42
-    mutate( c_42 = c_instruct_id )
-
-  return(output_df)
-}
-
-#' Calculate USHE Element c_43 (Instructor Name)
-#'
-#' @details
-#'
-#' **USHE Documentation**
-#'
-#' @importFrom magrittr %>%
-#' @importFrom dplyr mutate
-#' @importFrom dplyr select
-#'
-#' @param input_df A Data Frame. Must contain the following data fields: (instructor_first_name, instructor_last_name, instructor_middle_name).
-#'
-#'
-#' @return Original data frame, with USHE data element c_43 appended.
-#' @export
-#'
-#' @examples
-#' c_43()
-#'
-c_43 <- function(input_df=usheUtils::fake_course_df) {
-
-  output_df <- input_df %>%
-    # Calculate intermediate fields
-    mutate( c_instruct_name = paste0(instructor_last_name, ', ', instructor_first_name, ' ', instructor_middle_name) ) %>%
-    # Append USHE data element c_43
-    mutate( c_43 = c_instruct_name )
 
   return(output_df)
 }
