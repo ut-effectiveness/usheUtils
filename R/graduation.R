@@ -209,8 +209,8 @@ g_12 <- function(input_df=usheUtils::fake_graduation_df) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( g_trans_total_itermediate = (as.numeric(transfer_cumulative_credits_earned) -
-                                         as.numeric(total_cumulative_credits_attempted_other_sources)) ) %>%
+    mutate( g_trans_total_itermediate = as.numeric(total_cumulative_credits_attempted_other_sources)
+            - as.numeric(transfer_cumulative_credits_earned) ) %>%
     mutate( g_trans_total = round(g_trans_total_itermediate, digits = 1) )  %>%
     # Append USHE data element g_12
     mutate(g_12 = g_trans_total)
