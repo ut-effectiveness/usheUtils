@@ -776,7 +776,7 @@ sc_02 <- gen_ushe_year_term_extract
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
-#' @importFrom dplyr if_else
+#' @importFrom dplyr case_when
 #'
 #' @param input_df A Data Frame. Must contain the following data fields: (primary_degree_id).
 #'
@@ -792,9 +792,13 @@ gen_ushe_deg_type <- function(input_df=usheUtils::fake_graduation_df) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( deg_type = if_else( primary_degree_id == "MMFT",
-                                "MMF",
-                                primary_degree_id ) ) %>%
+    mutate( deg_type = case_when(
+    primary_degree_id == "MMFT" ~ "MMF",
+    primary_degree_id == "MACC" ~"MAC",
+    primary_degree_id %in% c("CER0", "CER1", "CERT") ~ "ACER",
+    TRUE ~ primary_degree_id
+    )) %>%
+
     # Append USHE data element gen_ushe_deg_type
     mutate( gen_ushe_deg_type = deg_type,
             g_10 = deg_type)
