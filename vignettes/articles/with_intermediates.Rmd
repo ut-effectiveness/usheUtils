@@ -1,0 +1,40 @@
+---
+title: "With Intermediates"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(tidyverse)
+library(usheUtils)
+```
+
+Here we can see what the report will consist of after running through all the helper functions to generate the USHE graduation submission file. for clarity I've only selected the USHE element g_03 which is the name of the student.
+
+```{r}
+g_03_df <- usheUtils::generate_graduation_submission_file() %>% 
+  select(g_03) 
+
+DT::datatable(g_03_df)
+```
+
+We can also use the argument **with_intermediates** to see what was the intermediate data points to make the USHE element and the USHE name. (the actual report only wants the element)
+
+
+| last_name                 | first_name                 | middle_name               | name_suffix               | name      | g_03         |
+|---------------------------|----------------------------|---------------------------|---------------------------|-----------|--------------|
+| intermediate data point 1 | intermediate data point 2  | intermediate data point 3 | intermediate data point 4 | USHE name | USHE element |
+
+```{r}
+g_03_df_check <- usheUtils::generate_graduation_submission_file(with_intermediates = TRUE) %>% 
+  select(last_name, first_name, middle_name, name_suffix , name, g_03) 
+
+DT::datatable(g_03_df_check)
+```
+
+You can use this argument to check or mutate if needed the data points making the final element.

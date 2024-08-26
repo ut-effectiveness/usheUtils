@@ -1,6 +1,6 @@
 Package: usheUtils
 Title: A collection of functions used to create USHE reports
-Version: 0.0.1.0000
+Version: 0.0.1.1
 Authors@R: c(
     person("Matt", "Nickodemus", , "mattthewnickodemus@gmail.com", role = c("aut", "cre")),
     person("LaVoy", "Canfield", , "brentenlavoy@gmail.com", role = "aut"),
@@ -22,3 +22,4 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.0
+Config/Needs/website: rmarkdown

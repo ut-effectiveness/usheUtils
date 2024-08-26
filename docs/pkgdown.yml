@@ -1,0 +1,10 @@
+pandoc: 3.1.11
+pkgdown: 2.0.7
+pkgdown_sha: ~
+articles:
+  with_intermediates: with_intermediates.html
+last_built: 2024-08-26T16:36Z
+urls:
+  reference: https://ut-effectiveness.github.io/usheUtils/reference
+  article: https://ut-effectiveness.github.io/usheUtils/articles
+
