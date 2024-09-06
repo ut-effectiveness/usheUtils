@@ -212,7 +212,7 @@ s_05 <- function(input_df=usheUtils::fake_student_df) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( s_previous_id = previous_student_id) %>%
+    mutate(s_previous_id = previous_student_id) %>%
     # Append USHE data element s_05
     mutate( s_05 = previous_student_id )
 
@@ -243,16 +243,9 @@ s_07 <- function(input_df=usheUtils::fake_student_df) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate(previous_last_name = clean_name(previous_last_name, .width =60)) %>%
-    mutate(previous_first_name = clean_name(previous_first_name)) %>%
-    mutate(previous_middle_name = clean_name(previous_middle_name)) %>%
-    mutate(previous_name_suffix = clean_name(previous_name_suffix, .width =4)) %>%
-    mutate( s_prev_last = coalesce(previous_last_name, ''),
-            s_prev_first = coalesce(previous_first_name, ''),
-            s_prev_middle = coalesce(previous_middle_name, ''),
-            s_prev_suffix = coalesce(previous_name_suffix, '') ) %>%
+    mutate(s_prev_last = clean_name(previous_last_name, .width =60)) %>%
     # Append USHE data element s_07
-    mutate( s_07 = paste(s_prev_last, s_prev_first, s_prev_middle, s_prev_suffix, sep='|') )
+    mutate( s_07 = s_prev_last)
 
   return(output_df)
 }
