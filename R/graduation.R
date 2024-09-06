@@ -63,7 +63,7 @@ generate_graduation_submission_file <- function(input_df=usheUtils::fake_graduat
   ushe_data_elements <- c("g_01", "g_02", "g_03", "g_04",
                           "g_05", "g_06", "g_07", "g_08",
                           "g_09", "g_10", "g_11", "g_12",
-                          "g_13", "g_14", "g_15", "g_16",
+                          "g_13", "g_14", "g_15",
                           "g_17", "g_18", "g_19", "g_20",
                           "g_21", "g_22", "g_23", "g_24",
                           "g_25", "g_26", "g_27", "g_28")
@@ -84,7 +84,6 @@ generate_graduation_submission_file <- function(input_df=usheUtils::fake_graduat
     g_13() %>%
     g_14() %>%
     g_15() %>%
-    g_16() %>%
     g_17() %>%
     g_18() %>%
     g_19() %>%
@@ -209,8 +208,8 @@ g_12 <- function(input_df=usheUtils::fake_graduation_df) {
 
   output_df <- input_df %>%
     # Calculate intermediate fields
-    mutate( g_trans_total_itermediate = (as.numeric(transfer_cumulative_credits_earned) -
-                                         as.numeric(total_cumulative_credits_attempted_other_sources)) ) %>%
+    mutate( g_trans_total_itermediate = as.numeric(total_cumulative_credits_attempted_other_sources)
+            - as.numeric(transfer_cumulative_credits_earned) ) %>%
     mutate( g_trans_total = round(g_trans_total_itermediate, digits = 1) )  %>%
     # Append USHE data element g_12
     mutate(g_12 = g_trans_total)
@@ -326,39 +325,6 @@ g_15 <- function(input_df=usheUtils::fake_graduation_df, with_intermediates=FALS
   return(output_df)
 }
 
-#' Calculate USHE Element g_16 (Previous Degree Type  )
-#'
-#' @details
-#'
-#' **USHE Documentation**
-#' - ELEMENT NAME: Previous Degree Type
-#' - FIELD NAME: g_prev_deg_type
-#' - FIELD FORMAT: Varchar, 3 Characters
-#' - DEFINITION: Type of highest degree awarded earned prior to this reporting period at any  institution, including your own institution
-#'
-#' @importFrom magrittr %>%
-#' @importFrom dplyr mutate
-#' @importFrom dplyr select
-#'
-#' @param input_df A Data Frame. Must contain the following data fields: (previous_degree_type).
-#' @param with_intermediates Boolean: Option to include intermediate calculated fields.
-#'
-#' @return Original data frame, with USHE data element g_16 appended. Will also return appended intermediate calculated fields, if option is set.
-#' @export
-#'
-#' @examples
-#' g_16()
-#'
-g_16 <- function(input_df=usheUtils::fake_graduation_df, with_intermediates=FALSE) {
-
-  output_df <- input_df %>%
-    # Calculate intermediate fields
-    mutate(g_prev_deg_type = previous_degree_type ) %>%
-    # Append USHE data element g_16
-    mutate( g_16 = g_prev_deg_type  )
-
-  return(output_df)
-}
 
 
 #' Calculate USHE Element g_18 (Required Hours for Degree)
